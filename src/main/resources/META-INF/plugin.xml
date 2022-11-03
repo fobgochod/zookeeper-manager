@@ -1,0 +1,80 @@
+<!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
+<idea-plugin>
+    <id>com.fobgochod</id>
+    <name>Zookeeper Manager</name>
+    <vendor>fobgochod</vendor>
+
+    <depends>com.intellij.modules.platform</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <toolWindow id="Zookeeper" anchor="right"
+                    factoryClass="com.fobgochod.ZKToolWindowFactory"
+                    order="last"
+                    doNotActivateOnStart="true" icon="/icons/logo.svg"/>
+
+        <applicationConfigurable parentId="tools"
+                                 id="com.fobgochod.setting.ZKConfigConfigurable"
+                                 instance="com.fobgochod.setting.ZKConfigConfigurable"
+                                 bundle="i18n.messages"
+                                 key="setting.configurable.displayName"/>
+        <applicationService serviceImplementation="com.fobgochod.setting.ZKConfigState"/>
+        <applicationService serviceImplementation="com.fobgochod.view.window.ZooToolWindow"/>
+
+        <applicationService serviceImplementation="com.fobgochod.view.setting.ZKConfigUI"/>
+        <applicationService serviceImplementation="com.fobgochod.ZKClient"/>
+
+        <virtualFileSystem key="zookeeper-node"
+                           implementationClass="com.fobgochod.view.vfs.ZKNodeFileSystem"/>
+
+        <notificationGroup id="Zookeeper" displayType="BALLOON" bundle="i18n.messages"
+                           key="notification.group.zookeeper"/>
+    </extensions>
+
+    <actions>
+        <group id="ZooKeeperToolbar" text="ZooKeeper ToolBar">
+            <action id="RefreshTreeAction" class="com.fobgochod.action.navigator.RefreshTreeAction"
+                    icon="AllIcons.General.InlineRefreshHover" text="Refresh"/>
+            <action id="ExpandTreeAction" class="com.fobgochod.action.navigator.ExpandTreeAction"
+                    icon="AllIcons.Actions.Expandall" text="Expand All"/>
+            <action id="CollapseTreeAction" class="com.fobgochod.action.navigator.CollapseTreeAction"
+                    icon="AllIcons.Actions.Collapseall" text="Collapse All"/>
+            <action id="AclSchemeAction" class="com.fobgochod.action.navigator.AclSchemeAction"
+                    icon="AllIcons.CodeWithMe.CwmPermissions" text="Acl Schemes"/>
+            <action id="EditSettingsAction" class="com.fobgochod.action.navigator.EditSettingsAction"
+                    icon="AllIcons.General.Settings" text="Edit Settings">
+            </action>
+        </group>
+
+        <group id="ZooKeeperPopup" text="ZooKeeper Popup" popup="true">
+            <action id="CreateNodeAction" class="com.fobgochod.action.popup.CreateNodeAction"
+                    icon="AllIcons.General.Add" text="Create Node"/>
+            <action id="DeleteNodeAction" class="com.fobgochod.action.popup.DeleteNodeAction"
+                    icon="AllIcons.General.Remove" text="Delete Node"/>
+            <action id="OpenInEditorAction" class="com.fobgochod.action.popup.OpenNodeInEditorAction"
+                    icon="AllIcons.General.Inline_edit" text="Open in Editor"/>
+            <separator/>
+            <action id="CopyNodePathAction" class="com.fobgochod.action.popup.CopyNodePathAction"
+                    icon="AllIcons.General.CopyHovered" text="Copy Node Path"/>
+            <separator/>
+            <action id="ConfigNodeAclAction" class="com.fobgochod.action.popup.ConfigNodeAclAction"
+                    icon="AllIcons.Actions.Show" text="Config Node ACL"/>
+        </group>
+
+        <group id="ModifyNodePopup">
+            <action id="ModifyNodeAction" class="com.fobgochod.action.popup.ModifyNodeAction"
+                    icon="AllIcons.General.InlineRefreshHover" text="Modify ZNode"/>
+            <action id="ReformatNodeAction" class="com.fobgochod.action.popup.ReformatNodeAction"
+                    icon="AllIcons.Json.Object" text="Reformat ZNode">
+            </action>
+        </group>
+        <group id="ClearAllPopup">
+            <action id="ClearAllAction" class="com.fobgochod.action.popup.ClearAllAction"
+                    icon="AllIcons.Actions.GC" text="Clear All"/>
+        </group>
+
+        <action id="UpdateNodeAction" class="com.fobgochod.action.popup.UpdateNodeAction"
+                icon="/icons/zookeeper_small.png" text="Update ZNode">
+            <add-to-group group-id="EditorPopupMenu" anchor="last"/>
+        </action>
+    </actions>
+</idea-plugin>
