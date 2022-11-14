@@ -1,8 +1,11 @@
 IntelliJ IDEA ZooKeeper Plugin
 =======================================
-ZooKeeper plugin for IntelliJ IDEA, and you can operate ZooKeeper directly in IDEA.
 
 <!-- Plugin description -->
+
+ZooKeeper plugin for IntelliJ IDEA, and you can operate ZooKeeper directly in IDEA.
+
+Open the tool by click menu "View->Tool Windows->Zookeeper".
 
 ## Introduction
 

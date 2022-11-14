@@ -13,7 +13,7 @@ public class ZKToolWindowFactory implements ToolWindowFactory {
     @Override
     public void createToolWindowContent(@NotNull Project project, @NotNull ToolWindow toolWindow) {
 
-        ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
+        ContentFactory contentFactory = ContentFactory.getInstance();
         Content content = contentFactory.createContent(ZooToolWindow.getInstance(), "", false);
         toolWindow.getContentManager().addContent(content);
     }
