@@ -27,7 +27,7 @@ public class NoticeUtil {
     }
 
     public static void notify(String message, NotificationType type) {
-        Notifications.Bus.notify(new Notification(ZKBundle.message("notification.group.zookeeper"), message, type));
+        Notifications.Bus.notify(new Notification(ZKBundle.message("notification.group.zookeeper"), null, message, type));
         switch (type) {
             case ERROR:
                 error(message);

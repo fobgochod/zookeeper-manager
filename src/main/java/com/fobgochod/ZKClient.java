@@ -7,7 +7,6 @@ import com.fobgochod.view.vfs.ZKNodeFile;
 import com.intellij.notification.NotificationType;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.util.text.Strings;
 import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
@@ -21,6 +20,7 @@ import org.apache.zookeeper.data.Stat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 public class ZKClient implements Disposable {
 
@@ -200,9 +200,9 @@ public class ZKClient implements Disposable {
     public void setACL(String path, List<ACL> aclList) {
         try {
             curator.setACL().withACL(aclList).forPath(path);
-            NoticeUtil.debug(ZKCli.getLog(ZKCli.setAcl, path, Strings.join(aclList, ",")));
+            NoticeUtil.debug(ZKCli.getLog(ZKCli.setAcl, path, aclList.stream().map(ACL::toString).collect(Collectors.joining(","))));
         } catch (Exception e) {
-            NoticeUtil.error(ZKCli.getLog(ZKCli.setAcl, path, Strings.join(aclList, ",")), e.getMessage());
+            NoticeUtil.error(ZKCli.getLog(ZKCli.setAcl, path, aclList.stream().map(ACL::toString).collect(Collectors.joining(","))), e.getMessage());
         }
     }
 }

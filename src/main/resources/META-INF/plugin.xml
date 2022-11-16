@@ -33,7 +33,7 @@
     <actions>
         <group id="ZooKeeperToolbar" text="ZooKeeper ToolBar">
             <action id="RefreshTreeAction" class="com.fobgochod.action.navigator.RefreshTreeAction"
-                    icon="AllIcons.General.InlineRefreshHover" text="Refresh"/>
+                    icon="AllIcons.Actions.Refresh" text="Refresh"/>
             <action id="ExpandTreeAction" class="com.fobgochod.action.navigator.ExpandTreeAction"
                     icon="AllIcons.Actions.Expandall" text="Expand All"/>
             <action id="CollapseTreeAction" class="com.fobgochod.action.navigator.CollapseTreeAction"
@@ -62,7 +62,7 @@
 
         <group id="ModifyNodePopup">
             <action id="ModifyNodeAction" class="com.fobgochod.action.popup.ModifyNodeAction"
-                    icon="AllIcons.General.InlineRefreshHover" text="Modify ZNode"/>
+                    icon="AllIcons.Actions.Refresh" text="Modify ZNode"/>
             <action id="ReformatNodeAction" class="com.fobgochod.action.popup.ReformatNodeAction"
                     icon="AllIcons.Json.Object" text="Reformat ZNode">
             </action>

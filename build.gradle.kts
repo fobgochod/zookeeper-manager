@@ -1,4 +1,5 @@
 import org.jetbrains.changelog.markdownToHTML
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 fun properties(key: String) = project.findProperty(key).toString()
 
@@ -6,18 +7,22 @@ plugins {
     // Java support
     id("java")
     // Kotlin support
-    id("org.jetbrains.kotlin.jvm") version "1.7.10"
+    id("org.jetbrains.kotlin.jvm") version "1.5.30"
     // Gradle IntelliJ Plugin
-    id("org.jetbrains.intellij") version "1.8.0"
+    id("org.jetbrains.intellij") version "1.1.6"
     // Gradle Changelog Plugin
-    id("org.jetbrains.changelog") version "1.3.1"
+    id("org.jetbrains.changelog") version "1.3.0"
     // Gradle Qodana Plugin
-    id("org.jetbrains.qodana") version "0.1.13"
+    id("org.jetbrains.qodana") version "0.1.12"
 }
 
 group = properties("pluginGroup")
 version = properties("pluginVersion")
 
+// Configure project's dependencies
+repositories {
+    mavenCentral()
+}
 
 dependencies {
     implementation("org.apache.zookeeper:zookeeper:3.8.0")
@@ -27,23 +32,13 @@ dependencies {
     implementation("org.apache.curator:curator-client:5.3.0")
 }
 
-// Configure project's dependencies
-repositories {
-    mavenCentral()
-}
-
-// Set the JVM language level used to compile sources and generate files - Java 11 is required since 2020.3
-kotlin {
-    jvmToolchain {
-        languageVersion.set(JavaLanguageVersion.of(11))
-    }
-}
-
-// Configure Gradle IntelliJ Plugin - read more: https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html
+// Configure Gradle IntelliJ Plugin - read more: https://github.com/JetBrains/gradle-intellij-plugin
 intellij {
     pluginName.set(properties("pluginName"))
     version.set(properties("platformVersion"))
     type.set(properties("platformType"))
+    downloadSources.set(properties("platformDownloadSources").toBoolean())
+    updateSinceUntilBuild.set(true)
 
     // Plugin Dependencies. Uses `platformPlugins` property from the gradle.properties file.
     plugins.set(properties("platformPlugins").split(',').map(String::trim).filter(String::isNotEmpty))
@@ -60,10 +55,21 @@ qodana {
     cachePath.set(projectDir.resolve(".qodana").canonicalPath)
     reportPath.set(projectDir.resolve("build/reports/inspections").canonicalPath)
     saveReport.set(true)
-    showReport.set(System.getenv("QODANA_SHOW_REPORT")?.toBoolean() ?: false)
+    showReport.set(System.getenv("QODANA_SHOW_REPORT").toBoolean())
 }
 
 tasks {
+    // Set the JVM compatibility versions
+    properties("javaVersion").let {
+        withType<JavaCompile> {
+            sourceCompatibility = it
+            targetCompatibility = it
+        }
+        withType<KotlinCompile> {
+            kotlinOptions.jvmTarget = it
+        }
+    }
+
     wrapper {
         gradleVersion = properties("gradleVersion")
     }
@@ -92,6 +98,10 @@ tasks {
                 getOrNull(properties("pluginVersion")) ?: getLatest()
             }.toHTML()
         })
+    }
+
+    runPluginVerifier {
+        ideVersions.set(properties("pluginVerifierIdeVersions").split(',').map(String::trim).filter(String::isNotEmpty))
     }
 
     // Configure UI tests plugin

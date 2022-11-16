@@ -4,8 +4,12 @@
 
 ## [Unreleased]
 
-## [2021.3.0]
+## [2020.3.0]
 
 ### Added
 
-- Initial project scaffold
+- Update `platformVersion` to `2020.3.4`
+- Change since/until build to `203-203.*` (2020.3 - 2020.3.4)
+- Dependencies - upgrade `org.jetbrains.kotlin.jvm` to `1.5.30`
+- Dependencies - upgrade `org.jetbrains.intellij` to `1.1.16`
+- Dependencies - upgrade `org.jetbrains.changelog` to `1.3.0`
