@@ -12,6 +12,13 @@
 - Dependencies - upgrade `org.jetbrains.changelog` to `2.0.0`
 - Dependencies - upgrade `org.jetbrains.kotlin.jvm` to `1.7.21`
 
+## [2022.1.0]
+
+### Changed
+
+- Update `platformVersion` to `2022.1.4`
+- Change since/until build to `221-221.*` (2022.1 - 2022.1.4)
+
 ## [2021.3.0]
 
 ### Added
