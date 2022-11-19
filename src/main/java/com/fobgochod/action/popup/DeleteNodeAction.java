@@ -13,7 +13,7 @@ import javax.swing.*;
 /**
  * delete node and children if they exist.
  *
- * @author Xiao
+ * @author fobgochod
  * @date 2022/10/15 22:21
  */
 public class DeleteNodeAction extends AbstractNodeAction {

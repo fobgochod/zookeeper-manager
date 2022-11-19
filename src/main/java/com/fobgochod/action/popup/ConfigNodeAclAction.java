@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * config node ACLs
  *
- * @author Xiao
+ * @author fobgochod
  * @date 2022/10/23 19:04
  */
 public class ConfigNodeAclAction extends AbstractNodeAction {

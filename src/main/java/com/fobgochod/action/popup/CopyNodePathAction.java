@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * copy node path
  *
- * @author Xiao
+ * @author fobgochod
  * @date 2022/10/15 22:21
  */
 public class CopyNodePathAction extends AbstractNodeAction {

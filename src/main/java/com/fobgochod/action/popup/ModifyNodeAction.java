@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * modify node data
  *
- * @author Xiao
+ * @author fobgochod
  * @date 2022/10/15 20:39
  */
 public class ModifyNodeAction extends AbstractNodeAction {
