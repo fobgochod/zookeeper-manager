@@ -18,7 +18,7 @@ import java.nio.charset.StandardCharsets;
 /**
  * zookeeper virtual file system
  *
- * @author Xiao
+ * @author fobgochod
  * @date 2022/10/17 23:12
  */
 public class ZKNodeFileSystem extends DummyFileSystem {

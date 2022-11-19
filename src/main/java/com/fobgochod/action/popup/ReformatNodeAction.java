@@ -12,7 +12,7 @@ import javax.swing.*;
 /**
  * reformat node data
  *
- * @author Xiao
+ * @author fobgochod
  * @date 2022/10/31 21:37
  */
 public class ReformatNodeAction extends AbstractNodeAction {

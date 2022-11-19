@@ -13,7 +13,7 @@ import java.awt.event.MouseEvent;
 /**
  * ZooKeeper application configurable
  *
- * @author Xiao
+ * @author fobgochod
  * @date 2022/10/17 23:47
  */
 public class ZKConfigUI {

@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * collapse all tree node
  *
- * @author Xiao
+ * @author fobgochod
  * @date 2022/10/23 19:36
  */
 public class CollapseTreeAction extends AbstractNodeAction {

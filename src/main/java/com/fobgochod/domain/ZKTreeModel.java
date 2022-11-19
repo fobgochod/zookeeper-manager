@@ -15,7 +15,7 @@ import java.util.stream.IntStream;
 /**
  * ZooKeeper tree model
  *
- * @author Xiao
+ * @author fobgochod
  * @date 2022/10/16 0:54
  */
 public class ZKTreeModel extends AbstractTreeModel {

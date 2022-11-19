@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * create node action
  *
- * @author Xiao
+ * @author fobgochod
  * @date 2022/10/15 20:39
  */
 public class CreateNodeAction extends AbstractNodeAction {

@@ -11,7 +11,7 @@ import javax.swing.*;
  * <br/>
  * <a href="https://plugins.jetbrains.com/docs/intellij/plugin-icon-file.html">Plugin Logo<a/>
  *
- * @author Xiao
+ * @author fobgochod
  * @date 2022/10/23 22:19
  */
 public class IconUtil {
