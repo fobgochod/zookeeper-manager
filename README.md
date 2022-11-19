@@ -5,7 +5,7 @@ IntelliJ IDEA ZooKeeper Plugin
 
 ZooKeeper plugin for IntelliJ IDEA, and you can operate ZooKeeper directly in IDEA.
 
-Open the tool by click menu "View->Tool Windows->Zookeeper".
+To use the **Zookeeper** tool window, select **View** > **Tool Windows** > **Zookeeper**.
 
 ## Introduction
 
@@ -17,11 +17,11 @@ Open the tool by click menu "View->Tool Windows->Zookeeper".
 ## Features
 
 * ZooKeeper's configuration for project: host, port
-* ZeeKeeper tool window to display ZooKeeper file system tree
+* ZooKeeper tool window to display ZooKeeper file system tree
 * Right click ZK tree node to popup operation menu
 * Create Node: path support, such as org/apache/zookeeper
 * Delete Node: will also delete children if they exist
-* Update node value by popup menu
+* Update Node value by popup menu
 * Click ZK tree node to show data、stat、ACLs
 * ......
 

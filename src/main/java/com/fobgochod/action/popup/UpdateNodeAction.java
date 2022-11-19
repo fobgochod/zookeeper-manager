@@ -16,7 +16,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * update node data
  *
- * @author Xiao
+ * @author fobgochod
  * @date 2022/10/15 23:22
  */
 public class UpdateNodeAction extends EditorAction {

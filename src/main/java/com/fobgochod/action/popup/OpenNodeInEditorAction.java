@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * open node in editor
  *
- * @author Xiao
+ * @author fobgochod
  * @date 2022/10/15 22:26
  */
 public class OpenNodeInEditorAction extends AnAction {

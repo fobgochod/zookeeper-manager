@@ -18,7 +18,7 @@ import org.jetbrains.annotations.Nullable;
  * <p>
  * zookeeper configuration persistence
  *
- * @author Xiao
+ * @author fobgochod
  * @date 2022/10/12 20:48
  */
 @State(name = ZKConfigState.NAME, storages = @Storage(ZKConfigState.STORAGES))
@@ -28,10 +28,10 @@ public class ZKConfigState implements PersistentStateComponent<ZKConfigState> {
     public static final String STORAGES = "ZooKeeperSettingsPlugin.xml";
 
     private String name;
-    private String host;
+    private String host = "127.0.0.1";
     private int port = 2181;
     private String paths;
-    private int blockUntilConnected = 20 * 1000;
+    private int blockUntilConnected = 6 * 1000;
     private boolean saslClientEnabled;
     private String username;
     private String password;

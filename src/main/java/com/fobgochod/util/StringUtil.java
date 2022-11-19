@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 /**
  * StringUtil.java
  *
- * @author Xiao
+ * @author fobgochod
  * @date 2022/10/22 12:12
  * @see com.intellij.openapi.util.text.StringUtil
  */
