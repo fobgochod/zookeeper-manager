@@ -3,27 +3,30 @@ IntelliJ IDEA ZooKeeper Plugin
 
 <!-- Plugin description -->
 
-ZooKeeper plugin for IntelliJ IDEA, and you can operate ZooKeeper directly in IDEA.
-
-To use the **Zookeeper** tool window, select **View** > **Tool Windows** > **Zookeeper**.
+Provides integration with [Zookeeper](https://zookeeper.apache.org).
 
 ## Introduction
 
 - This project is developed based on plugin [ZooKeeper](https://github.com/linux-china/zookeeper-intellij), because it
   is no longer maintained.
-- The main purpose of this project is to learn about developing idea plugin, and learn about zookeeper by the way.
-- If you have a bug or an idea, please create an issue at [GitHub](https://github.com/fobgochod/zookeeper-manager/issues).
+- If you have a bug or an idea, please create an issue
+  at [GitHub](https://github.com/fobgochod/zookeeper-manager/issues).
 
 ## Features
 
-* ZooKeeper's configuration for project: host, port
-* ZooKeeper tool window to display ZooKeeper file system tree
-* Right click ZK tree node to popup operation menu
-* Create Node: path support, such as org/apache/zookeeper
-* Delete Node: will also delete children if they exist
-* Update Node value by popup menu
-* Click ZK tree node to show data、stat、ACLs
-* ......
+* To configure, open Settings | Tools | Zookeeper.
+* Click "Refresh" to display ZooKeeper file system tree
+* Right click tree node to popup operation menu
+  * Create Node: path support, such as org/apache/zookeeper
+  * Delete Node: will also delete children if they exist
+  * Config Node: allow to config ACL if you have permissions
+* Click tree node to show data、stat、ACLs
+  * Data Tab allow update node value by popup menu
+  * Stat Tab display node stat structure
+  * ACL Tab show node ACL info
+  * Log Tab print some operation log
+
+To use the **Zookeeper** tool window, select **View** > **Tool Windows** > **Zookeeper**.
 
 <!-- Plugin description end -->
 
