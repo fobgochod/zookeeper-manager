@@ -121,6 +121,15 @@ public class ZKClient implements Disposable {
         }
     }
 
+    public void createTTL(String path, byte[] data, long ttl, CreateMode mode) {
+        try {
+            curator.create().withTtl(ttl).creatingParentsIfNeeded().withMode(mode).forPath(path, data);
+            NoticeUtil.debug(ZKCli.getLog(ZKCli.create_e_s_data, ZKCli.mode(mode) + ttl, path, ZKCli.data(data)));
+        } catch (Exception e) {
+            NoticeUtil.error(ZKCli.getLog(ZKCli.create_e_s_data, ZKCli.mode(mode) + ttl, path, ZKCli.data(data)), e.getMessage());
+        }
+    }
+
     public void delete(String path) {
         try {
             curator.delete().forPath(path);

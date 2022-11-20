@@ -20,7 +20,7 @@ import java.util.stream.IntStream;
  */
 public class ZKTreeModel extends AbstractTreeModel {
 
-    private static final ZKClient ZK_CLIENT = ZKClient.getInstance();
+    private static final ZKClient zkClient = ZKClient.getInstance();
     private List<String> paths = Arrays.asList();
 
     public ZKTreeModel() {
@@ -34,11 +34,11 @@ public class ZKTreeModel extends AbstractTreeModel {
 
     public static void fillNode(ZKNode node) {
         Stat stat = new Stat();
-        byte[] contents = ZK_CLIENT.storingStatIn(node.getFullPath(), stat);
+        byte[] contents = zkClient.storingStatIn(node.getFullPath(), stat);
         if (contents != null) {
             node.setData(contents);
             node.setStat(stat);
-            List<ACL> perms = ZK_CLIENT.getACL(node.getFullPath());
+            List<ACL> perms = zkClient.getACL(node.getFullPath());
             node.setPerms(perms.stream().map(ZKAcl::new).collect(Collectors.toList()));
         }
     }
@@ -94,7 +94,7 @@ public class ZKTreeModel extends AbstractTreeModel {
             return children;
         }
 
-        List<String> childPaths = ZK_CLIENT.getChildren(node.getFullPath());
+        List<String> childPaths = zkClient.getChildren(node.getFullPath());
         childPaths.sort(String::compareTo);
         for (String childPath : childPaths) {
             ZKNode childNode = new ZKNode(node.getFullPath(), childPath);

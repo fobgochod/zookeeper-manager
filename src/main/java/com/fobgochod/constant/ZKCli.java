@@ -3,9 +3,9 @@ package com.fobgochod.constant;
 import org.apache.zookeeper.CreateMode;
 
 /**
- *  ZooCli.java
+ * ZooCli.java
  *
- *  <a href="https://zookeeper.apache.org/doc/current/zookeeperCLI.html">ZooKeeper CLI</a>
+ * <a href="https://zookeeper.apache.org/doc/current/zookeeperCLI.html">ZooKeeper CLI</a>
  *
  * @author fobgochod
  * @date 2022/10/28 0:38
@@ -45,6 +45,12 @@ public class ZKCli {
                 return "-e";
             case EPHEMERAL_SEQUENTIAL:
                 return "-e -s";
+            case CONTAINER:
+                return "-c";
+            case PERSISTENT_WITH_TTL:
+                return "-t ";
+            case PERSISTENT_SEQUENTIAL_WITH_TTL:
+                return "-e -t ";
         }
         return "";
     }

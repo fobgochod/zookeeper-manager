@@ -1,9 +1,9 @@
 package com.fobgochod.action.popup;
 
 import com.fobgochod.action.AbstractNodeAction;
+import com.fobgochod.domain.ZKNode;
 import com.fobgochod.util.StringUtil;
 import com.fobgochod.view.action.popup.CreateNodeUI;
-import com.fobgochod.domain.ZKNode;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.ui.DialogBuilder;
 import com.intellij.openapi.ui.DialogWrapper;
@@ -11,6 +11,8 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * create node action
+ * <p>
+ * ${@link org.apache.zookeeper.CreateMode}
  *
  * @author fobgochod
  * @date 2022/10/15 20:39
@@ -30,8 +32,11 @@ public class CreateNodeAction extends AbstractNodeAction {
 
                 ZKNode selectionNode = zooToolWindow.getSelectionNode();
                 String fullPath = StringUtil.rebuild(selectionNode.getFullPath(), nodePath);
-
-                zkClient.creatingParentsIfNeeded(fullPath, ui.getNodeData(), ui.getNodeMode());
+                if (ui.getNodeMode().isTTL()) {
+                    zkClient.createTTL(fullPath, ui.getNodeData(), ui.getTTL(), ui.getNodeMode());
+                } else {
+                    zkClient.creatingParentsIfNeeded(fullPath, ui.getNodeData(), ui.getNodeMode());
+                }
                 zooToolWindow.flushTree();
             }
             builder.getDialogWrapper().close(DialogWrapper.OK_EXIT_CODE);

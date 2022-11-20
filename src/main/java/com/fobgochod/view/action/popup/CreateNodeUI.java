@@ -10,14 +10,15 @@ public class CreateNodeUI {
     private JComboBox<CreateMode> nodeMode;
     private JTextField nodePath;
     private JTextField nodeData;
+    private JTextField nodeTtl;
 
     public CreateNodeUI() {
-        nodeMode.setModel(new DefaultComboBoxModel<>(new CreateMode[]{
-                CreateMode.PERSISTENT,
-                CreateMode.PERSISTENT_SEQUENTIAL,
-                CreateMode.EPHEMERAL,
-                CreateMode.EPHEMERAL_SEQUENTIAL
-        }));
+        nodeMode.setModel(new DefaultComboBoxModel<>(CreateMode.values()));
+
+        nodeMode.addItemListener(e -> {
+            CreateMode item = (CreateMode) e.getItem();
+            nodeTtl.setEditable(item.isTTL());
+        });
     }
 
     public JPanel getRoot() {
@@ -34,5 +35,10 @@ public class CreateNodeUI {
 
     public byte[] getNodeData() {
         return nodeData.getText().getBytes();
+    }
+
+    public long getTTL() {
+        String text = nodeTtl.getText();
+        return Long.parseLong(text);
     }
 }
