@@ -4,11 +4,14 @@
 
 ## [Unreleased]
 
+## [2022.3.0]
+
 ### Changed
 
 - Update `platformVersion` to `2022.2.3`
 - Change since/until build to `222-222.*` (2022.2 - 2022.2.3)
 - Dependencies - upgrade `org.jetbrains.intellij` to `1.10.0`
+- Add Container Nodes and TTL Nodes
 
 ## [2022.2.0]
 
