@@ -23,7 +23,7 @@ version = properties("pluginVersion")
 
 dependencies {
     implementation("org.apache.zookeeper:zookeeper:3.8.0")
-    implementation("org.slf4j:slf4j-api:2.0.3")
+    implementation("org.slf4j:slf4j-api:2.0.4")
     implementation("com.google.guava:guava:31.1-jre")
     implementation("org.apache.curator:curator-framework:5.3.0")
     implementation("org.apache.curator:curator-client:5.3.0")

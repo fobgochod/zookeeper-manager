@@ -3,7 +3,9 @@ package com.fobgochod.action.popup;
 import com.fobgochod.action.AbstractNodeAction;
 import com.fobgochod.domain.ZKNode;
 import com.fobgochod.util.StringUtil;
+import com.fobgochod.util.ZKBundle;
 import com.fobgochod.view.action.popup.CreateNodeUI;
+import com.intellij.icons.AllIcons;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.ui.DialogBuilder;
 import com.intellij.openapi.ui.DialogWrapper;
@@ -19,9 +21,16 @@ import org.jetbrains.annotations.NotNull;
  */
 public class CreateNodeAction extends AbstractNodeAction {
 
+    public CreateNodeAction() {
+        getTemplatePresentation().setText(ZKBundle.message("action.popup.create.node.text"));
+        getTemplatePresentation().setIcon(AllIcons.General.Add);
+    }
+
     public void actionPerformed(@NotNull AnActionEvent event) {
+        super.actionPerformed(event);
+
         final DialogBuilder builder = new DialogBuilder();
-        builder.setTitle("Create Node");
+        builder.setTitle(ZKBundle.message("action.popup.create.node.text"));
 
         CreateNodeUI ui = new CreateNodeUI();
         builder.setPreferredFocusComponent(ui.getNodePath());
@@ -30,14 +39,14 @@ public class CreateNodeAction extends AbstractNodeAction {
             String nodePath = ui.getNodePath().getText();
             if (StringUtil.isNotEmpty(nodePath)) {
 
-                ZKNode selectionNode = zooToolWindow.getSelectionNode();
+                ZKNode selectionNode = toolWindow.getSelectionNode();
                 String fullPath = StringUtil.rebuild(selectionNode.getFullPath(), nodePath);
                 if (ui.getNodeMode().isTTL()) {
                     zkClient.createTTL(fullPath, ui.getNodeData(), ui.getTTL(), ui.getNodeMode());
                 } else {
                     zkClient.creatingParentsIfNeeded(fullPath, ui.getNodeData(), ui.getNodeMode());
                 }
-                zooToolWindow.flushTree();
+                toolWindow.flushTree();
             }
             builder.getDialogWrapper().close(DialogWrapper.OK_EXIT_CODE);
         });

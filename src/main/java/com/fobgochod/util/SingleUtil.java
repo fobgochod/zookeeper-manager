@@ -10,6 +10,6 @@ public class SingleUtil {
         if (projects.length > 0) {
             return projects[0];
         }
-        return null;
+        return ProjectManager.getInstance().getDefaultProject();
     }
 }

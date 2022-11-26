@@ -1,9 +1,9 @@
 package com.fobgochod.util;
 
-import com.fobgochod.ZKBundle;
 import com.fobgochod.constant.ZKConstant;
 import com.fobgochod.constant.ZKStyle;
-import com.fobgochod.view.window.ZooToolWindow;
+import com.fobgochod.constant.ZKTab;
+import com.fobgochod.view.window.ZKToolWindow;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
@@ -19,10 +19,11 @@ import java.time.LocalDateTime;
 
 public class NoticeUtil {
 
-    private static final JTextPane console = ZooToolWindow.getInstance().getConsole();
+    private static final ZKToolWindow toolWindow = ZKToolWindow.getInstance();
+    private static final JTextPane console = toolWindow.getConsole();
 
     public static void status(String message) {
-        StatusBarUtil.setStatusBarInfo(SingleUtil.getProject(), message);
+        StatusBarUtil.setStatusBarInfo(toolWindow.getProject(), message);
         info(message);
     }
 
@@ -66,6 +67,7 @@ public class NoticeUtil {
 
     public static void error(String command, String message) {
         render(command + " - " + message, ZKStyle.ERROR);
+        toolWindow.showTab(ZKTab.Log.ordinal());
     }
 
     public static void render(String content, ZKStyle style) {

@@ -6,7 +6,9 @@ import com.fobgochod.domain.ZKNode;
 import com.fobgochod.domain.ZKTreeModel;
 import com.fobgochod.setting.ZKConfigState;
 import com.fobgochod.util.StringUtil;
-import com.fobgochod.view.window.ZooToolWindow;
+import com.fobgochod.util.ZKBundle;
+import com.fobgochod.view.window.ZKToolWindow;
+import com.intellij.icons.AllIcons;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import org.jetbrains.annotations.NotNull;
@@ -19,6 +21,11 @@ import org.jetbrains.annotations.NotNull;
  */
 public class RefreshTreeAction extends AnAction {
 
+    public RefreshTreeAction() {
+        getTemplatePresentation().setText(ZKBundle.message("action.toolbar.refresh.text"));
+        getTemplatePresentation().setIcon(AllIcons.General.InlineRefreshHover);
+    }
+
     public void actionPerformed(@NotNull AnActionEvent event) {
         ZKConfigState config = ZKConfigState.getInstance();
         boolean reloadSuccess = ZKClient.getInstance().initZookeeper();
@@ -28,7 +35,7 @@ public class RefreshTreeAction extends AnAction {
             }
 
             ZKNode.ROOT.setName(config.getTitle());
-            ZooToolWindow.getInstance().initTree(new ZKTreeModel(config.getPaths()));
+            ZKToolWindow.getInstance(event.getProject()).initTree(new ZKTreeModel(config.getPaths()));
         }
     }
 }
