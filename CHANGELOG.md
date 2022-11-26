@@ -4,6 +4,17 @@
 
 ## [Unreleased]
 
+## [2022.3.1]
+
+### Changed
+
+- Update `platformVersion` to `2022.2.4`
+- Change since/until build to `222-223.*` (2022.2 - 2022.3)
+- Optimize tabs UI to IDEA style
+- Add display type of data, such as json、html
+- Refresh stat、acl in time after modifying relevant information
+- Jump to the Log tab when an exception occurs
+
 ## [2022.3.0]
 
 ### Changed
