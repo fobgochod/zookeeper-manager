@@ -34,6 +34,13 @@ public class ZKClient implements Disposable {
         return curator != null && curator.getZookeeperClient().isConnected();
     }
 
+    public void close() {
+        if (curator != null) {
+            // 关闭旧连接
+            curator.close();
+        }
+    }
+
     public boolean initZookeeper() {
         ZKConfigState config = ZKConfigState.getInstance();
         return initZookeeper(config.getZkUrl(), config.getBlockUntilConnected(), config.isSaslClientEnabled());
@@ -44,6 +51,8 @@ public class ZKClient implements Disposable {
             return true;
         }
         try {
+            close();
+
             System.setProperty(ZKClientConfig.ENABLE_CLIENT_SASL_KEY, String.valueOf(saslClientEnabled));
             RetryPolicy retryPolicy = new ExponentialBackoffRetry(1000, 3);
             curator = CuratorFrameworkFactory.builder().connectString(connectString).retryPolicy(retryPolicy).build();
