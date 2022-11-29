@@ -4,6 +4,14 @@
 
 ## [Unreleased]
 
+## [2022.3.2]
+
+### Changed
+
+- Update `gradleVersion` to `7.6`
+- Refactor create node view
+- Refactor update ACLs info view
+
 ## [2022.3.1]
 
 ### Changed

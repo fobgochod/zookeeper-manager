@@ -1,6 +1,7 @@
 package com.fobgochod.view.action.popup;
 
 import com.fobgochod.constant.AclScheme;
+import com.fobgochod.constant.ZKConstant;
 import com.fobgochod.domain.ZKAcl;
 import com.intellij.icons.AllIcons;
 import com.intellij.ui.ToolbarDecorator;
@@ -35,7 +36,7 @@ public class ConfigNodeAclUI {
 
     public ConfigNodeAclUI(List<? extends ACL> aclList) {
         this.aclList = aclList;
-        root.setPreferredSize(new Dimension(460, 200));
+        root.setPreferredSize(ZKConstant.DIALOG_SIZE);
 
         initView();
         initEvent();

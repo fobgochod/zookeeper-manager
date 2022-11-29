@@ -3,8 +3,10 @@ package com.fobgochod.action.popup;
 import com.fobgochod.action.AbstractNodeAction;
 import com.fobgochod.constant.ZKTab;
 import com.fobgochod.domain.ZKNode;
+import com.fobgochod.domain.ZKTreeModel;
 import com.fobgochod.util.ZKBundle;
 import com.fobgochod.view.action.popup.ConfigNodeAclUI;
+import com.fobgochod.view.window.ZKNodeData;
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.ui.DialogBuilder;
@@ -38,7 +40,11 @@ public class ConfigNodeAclAction extends AbstractNodeAction {
         builder.setOkOperation(() -> {
             zkClient.setACL(selectionNode.getFullPath(), ui.getData());
             selectionNode.setPerms(ui.getData());
-            toolWindow.showTab(ZKTab.ACL.ordinal());
+            if (toolWindow.getTab() == ZKTab.ACL) {
+                ZKNodeData.getInstance(event.getProject()).showTabAcl(selectionNode);
+            } else {
+                toolWindow.showTab(ZKTab.ACL.ordinal());
+            }
             builder.getDialogWrapper().close(DialogWrapper.OK_EXIT_CODE);
         });
         builder.showModal(true);

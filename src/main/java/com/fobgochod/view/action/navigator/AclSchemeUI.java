@@ -1,8 +1,10 @@
 package com.fobgochod.view.action.navigator;
 
 import com.fobgochod.constant.AclScheme;
+import com.fobgochod.constant.ZKConstant;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class AclSchemeUI {
 
@@ -13,6 +15,8 @@ public class AclSchemeUI {
     private JComboBox<String> schemeBox;
 
     public AclSchemeUI() {
+        root.setPreferredSize(ZKConstant.DIALOG_SIZE);
+
         schemeBox.setModel(new DefaultComboBoxModel<>(new String[]{
                 AclScheme.digest.key()
         }));

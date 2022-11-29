@@ -50,7 +50,6 @@ public class AclSchemeAction extends AbstractNodeAction {
             NoticeUtil.info("add a authorized user [" + aclScheme.getUsername() + "]  success!");
             builder.getDialogWrapper().close(DialogWrapper.OK_EXIT_CODE);
         });
-        builder.getDialogWrapper().setSize(600, 300);
         builder.showModal(true);
     }
 }

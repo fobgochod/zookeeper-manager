@@ -1,5 +1,6 @@
 package com.fobgochod.view.action.popup;
 
+import com.fobgochod.constant.ZKConstant;
 import com.fobgochod.util.ZKBundle;
 import com.fobgochod.view.editor.ZKFileTypePanel;
 import com.fobgochod.view.editor.ZKNodeEditor;
@@ -27,7 +28,7 @@ public class CreateNodeUI {
 
     public CreateNodeUI(@NotNull Project project) {
         this.project = project;
-        root.setPreferredSize(new Dimension(460, 200));
+        root.setPreferredSize(ZKConstant.DIALOG_SIZE);
 
         initView();
         initEvent();

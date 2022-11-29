@@ -172,6 +172,14 @@ public class ZKToolWindow extends SimpleToolWindowPanel {
         return console;
     }
 
+    public ZKTab getTab() {
+        TabInfo selectedInfo = tabs.getSelectedInfo();
+        if (selectedInfo != null) {
+            return ZKTab.valueOf(selectedInfo.getText());
+        }
+        return null;
+    }
+
     public void showTab(int index) {
         TabInfo tabInfo = tabs.getTabAt(index);
         tabs.select(tabInfo, true);
