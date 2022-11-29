@@ -52,7 +52,6 @@ public class ZKClient implements Disposable {
         }
         try {
             close();
-
             System.setProperty(ZKClientConfig.ENABLE_CLIENT_SASL_KEY, String.valueOf(saslClientEnabled));
             RetryPolicy retryPolicy = new ExponentialBackoffRetry(1000, 3);
             curator = CuratorFrameworkFactory.builder().connectString(connectString).retryPolicy(retryPolicy).build();
@@ -65,6 +64,7 @@ public class ZKClient implements Disposable {
         } catch (Exception e) {
             NoticeUtil.notify("cannot connect to remote host " + connectString + " :" + e.getMessage(), NotificationType.ERROR);
         }
+        close();
         NoticeUtil.warn(connectString + " connection failed!");
         return false;
     }

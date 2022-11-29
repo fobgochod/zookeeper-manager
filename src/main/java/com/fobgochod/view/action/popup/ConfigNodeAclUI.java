@@ -3,14 +3,15 @@ package com.fobgochod.view.action.popup;
 import com.fobgochod.constant.AclScheme;
 import com.fobgochod.domain.ZKAcl;
 import com.intellij.icons.AllIcons;
+import com.intellij.ui.ToolbarDecorator;
+import com.intellij.ui.components.JBList;
 import org.apache.zookeeper.ZooDefs;
 import org.apache.zookeeper.data.ACL;
 import org.apache.zookeeper.data.Id;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,18 +19,20 @@ import java.util.stream.Collectors;
 public class ConfigNodeAclUI {
 
     private final DefaultListModel<ACL> data = new DefaultListModel<>();
+    private final JList<ACL> perms = new JBList<>(data);
     private JPanel root;
     private JComboBox<String> schemeBox;
-    private JButton btnApply;
     private JTextField idField;
     private JCheckBox createBox;
     private JCheckBox deleteBox;
     private JCheckBox writeBox;
     private JCheckBox readBox;
     private JCheckBox adminBox;
-    private JList<ACL> perms;
+    private JPanel permsPanel;
 
     public ConfigNodeAclUI(List<? extends ACL> aclList) {
+        root.setPreferredSize(new Dimension(460, 200));
+
         idField.setText("anyone");
         idField.setEditable(false);
         aclList.forEach(data::addElement);
@@ -64,25 +67,28 @@ public class ConfigNodeAclUI {
         });
         popupMenu.add(menuItem);
         perms.setComponentPopupMenu(popupMenu);
-        perms.setModel(data);
 
-        btnApply.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                String schema = (String) schemeBox.getSelectedItem();
-                String id = idField.getText();
-                int perms = (createBox.isSelected() ? ZooDefs.Perms.CREATE : 0)
-                        | (deleteBox.isSelected() ? ZooDefs.Perms.DELETE : 0)
-                        | (writeBox.isSelected() ? ZooDefs.Perms.WRITE : 0)
-                        | (readBox.isSelected() ? ZooDefs.Perms.READ : 0)
-                        | (adminBox.isSelected() ? ZooDefs.Perms.ADMIN : 0);
+        permsPanel.add(
+                ToolbarDecorator.createDecorator(perms)
+                        .setAddAction(anActionButton -> {
+                            ACL acl = newAcl();
+                            if (!data.contains(acl)) {
+                                data.addElement(acl);
+                            }
+                        }).setRemoveAction(anActionButton -> data.removeElement(perms.getSelectedValue())).createPanel(),
+                BorderLayout.CENTER);
+    }
 
-                ACL acl = new ZKAcl(perms, new Id(schema, id));
-                if (!ConfigNodeAclUI.this.data.contains(acl)) {
-                    ConfigNodeAclUI.this.data.addElement(acl);
-                }
-            }
-        });
+    private ACL newAcl() {
+        String schema = (String) schemeBox.getSelectedItem();
+        String id = idField.getText();
+        int perms = (createBox.isSelected() ? ZooDefs.Perms.CREATE : 0)
+                | (deleteBox.isSelected() ? ZooDefs.Perms.DELETE : 0)
+                | (writeBox.isSelected() ? ZooDefs.Perms.WRITE : 0)
+                | (readBox.isSelected() ? ZooDefs.Perms.READ : 0)
+                | (adminBox.isSelected() ? ZooDefs.Perms.ADMIN : 0);
+
+        return new ZKAcl(perms, new Id(schema, id));
     }
 
     public JPanel getRoot() {
