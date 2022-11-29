@@ -32,7 +32,7 @@ public class CreateNodeAction extends AbstractNodeAction {
         final DialogBuilder builder = new DialogBuilder();
         builder.setTitle(ZKBundle.message("action.popup.create.node.text"));
 
-        CreateNodeUI ui = new CreateNodeUI();
+        CreateNodeUI ui = new CreateNodeUI(event.getProject());
         builder.setPreferredFocusComponent(ui.getNodePath());
         builder.setCenterPanel(ui.getRoot());
         builder.setOkOperation(() -> {

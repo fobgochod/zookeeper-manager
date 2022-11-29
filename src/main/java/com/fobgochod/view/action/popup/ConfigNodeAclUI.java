@@ -20,8 +20,11 @@ public class ConfigNodeAclUI {
 
     private final DefaultListModel<ACL> data = new DefaultListModel<>();
     private final JList<ACL> perms = new JBList<>(data);
+    private List<? extends ACL> aclList;
+    private JMenuItem removeMenuItem;
+
     private JPanel root;
-    private JComboBox<String> schemeBox;
+    private JComboBox<AclScheme> schemeBox;
     private JTextField idField;
     private JCheckBox createBox;
     private JCheckBox deleteBox;
@@ -31,22 +34,29 @@ public class ConfigNodeAclUI {
     private JPanel permsPanel;
 
     public ConfigNodeAclUI(List<? extends ACL> aclList) {
+        this.aclList = aclList;
         root.setPreferredSize(new Dimension(460, 200));
 
-        idField.setText("anyone");
-        idField.setEditable(false);
+        initView();
+        initEvent();
+    }
+
+    private void initView() {
+        schemeBox.setModel(new DefaultComboBoxModel<>(AclScheme.values()));
+
         aclList.forEach(data::addElement);
 
-        schemeBox.setModel(new DefaultComboBoxModel<>(new String[]{
-                AclScheme.world.key(),
-                AclScheme.auth.key(),
-                AclScheme.digest.key(),
-                AclScheme.ip.key(),
-                AclScheme.x509.key(),
-        }));
+        // 右键菜单
+        removeMenuItem = new JMenuItem("Remove", AllIcons.General.Remove);
+        JPopupMenu popupMenu = new JPopupMenu();
+        popupMenu.add(removeMenuItem);
+        perms.setComponentPopupMenu(popupMenu);
+    }
+
+    private void initEvent() {
         schemeBox.addItemListener(e -> {
-            String item = (String) e.getItem();
-            if (AclScheme.world.key().equals(item)) {
+            AclScheme item = (AclScheme) e.getItem();
+            if (AclScheme.world == item) {
                 idField.setText("anyone");
                 idField.setEditable(false);
             } else {
@@ -55,18 +65,12 @@ public class ConfigNodeAclUI {
             }
         });
 
-        JPopupMenu popupMenu = new JPopupMenu();
-        JMenuItem menuItem = new JMenuItem();
-        menuItem.setText("Remove Item");
-        menuItem.setIcon(AllIcons.General.Remove);
-        menuItem.addActionListener(new AbstractAction() {
+        removeMenuItem.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 data.removeElement(perms.getSelectedValue());
             }
         });
-        popupMenu.add(menuItem);
-        perms.setComponentPopupMenu(popupMenu);
 
         permsPanel.add(
                 ToolbarDecorator.createDecorator(perms)
@@ -75,12 +79,14 @@ public class ConfigNodeAclUI {
                             if (!data.contains(acl)) {
                                 data.addElement(acl);
                             }
-                        }).setRemoveAction(anActionButton -> data.removeElement(perms.getSelectedValue())).createPanel(),
+                        })
+                        .setRemoveAction(anActionButton -> data.removeElement(perms.getSelectedValue()))
+                        .createPanel(),
                 BorderLayout.CENTER);
     }
 
     private ACL newAcl() {
-        String schema = (String) schemeBox.getSelectedItem();
+        AclScheme schema = (AclScheme) schemeBox.getSelectedItem();
         String id = idField.getText();
         int perms = (createBox.isSelected() ? ZooDefs.Perms.CREATE : 0)
                 | (deleteBox.isSelected() ? ZooDefs.Perms.DELETE : 0)
@@ -88,14 +94,14 @@ public class ConfigNodeAclUI {
                 | (readBox.isSelected() ? ZooDefs.Perms.READ : 0)
                 | (adminBox.isSelected() ? ZooDefs.Perms.ADMIN : 0);
 
-        return new ZKAcl(perms, new Id(schema, id));
+        return new ZKAcl(perms, new Id(schema.key(), id));
     }
 
     public JPanel getRoot() {
         return root;
     }
 
-    public JComboBox<String> getScheme() {
+    public JComboBox<AclScheme> getScheme() {
         return schemeBox;
     }
 

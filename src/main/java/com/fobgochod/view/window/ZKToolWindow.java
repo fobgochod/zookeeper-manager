@@ -7,7 +7,7 @@ import com.fobgochod.domain.ZKNode;
 import com.fobgochod.domain.ZKTreeModel;
 import com.fobgochod.util.NoticeUtil;
 import com.fobgochod.util.SingleUtil;
-import com.fobgochod.util.ZKBundle;
+import com.fobgochod.view.editor.ZKFileTypePanel;
 import com.fobgochod.view.editor.ZKNodeEditor;
 import com.fobgochod.view.vfs.ZKNodeFile;
 import com.fobgochod.view.vfs.ZKNodeFileSystem;
@@ -21,13 +21,9 @@ import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.ActionPlaces;
 import com.intellij.openapi.actionSystem.ActionToolbar;
 import com.intellij.openapi.fileEditor.FileEditorManager;
-import com.intellij.openapi.fileTypes.FileType;
-import com.intellij.openapi.fileTypes.impl.FileTypeRenderer;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.ComboBox;
 import com.intellij.openapi.ui.SimpleToolWindowPanel;
 import com.intellij.ui.JBSplitter;
-import com.intellij.ui.components.JBLabel;
 import com.intellij.ui.components.JBScrollPane;
 import com.intellij.ui.table.JBTable;
 import com.intellij.ui.tabs.JBTabs;
@@ -35,7 +31,6 @@ import com.intellij.ui.tabs.TabInfo;
 import com.intellij.ui.tabs.TabsListener;
 import com.intellij.ui.tabs.impl.JBTabsImpl;
 import com.intellij.ui.treeStructure.Tree;
-import com.intellij.util.ui.JBUI;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -46,21 +41,14 @@ import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
-import java.util.HashMap;
-import java.util.Map;
 
 public class ZKToolWindow extends SimpleToolWindowPanel {
 
-    private final transient Map<ZKNode, FileType> dataFileTypeCache;
     private final transient Project project;
 
     private JBSplitter root;
     private JScrollPane treePane;
     private Tree tree;
-    /**
-     * 选中的ZKNode
-     */
-    private transient ZKNode selectionNode;
 
     /**
      * 选项卡面板 - 节点信息
@@ -72,8 +60,7 @@ public class ZKToolWindow extends SimpleToolWindowPanel {
      */
     private transient TabInfo dataTab;
     private ZKNodeEditor nodeData;
-    private ComboBox<FileType> nodeDataFileType;
-    private JPanel nodeDataFileTypePanel;
+    private ZKFileTypePanel zkFileTypePanel;
 
     /**
      * node stat
@@ -99,7 +86,6 @@ public class ZKToolWindow extends SimpleToolWindowPanel {
     public ZKToolWindow(@NotNull Project project) {
         super(true);
         this.project = project;
-        this.dataFileTypeCache = new HashMap<>();
 
         initComponent();
         setToolbar(initToolbar().getComponent());
@@ -150,21 +136,6 @@ public class ZKToolWindow extends SimpleToolWindowPanel {
         }
     }
 
-    @NotNull
-    public FileType getCacheType() {
-        if (selectionNode == null) {
-            return ZKNodeEditor.TEXT_FILE_TYPE;
-        }
-        return dataFileTypeCache.getOrDefault(selectionNode, ZKNodeEditor.TEXT_FILE_TYPE);
-    }
-
-    public void setCacheType(@NotNull FileType fileType) {
-        if (selectionNode == null) {
-            return;
-        }
-        dataFileTypeCache.put(selectionNode, fileType);
-    }
-
     public ZKNode getSelectionNode() {
         TreePath treePath = tree.getSelectionPath();
         if (treePath == null) {
@@ -175,8 +146,7 @@ public class ZKToolWindow extends SimpleToolWindowPanel {
     }
 
     public void selectionNodeChanged(@Nullable ZKNode selectionNode) {
-        this.selectionNode = selectionNode;
-        this.nodeDataFileType.setSelectedItem(getCacheType());
+        this.zkFileTypePanel.setSelectionNode(selectionNode);
         ZKNodeData.getInstance(project).showZNode(selectionNode);
     }
 
@@ -288,28 +258,18 @@ public class ZKToolWindow extends SimpleToolWindowPanel {
         logTab.setIcon(AllIcons.Debugger.Console);
         tabs.addTab(logTab);
 
-        // node data file type
-        nodeDataFileTypePanel = new JPanel(new BorderLayout());
-        nodeDataFileTypePanel.add(new JBLabel(ZKBundle.message("zookeeper.tab.data.FileType")), BorderLayout.WEST);
-        nodeDataFileType = new ComboBox<>(new FileType[]{
-                ZKNodeEditor.TEXT_FILE_TYPE,
-                ZKNodeEditor.JSON_FILE_TYPE,
-                ZKNodeEditor.HTML_FILE_TYPE,
-                ZKNodeEditor.XML_FILE_TYPE
-        });
-        nodeDataFileType.setFocusable(false);
-        nodeDataFileTypePanel.add(nodeDataFileType, BorderLayout.CENTER);
-        nodeDataFileTypePanel.setBorder(JBUI.Borders.emptyLeft(3));
-
         JPanel tabPanel = new JPanel(new BorderLayout());
         tabPanel.add(tabs.getComponent(), BorderLayout.CENTER);
-        tabPanel.add(nodeDataFileTypePanel, BorderLayout.SOUTH);
+
+        // node data file type
+        zkFileTypePanel = new ZKFileTypePanel(nodeData);
+        tabPanel.add(zkFileTypePanel, BorderLayout.SOUTH);
 
         TabInfo selectedTab = tabs.getSelectedInfo();
         if (selectedTab == null) {
-            nodeDataFileTypePanel.setVisible(false);
+            zkFileTypePanel.setVisible(false);
         } else {
-            nodeDataFileTypePanel.setVisible(dataTab.getText().equals(selectedTab.getText()));
+            zkFileTypePanel.setVisible(dataTab.getText().equals(selectedTab.getText()));
         }
 
         root.setSecondComponent(tabPanel);
@@ -342,26 +302,7 @@ public class ZKToolWindow extends SimpleToolWindowPanel {
 
             @Override
             public void beforeSelectionChanged(TabInfo oldSelection, TabInfo newSelection) {
-                nodeDataFileTypePanel.setVisible(dataTab.getText().equalsIgnoreCase(newSelection.getText()));
-            }
-        });
-
-        nodeDataFileType.setSelectedItem(getCacheType());
-        nodeDataFileType.setRenderer(new FileTypeRenderer());
-        nodeDataFileType.addItemListener(event -> {
-            ItemSelectable selectable = event.getItemSelectable();
-            if (selectable == null) {
-                return;
-            }
-            Object[] selects = selectable.getSelectedObjects();
-            if (selects == null || selects.length < 1) {
-                return;
-            }
-            Object select = selects[0];
-            if (select instanceof FileType) {
-                FileType fileType = (FileType) select;
-                nodeData.setFileType(fileType);
-                setCacheType(fileType);
+                zkFileTypePanel.setVisible(dataTab.getText().equalsIgnoreCase(newSelection.getText()));
             }
         });
     }
