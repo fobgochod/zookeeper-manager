@@ -3,6 +3,8 @@ package com.fobgochod.action.popup;
 import com.fobgochod.action.AbstractNodeAction;
 import com.fobgochod.util.NoticeUtil;
 import com.fobgochod.domain.ZKNode;
+import com.fobgochod.util.ZKBundle;
+import com.intellij.icons.AllIcons;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.ui.DialogBuilder;
 import com.intellij.openapi.ui.DialogWrapper;
@@ -18,19 +20,26 @@ import javax.swing.*;
  */
 public class DeleteNodeAction extends AbstractNodeAction {
 
+    public DeleteNodeAction() {
+        getTemplatePresentation().setText(ZKBundle.message("action.popup.delete.node.text"));
+        getTemplatePresentation().setIcon(AllIcons.General.Remove);
+    }
+
     public void actionPerformed(@NotNull AnActionEvent event) {
-        ZKNode selectionNode = zooToolWindow.getSelectionNode();
+        super.actionPerformed(event);
+
+        ZKNode selectionNode = toolWindow.getSelectionNode();
         if (selectionNode == null) {
             return;
         }
 
         DialogBuilder builder = new DialogBuilder();
-        builder.setTitle("Delete Node");
+        builder.setTitle(ZKBundle.message("action.popup.delete.node.text"));
         JLabel jTextField = new JLabel("Path: " + selectionNode.getFullPath());
         builder.setCenterPanel(jTextField);
         builder.setOkOperation(() -> {
             zkClient.deletingChildrenIfNeeded(selectionNode.getFullPath());
-            zooToolWindow.flushTree();
+            toolWindow.flushTree();
             builder.getDialogWrapper().close(DialogWrapper.OK_EXIT_CODE);
 
             NoticeUtil.status("'" + selectionNode.getFullPath() + "' has been deleted!");

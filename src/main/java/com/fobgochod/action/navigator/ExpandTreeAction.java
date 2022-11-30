@@ -1,6 +1,8 @@
 package com.fobgochod.action.navigator;
 
 import com.fobgochod.action.AbstractNodeAction;
+import com.fobgochod.util.ZKBundle;
+import com.intellij.icons.AllIcons;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import org.jetbrains.annotations.NotNull;
 
@@ -12,7 +14,13 @@ import org.jetbrains.annotations.NotNull;
  */
 public class ExpandTreeAction extends AbstractNodeAction {
 
+    public ExpandTreeAction() {
+        getTemplatePresentation().setText(ZKBundle.message("action.toolbar.expand.all.text"));
+        getTemplatePresentation().setIcon(AllIcons.Actions.Expandall);
+    }
+
     public void actionPerformed(@NotNull AnActionEvent event) {
-        zooToolWindow.expandTree();
+        super.actionPerformed(event);
+        toolWindow.expandTree();
     }
 }

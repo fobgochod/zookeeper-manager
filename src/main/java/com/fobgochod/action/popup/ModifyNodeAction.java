@@ -2,6 +2,8 @@ package com.fobgochod.action.popup;
 
 import com.fobgochod.action.AbstractNodeAction;
 import com.fobgochod.domain.ZKNode;
+import com.fobgochod.util.ZKBundle;
+import com.intellij.icons.AllIcons;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import org.jetbrains.annotations.NotNull;
 
@@ -13,10 +15,17 @@ import org.jetbrains.annotations.NotNull;
  */
 public class ModifyNodeAction extends AbstractNodeAction {
 
+    public ModifyNodeAction() {
+        getTemplatePresentation().setText(ZKBundle.message("action.popup.modify.node.text"));
+        getTemplatePresentation().setIcon(AllIcons.General.InlineRefreshHover);
+    }
+
     public void actionPerformed(@NotNull AnActionEvent event) {
-        ZKNode selectionNode = zooToolWindow.getSelectionNode();
+        super.actionPerformed(event);
+
+        ZKNode selectionNode = toolWindow.getSelectionNode();
         if (selectionNode != null) {
-            byte[] updateData = zooToolWindow.getText().getText().getBytes();
+            byte[] updateData = toolWindow.getData().getBytes();
             zkClient.setData(selectionNode.getFullPath(), updateData);
             selectionNode.setData(updateData);
         }

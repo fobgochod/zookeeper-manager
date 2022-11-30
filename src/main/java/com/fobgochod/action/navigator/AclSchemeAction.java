@@ -2,7 +2,9 @@ package com.fobgochod.action.navigator;
 
 import com.fobgochod.action.AbstractNodeAction;
 import com.fobgochod.util.NoticeUtil;
+import com.fobgochod.util.ZKBundle;
 import com.fobgochod.view.action.navigator.AclSchemeUI;
+import com.intellij.icons.AllIcons;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.ui.DialogBuilder;
 import com.intellij.openapi.ui.DialogWrapper;
@@ -14,11 +16,17 @@ import java.util.Vector;
 
 public class AclSchemeAction extends AbstractNodeAction {
 
+    public AclSchemeAction() {
+        getTemplatePresentation().setText(ZKBundle.message("action.toolbar.acl.schemes.text"));
+        getTemplatePresentation().setIcon(AllIcons.CodeWithMe.CwmPermissions);
+    }
+
     @Override
-    public void actionPerformed(@NotNull AnActionEvent e) {
+    public void actionPerformed(@NotNull AnActionEvent event) {
+        super.actionPerformed(event);
 
         final DialogBuilder builder = new DialogBuilder();
-        builder.setTitle("ACL Schemes");
+        builder.setTitle(ZKBundle.message("action.toolbar.acl.schemes.text"));
 
         AclSchemeUI aclScheme = new AclSchemeUI();
 
@@ -42,7 +50,6 @@ public class AclSchemeAction extends AbstractNodeAction {
             NoticeUtil.info("add a authorized user [" + aclScheme.getUsername() + "]  success!");
             builder.getDialogWrapper().close(DialogWrapper.OK_EXIT_CODE);
         });
-        builder.getDialogWrapper().setSize(600, 300);
         builder.showModal(true);
     }
 }

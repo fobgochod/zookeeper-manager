@@ -1,10 +1,6 @@
 package com.fobgochod.view.vfs;
 
 import com.fobgochod.ZKClient;
-import com.fobgochod.domain.ZKNode;
-import com.fobgochod.util.SingleUtil;
-import com.intellij.openapi.fileEditor.FileEditorManager;
-import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileManager;
 import com.intellij.openapi.vfs.ex.dummy.DummyFileSystem;
@@ -74,21 +70,6 @@ public class ZKNodeFileSystem extends DummyFileSystem {
         String filePath = virtualFile.getPath() + "/" + directory;
         zkClient.create(filePath);
         return new ZKNodeFile(this, filePath);
-    }
-
-    public void openFile(Object o) {
-        if (o instanceof ZKNode) {
-            ZKNode node = (ZKNode) o;
-            if (node.isLeaf() && !node.isBinary()) {
-                ZKNodeFile virtualFile = (ZKNodeFile) findFileByPath(node.getFullPath());
-                if (virtualFile != null) {
-                    Project project = SingleUtil.getProject();
-                    if (project != null) {
-                        FileEditorManager.getInstance(project).openFile(virtualFile, true);
-                    }
-                }
-            }
-        }
     }
 
     @Override

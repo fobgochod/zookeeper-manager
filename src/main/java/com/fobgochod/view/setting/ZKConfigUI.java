@@ -29,7 +29,7 @@ public class ZKConfigUI {
     private JTextField username;
     private JPasswordField password;
 
-    private ZKConfigUI() {
+    public ZKConfigUI() {
         testConnectionButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
