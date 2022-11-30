@@ -1,6 +1,6 @@
 package com.fobgochod.setting;
 
-import com.fobgochod.ZKBundle;
+import com.fobgochod.util.ZKBundle;
 import com.fobgochod.view.setting.ZKConfigUI;
 import com.intellij.credentialStore.Credentials;
 import com.intellij.ide.passwordSafe.PasswordSafe;
@@ -34,7 +34,7 @@ public class ZKConfigConfigurable implements Configurable {
     @Nullable
     @Override
     public JComponent createComponent() {
-        component = ZKConfigUI.getInstance();
+        component = new ZKConfigUI();
         return component.getRoot();
     }
 

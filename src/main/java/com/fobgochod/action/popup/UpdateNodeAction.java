@@ -1,8 +1,11 @@
 package com.fobgochod.action.popup;
 
+import com.fobgochod.util.IconUtil;
 import com.fobgochod.util.NoticeUtil;
+import com.fobgochod.util.ZKBundle;
 import com.fobgochod.view.vfs.ZKNodeFile;
 import com.fobgochod.ZKClient;
+import com.intellij.icons.AllIcons;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.editor.Caret;
@@ -41,5 +44,10 @@ public class UpdateNodeAction extends EditorAction {
                 return virtualFile instanceof ZKNodeFile;
             }
         });
+
+        getTemplatePresentation().setText(ZKBundle.message("action.popup.update.node.text"));
+        getTemplatePresentation().setIcon(IconUtil.ZooKeeper);
     }
+
+
 }

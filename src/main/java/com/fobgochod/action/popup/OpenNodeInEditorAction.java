@@ -1,12 +1,10 @@
 package com.fobgochod.action.popup;
 
-import com.fobgochod.domain.ZKNode;
-import com.fobgochod.view.vfs.ZKNodeFile;
-import com.fobgochod.view.vfs.ZKNodeFileSystem;
-import com.fobgochod.view.window.ZooToolWindow;
+import com.fobgochod.util.ZKBundle;
+import com.fobgochod.view.window.ZKToolWindow;
+import com.intellij.icons.AllIcons;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.fileEditor.FileEditorManager;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -17,14 +15,15 @@ import org.jetbrains.annotations.NotNull;
  */
 public class OpenNodeInEditorAction extends AnAction {
 
+    public OpenNodeInEditorAction() {
+        getTemplatePresentation().setText(ZKBundle.message("action.popup.open.editor.text"));
+        getTemplatePresentation().setIcon(AllIcons.General.Inline_edit);
+    }
+
     public void actionPerformed(@NotNull AnActionEvent event) {
-        ZKNode selectionNode = ZooToolWindow.getInstance().getSelectionNode();
-        if (selectionNode != null) {
-            ZKNodeFile virtualFile = (ZKNodeFile) ZKNodeFileSystem.getInstance().findFileByPath(selectionNode.getFullPath());
-            if (virtualFile != null && event.getProject() != null) {
-                virtualFile.setLeaf();
-                FileEditorManager.getInstance(event.getProject()).openFile(virtualFile, true);
-            }
+        if (event.getProject() == null) {
+            return;
         }
+        ZKToolWindow.getInstance(event.getProject()).openFile(true);
     }
 }

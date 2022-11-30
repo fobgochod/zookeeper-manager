@@ -34,6 +34,13 @@ public class ZKClient implements Disposable {
         return curator != null && curator.getZookeeperClient().isConnected();
     }
 
+    public void close() {
+        if (curator != null) {
+            // 关闭旧连接
+            curator.close();
+        }
+    }
+
     public boolean initZookeeper() {
         ZKConfigState config = ZKConfigState.getInstance();
         return initZookeeper(config.getZkUrl(), config.getBlockUntilConnected(), config.isSaslClientEnabled());
@@ -44,6 +51,7 @@ public class ZKClient implements Disposable {
             return true;
         }
         try {
+            close();
             System.setProperty(ZKClientConfig.ENABLE_CLIENT_SASL_KEY, String.valueOf(saslClientEnabled));
             RetryPolicy retryPolicy = new ExponentialBackoffRetry(1000, 3);
             curator = CuratorFrameworkFactory.builder().connectString(connectString).retryPolicy(retryPolicy).build();
@@ -56,6 +64,7 @@ public class ZKClient implements Disposable {
         } catch (Exception e) {
             NoticeUtil.notify("cannot connect to remote host " + connectString + " :" + e.getMessage(), NotificationType.ERROR);
         }
+        close();
         NoticeUtil.warn(connectString + " connection failed!");
         return false;
     }
@@ -118,6 +127,15 @@ public class ZKClient implements Disposable {
             NoticeUtil.debug(ZKCli.getLog(ZKCli.create_e_s_data, ZKCli.mode(mode), path, ZKCli.data(data)));
         } catch (Exception e) {
             NoticeUtil.error(ZKCli.getLog(ZKCli.create_e_s_data, ZKCli.mode(mode), path, ZKCli.data(data)), e.getMessage());
+        }
+    }
+
+    public void createTTL(String path, byte[] data, long ttl, CreateMode mode) {
+        try {
+            curator.create().withTtl(ttl).creatingParentsIfNeeded().withMode(mode).forPath(path, data);
+            NoticeUtil.debug(ZKCli.getLog(ZKCli.create_e_s_data, ZKCli.mode(mode) + ttl, path, ZKCli.data(data)));
+        } catch (Exception e) {
+            NoticeUtil.error(ZKCli.getLog(ZKCli.create_e_s_data, ZKCli.mode(mode) + ttl, path, ZKCli.data(data)), e.getMessage());
         }
     }
 

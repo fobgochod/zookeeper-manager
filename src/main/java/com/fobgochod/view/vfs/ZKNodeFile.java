@@ -19,9 +19,10 @@ import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 /**
- * ZooKeeper node virtual file
+ *  ZooKeeper node virtual file
  *
- * @author linux_china
+ * @author fobgochod
+ * @date 2022/11/26 22:56
  */
 public class ZKNodeFile extends VirtualFile {
 

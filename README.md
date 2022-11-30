@@ -17,14 +17,14 @@ Provides integration with [Zookeeper](https://zookeeper.apache.org).
 * To configure, open Settings | Tools | Zookeeper.
 * Click "Refresh" to display ZooKeeper file system tree
 * Right click tree node to popup operation menu
-  * Create Node: path support, such as org/apache/zookeeper
-  * Delete Node: will also delete children if they exist
-  * Config Node: allow to config ACL if you have permissions
+    * Create Node: path support, such as org/apache/zookeeper
+    * Delete Node: will also delete children if they exist
+    * Config Node: allow to config ACL if you have permissions
 * Click tree node to show data、stat、ACLs
-  * Data Tab allow update node value by popup menu
-  * Stat Tab display node stat structure
-  * ACL Tab show node ACL info
-  * Log Tab print some operation log
+    * Data Tab allow update node value by popup menu
+    * Stat Tab display node stat structure
+    * ACL Tab show node ACL info
+    * Log Tab print some operation log
 
 To use the **Zookeeper** tool window, select **View** > **Tool Windows** > **Zookeeper**.
 

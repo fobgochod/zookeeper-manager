@@ -16,8 +16,8 @@ import javax.swing.*;
  */
 public class IconUtil {
 
-    public static final Icon ZooKeeper = IconLoader.findIcon("/icons/zookeeper_small.png");
-    public static final Icon Logo = IconLoader.findIcon("/icons/logo.svg");
+    public static final Icon ZooKeeper = load("/icons/zookeeper_small.png");
+    public static final Icon Logo = load("/icons/logo.svg");
     public static final Icon Root = IconLoader.getIcon("/icons/root.svg", IconUtil.class);
     public static final Icon Plugin = load("/META-INF/pluginIcon.svg");
 

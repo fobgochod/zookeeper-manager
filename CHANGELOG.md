@@ -4,12 +4,20 @@
 
 ## [Unreleased]
 
-## [2020.3.0]
+## [2021.3.1]
+
+### Changed
+
+- Add Container Nodes and TTL Nodes
+- Optimize tabs UI to IDEA style
+- Add display type of data, such as json、html
+- Refresh stat、acl in time after modifying relevant information
+- Jump to the Log tab when an exception occurs
+- Refactor create node view
+- Refactor update ACLs info view
+
+## [2021.3.0]
 
 ### Added
 
-- Update `platformVersion` to `2020.3.4`
-- Change since/until build to `203-203.*` (2020.3 - 2020.3.4)
-- Dependencies - upgrade `org.jetbrains.kotlin.jvm` to `1.5.30`
-- Dependencies - upgrade `org.jetbrains.intellij` to `1.1.16`
-- Dependencies - upgrade `org.jetbrains.changelog` to `1.3.0`
+- Initial project scaffold
