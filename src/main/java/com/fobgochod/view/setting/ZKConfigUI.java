@@ -53,10 +53,6 @@ public class ZKConfigUI {
         });
     }
 
-    public static ZKConfigUI getInstance() {
-        return ApplicationManager.getApplication().getService(ZKConfigUI.class);
-    }
-
     public JPanel getRoot() {
         return root;
     }
