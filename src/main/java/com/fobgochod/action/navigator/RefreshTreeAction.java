@@ -23,7 +23,7 @@ public class RefreshTreeAction extends AnAction {
 
     public RefreshTreeAction() {
         getTemplatePresentation().setText(ZKBundle.message("action.toolbar.refresh.text"));
-        getTemplatePresentation().setIcon(AllIcons.General.InlineRefreshHover);
+        getTemplatePresentation().setIcon(AllIcons.Actions.Refresh);
     }
 
     public void actionPerformed(@NotNull AnActionEvent event) {

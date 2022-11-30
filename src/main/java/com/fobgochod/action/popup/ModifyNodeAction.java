@@ -17,7 +17,7 @@ public class ModifyNodeAction extends AbstractNodeAction {
 
     public ModifyNodeAction() {
         getTemplatePresentation().setText(ZKBundle.message("action.popup.modify.node.text"));
-        getTemplatePresentation().setIcon(AllIcons.General.InlineRefreshHover);
+        getTemplatePresentation().setIcon(AllIcons.Actions.Refresh);
     }
 
     public void actionPerformed(@NotNull AnActionEvent event) {
