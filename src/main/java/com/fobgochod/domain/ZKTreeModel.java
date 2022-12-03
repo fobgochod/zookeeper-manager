@@ -1,7 +1,9 @@
 package com.fobgochod.domain;
 
 import com.fobgochod.ZKClient;
-import com.intellij.openapi.util.text.StringUtil;
+import com.fobgochod.constant.ZKConstant;
+import com.fobgochod.setting.ZKConfigState;
+import com.fobgochod.util.StringUtil;
 import com.intellij.util.ui.tree.AbstractTreeModel;
 import org.apache.zookeeper.data.ACL;
 import org.apache.zookeeper.data.Stat;
@@ -20,15 +22,14 @@ import java.util.stream.IntStream;
  */
 public class ZKTreeModel extends AbstractTreeModel {
 
+    private static final ZKConfigState config = ZKConfigState.getInstance();
     private static final ZKClient zkClient = ZKClient.getInstance();
+    private final ZKNode ROOT = new ZKNode(ZKConstant.SLASH, config.getTitle(), true);
     private List<String> paths = Arrays.asList();
 
     public ZKTreeModel() {
-    }
-
-    public ZKTreeModel(String paths) {
-        if (StringUtil.isNotEmpty(paths)) {
-            this.paths = Arrays.asList(paths.trim().split("[\\s;]+"));
+        if (StringUtil.isNotEmpty(config.getPaths())) {
+            this.paths = Arrays.asList(config.getPaths().trim().split("[\\s;]+"));
         }
     }
 
@@ -45,10 +46,10 @@ public class ZKTreeModel extends AbstractTreeModel {
 
     @Override
     public Object getRoot() {
-        if (ZKNode.ROOT.getStat() != null) {
-            fillNode(ZKNode.ROOT);
+        if (ROOT.getStat() != null) {
+            fillNode(ROOT);
         }
-        return ZKNode.ROOT;
+        return ROOT;
     }
 
     @Override

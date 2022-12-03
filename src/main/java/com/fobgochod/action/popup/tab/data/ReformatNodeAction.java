@@ -1,4 +1,4 @@
-package com.fobgochod.action.popup;
+package com.fobgochod.action.popup.tab.data;
 
 import com.fobgochod.action.AbstractNodeAction;
 import com.fobgochod.util.NoticeUtil;
@@ -25,8 +25,6 @@ public class ReformatNodeAction extends AbstractNodeAction {
     }
 
     public void actionPerformed(@NotNull AnActionEvent event) {
-        super.actionPerformed(event);
-
         try {
             JsonElement je = JsonParser.parseString(toolWindow.getData());
             toolWindow.setData(gson.toJson(je));

@@ -14,7 +14,6 @@ import com.fobgochod.view.vfs.ZKNodeFileSystem;
 import com.fobgochod.view.window.listener.ZKTreeCellRenderer;
 import com.fobgochod.view.window.listener.ZKTreeMouseListener;
 import com.fobgochod.view.window.listener.ZKTreeSelectionListener;
-import com.intellij.icons.AllIcons;
 import com.intellij.ide.ui.customization.CustomizationUtil;
 import com.intellij.openapi.actionSystem.ActionGroup;
 import com.intellij.openapi.actionSystem.ActionManager;
@@ -37,7 +36,6 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.*;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
-import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
@@ -106,20 +104,32 @@ public class ZKToolWindow extends SimpleToolWindowPanel {
         return project;
     }
 
-    public void initTree(TreeModel mode) {
-        tree.setModel(mode);
-        tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+    public void initTree() {
+        if (tree == null) {
+            tree = new Tree();
+            tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+
+            tree.addTreeSelectionListener(new ZKTreeSelectionListener(this));
+            tree.addMouseListener(new ZKTreeMouseListener());
+            tree.setCellRenderer(new ZKTreeCellRenderer());
+
+            ToolTipManager.sharedInstance().registerComponent(tree);
+            CustomizationUtil.installPopupHandler(tree, ZKPluginId.ZOOKEEPER_POPUP, ActionPlaces.POPUP);
+        }
+
+        tree.setModel(new ZKTreeModel());
         treePane.setViewportView(tree);
-
-        ToolTipManager.sharedInstance().registerComponent(tree);
-        CustomizationUtil.installPopupHandler(tree, ZKPluginId.ZOOKEEPER_POPUP, ActionPlaces.POPUP);
-
-        tree.updateUI();
+        treePane.updateUI();
     }
 
-    public void flushTree() {
+    public void updateTree() {
         tree.updateUI();
         tree.expandPath(tree.getSelectionPath());
+    }
+
+    public void closeTree() {
+        treePane.setViewport(null);
+        treePane.updateUI();
     }
 
     public void expandTree() {
@@ -137,6 +147,10 @@ public class ZKToolWindow extends SimpleToolWindowPanel {
     }
 
     public ZKNode getSelectionNode() {
+        if (tree == null) {
+            NoticeUtil.error("please click Refresh to init zookeeper.");
+            return null;
+        }
         TreePath treePath = tree.getSelectionPath();
         if (treePath == null) {
             NoticeUtil.error("please select at least one node.");
@@ -204,7 +218,6 @@ public class ZKToolWindow extends SimpleToolWindowPanel {
     private void initComponent() {
         root = new JBSplitter(true, ZKToolWindow.class.getName(), 0.5F);
 
-        tree = new Tree();
         treePane = new JBScrollPane();
         root.setFirstComponent(treePane);
 
@@ -215,7 +228,7 @@ public class ZKToolWindow extends SimpleToolWindowPanel {
         CustomizationUtil.installPopupHandler(nodeData, ZKPluginId.UPDATE_NODE_DATA, ActionPlaces.POPUP);
         dataTab = new TabInfo(nodeData);
         dataTab.setText(ZKTab.Data.key());
-        dataTab.setIcon(AllIcons.FileTypes.Text);
+        dataTab.setIcon(ZKTab.Data.icon());
         dataTab.setTooltipText(ZKTab.Data.intro());
         tabs.addTab(dataTab);
 
@@ -236,7 +249,7 @@ public class ZKToolWindow extends SimpleToolWindowPanel {
         statTabPane.setViewportView(statTable);
         statTab = new TabInfo(statTabPane);
         statTab.setText(ZKTab.Stat.key());
-        statTab.setIcon(AllIcons.Ide.ConfigFile);
+        statTab.setIcon(ZKTab.Stat.icon());
         statTab.setTooltipText(ZKTab.Stat.intro());
         tabs.addTab(statTab);
 
@@ -251,8 +264,8 @@ public class ZKToolWindow extends SimpleToolWindowPanel {
         aclTabPane.setViewportView(aclTable);
         aclTab = new TabInfo(aclTabPane);
         aclTab.setText(ZKTab.ACL.key());
+        aclTab.setIcon(ZKTab.ACL.icon());
         aclTab.setTooltipText(ZKTab.ACL.intro());
-        aclTab.setIcon(AllIcons.Actions.Show);
         tabs.addTab(aclTab);
 
         // system log
@@ -262,8 +275,8 @@ public class ZKToolWindow extends SimpleToolWindowPanel {
         logTabPane.setViewportView(console);
         logTab = new TabInfo(logTabPane);
         logTab.setText(ZKTab.Log.key());
+        logTab.setIcon(ZKTab.Log.icon());
         logTab.setTooltipText(ZKTab.Log.intro());
-        logTab.setIcon(AllIcons.Debugger.Console);
         tabs.addTab(logTab);
 
         JPanel tabPanel = new JPanel(new BorderLayout());
@@ -291,17 +304,13 @@ public class ZKToolWindow extends SimpleToolWindowPanel {
     }
 
     private void initEvent() {
-        tree.addTreeSelectionListener(new ZKTreeSelectionListener(this));
-        tree.addMouseListener(new ZKTreeMouseListener());
-        tree.setCellRenderer(new ZKTreeCellRenderer());
-
         tabs.addListener(new TabsListener() {
             @Override
             public void selectionChanged(TabInfo oldSelection, TabInfo newSelection) {
                 String selectedTab = newSelection.getText();
-                if (ZKTab.Stat.key().equals(selectedTab) || ZKTab.ACL.key().equals(selectedTab)) {
-                    ZKNode selectionNode = getSelectionNode();
-                    if (selectionNode != null) {
+                ZKNode selectionNode = getSelectionNode();
+                if (selectionNode != null) {
+                    if (ZKTab.Stat.key().equals(selectedTab) || ZKTab.ACL.key().equals(selectedTab)) {
                         ZKTreeModel.fillNode(selectionNode);
                         ZKNodeData.getInstance(project).showZNode(selectionNode);
                     }

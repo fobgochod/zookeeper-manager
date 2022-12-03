@@ -68,3 +68,9 @@
 - Dependencies - upgrade `org.jetbrains.kotlin.jvm` to `1.5.30`
 - Dependencies - upgrade `org.jetbrains.intellij` to `1.1.16`
 - Dependencies - upgrade `org.jetbrains.changelog` to `1.3.0`
+
+## [1.0.0]
+
+### Added
+
+- Initial project scaffold

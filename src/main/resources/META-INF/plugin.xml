@@ -30,34 +30,38 @@
     </extensions>
 
     <actions>
-        <group id="ZooKeeperToolbar" text="ZooKeeper ToolBar">
+        <group id="ZooKeeperToolbar">
             <action id="RefreshTreeAction" class="com.fobgochod.action.navigator.RefreshTreeAction"/>
+            <action id="DeactivateTreeAction" class="com.fobgochod.action.navigator.DeactivateTreeAction"/>
+            <separator/>
             <action id="ExpandTreeAction" class="com.fobgochod.action.navigator.ExpandTreeAction"/>
             <action id="CollapseTreeAction" class="com.fobgochod.action.navigator.CollapseTreeAction"/>
+            <separator/>
             <action id="AclSchemeAction" class="com.fobgochod.action.navigator.AclSchemeAction"/>
             <action id="EditSettingsAction" class="com.fobgochod.action.navigator.EditSettingsAction"/>
         </group>
 
-        <group id="ZooKeeperPopup" text="ZooKeeper Popup" popup="true">
-            <action id="CreateNodeAction" class="com.fobgochod.action.popup.CreateNodeAction"/>
-            <action id="DeleteNodeAction" class="com.fobgochod.action.popup.DeleteNodeAction"/>
-            <action id="OpenInEditorAction" class="com.fobgochod.action.popup.OpenNodeInEditorAction"/>
+        <group id="ZooKeeperPopup" popup="true">
+            <action id="CreateNodeAction" class="com.fobgochod.action.popup.node.CreateNodeAction"/>
+            <action id="DeleteNodeAction" class="com.fobgochod.action.popup.node.DeleteNodeAction"/>
+            <action id="ModifyNodeAction" class="com.fobgochod.action.popup.node.ModifyNodeAction"/>
+            <action id="OpenInEditorAction" class="com.fobgochod.action.popup.node.OpenNodeInEditorAction"/>
             <separator/>
-            <action id="CopyNodePathAction" class="com.fobgochod.action.popup.CopyNodePathAction"/>
+            <action id="CopyNodePathAction" class="com.fobgochod.action.popup.node.CopyNodePathAction"/>
             <separator/>
-            <action id="ConfigNodeAclAction" class="com.fobgochod.action.popup.ConfigNodeAclAction"/>
+            <action id="ConfigNodeAclAction" class="com.fobgochod.action.popup.node.ConfigNodeAclAction"/>
         </group>
 
         <group id="ModifyNodePopup">
-            <action id="ModifyNodeAction" class="com.fobgochod.action.popup.ModifyNodeAction"/>
-            <action id="ReformatNodeAction" class="com.fobgochod.action.popup.ReformatNodeAction"/>
+            <action id="UpdateNodeAction" class="com.fobgochod.action.popup.tab.data.UpdateNodeAction"/>
+            <action id="ReformatNodeAction" class="com.fobgochod.action.popup.tab.data.ReformatNodeAction"/>
         </group>
 
         <group id="ClearAllPopup">
-            <action id="ClearAllAction" class="com.fobgochod.action.popup.ClearAllAction"/>
+            <action id="ClearAllAction" class="com.fobgochod.action.popup.tab.log.ClearAllAction"/>
         </group>
 
-        <action id="UpdateNodeAction" class="com.fobgochod.action.popup.UpdateNodeAction">
+        <action id="ModifyNodeInEditorAction" class="com.fobgochod.action.popup.ModifyNodeInEditorAction">
             <add-to-group group-id="EditorPopupMenu" anchor="last"/>
         </action>
     </actions>

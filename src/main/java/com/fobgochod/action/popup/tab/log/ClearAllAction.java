@@ -1,4 +1,4 @@
-package com.fobgochod.action.popup;
+package com.fobgochod.action.popup.tab.log;
 
 import com.fobgochod.action.AbstractNodeAction;
 import com.fobgochod.util.ZKBundle;
@@ -16,7 +16,6 @@ public class ClearAllAction extends AbstractNodeAction {
 
     @Override
     public void actionPerformed(@NotNull AnActionEvent event) {
-        super.actionPerformed(event);
         toolWindow.getConsole().setText("");
     }
 }

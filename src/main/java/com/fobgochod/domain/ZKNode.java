@@ -18,8 +18,6 @@ import java.util.List;
  */
 public class ZKNode {
 
-    public static final ZKNode ROOT = new ZKNode(ZKConstant.SLASH, ZKConstant.EMPTY, true);
-
     private static final List<String> binaryExtNames = Arrays.asList("pb", "bin", "msgpack");
     private boolean root;
     private String path;
@@ -36,7 +34,7 @@ public class ZKNode {
         this(path, name, false);
     }
 
-    private ZKNode(String path, String name, boolean root) {
+    public ZKNode(String path, String name, boolean root) {
         this.path = path;
         this.name = name;
         this.root = root;
@@ -55,24 +53,12 @@ public class ZKNode {
         return path;
     }
 
-    public void setPath(String path) {
-        this.path = path;
-    }
-
     public String getFullPath() {
         return fullPath;
     }
 
-    public void setFullPath(String fullPath) {
-        this.fullPath = fullPath;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public byte[] getData() {
@@ -115,20 +101,12 @@ public class ZKNode {
         return stat != null ? stat.getNumChildren() : 0;
     }
 
-    public String getTooltip() {
-        return this.fullPath;
-    }
-
     public boolean isBinary() {
         String extName = null;
         if (name.contains(".")) {
             extName = name.substring(name.lastIndexOf(".") + 1);
         }
         return extName != null && binaryExtNames.contains(extName.toLowerCase());
-    }
-
-    public ZKNode getChild(String childName) {
-        return new ZKNode(this.fullPath, childName);
     }
 
     @Override

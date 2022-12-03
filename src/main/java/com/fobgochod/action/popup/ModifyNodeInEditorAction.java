@@ -1,11 +1,10 @@
 package com.fobgochod.action.popup;
 
+import com.fobgochod.ZKClient;
 import com.fobgochod.util.IconUtil;
 import com.fobgochod.util.NoticeUtil;
 import com.fobgochod.util.ZKBundle;
 import com.fobgochod.view.vfs.ZKNodeFile;
-import com.fobgochod.ZKClient;
-import com.intellij.icons.AllIcons;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.editor.Caret;
@@ -17,14 +16,14 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * update node data
+ * modify node data
  *
  * @author fobgochod
  * @date 2022/10/15 23:22
  */
-public class UpdateNodeAction extends EditorAction {
+public class ModifyNodeInEditorAction extends EditorAction {
 
-    public UpdateNodeAction() {
+    public ModifyNodeInEditorAction() {
         super(new EditorActionHandler() {
 
             @Override
@@ -45,8 +44,8 @@ public class UpdateNodeAction extends EditorAction {
             }
         });
 
-        getTemplatePresentation().setText(ZKBundle.message("action.popup.update.node.text"));
-        getTemplatePresentation().setIcon(IconUtil.ZooKeeper);
+        getTemplatePresentation().setText(ZKBundle.message("action.popup.modify.node.data.text"));
+        getTemplatePresentation().setIcon(IconUtil.ZOOKEEPER);
     }
 
 
