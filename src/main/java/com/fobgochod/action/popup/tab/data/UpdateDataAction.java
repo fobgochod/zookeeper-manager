@@ -13,10 +13,10 @@ import org.jetbrains.annotations.NotNull;
  * @author fobgochod
  * @date 2022/10/15 20:39
  */
-public class UpdateNodeAction extends AbstractNodeAction {
+public class UpdateDataAction extends AbstractNodeAction {
 
-    public UpdateNodeAction() {
-        getTemplatePresentation().setText(ZKBundle.message("action.popup.update.node.data.text"));
+    public UpdateDataAction() {
+        getTemplatePresentation().setText(ZKBundle.message("action.popup.update.data.text"));
         getTemplatePresentation().setIcon(AllIcons.General.InlineRefreshHover);
     }
 

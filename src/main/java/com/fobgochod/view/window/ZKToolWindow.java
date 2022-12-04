@@ -1,7 +1,7 @@
 package com.fobgochod.view.window;
 
 import com.fobgochod.constant.StatStructure;
-import com.fobgochod.constant.ZKPluginId;
+import com.fobgochod.constant.ZKConstant;
 import com.fobgochod.constant.ZKTab;
 import com.fobgochod.domain.ZKNode;
 import com.fobgochod.domain.ZKTreeModel;
@@ -114,7 +114,7 @@ public class ZKToolWindow extends SimpleToolWindowPanel {
             tree.setCellRenderer(new ZKTreeCellRenderer());
 
             ToolTipManager.sharedInstance().registerComponent(tree);
-            CustomizationUtil.installPopupHandler(tree, ZKPluginId.ZOOKEEPER_POPUP, ActionPlaces.POPUP);
+            CustomizationUtil.installPopupHandler(tree, ZKConstant.ZOOKEEPER_NODE_POPUP, ActionPlaces.POPUP);
         }
 
         tree.setModel(new ZKTreeModel());
@@ -225,7 +225,7 @@ public class ZKToolWindow extends SimpleToolWindowPanel {
 
         // node data
         nodeData = new ZKNodeEditor(project);
-        CustomizationUtil.installPopupHandler(nodeData, ZKPluginId.UPDATE_NODE_DATA, ActionPlaces.POPUP);
+        CustomizationUtil.installPopupHandler(nodeData, ZKConstant.ZOOKEEPER_NODE_DATA_POPUP, ActionPlaces.POPUP);
         dataTab = new TabInfo(nodeData);
         dataTab.setText(ZKTab.Data.key());
         dataTab.setIcon(ZKTab.Data.icon());
@@ -271,7 +271,7 @@ public class ZKToolWindow extends SimpleToolWindowPanel {
         // system log
         logTabPane = new JBScrollPane();
         console = new JTextPane();
-        CustomizationUtil.installPopupHandler(console, ZKPluginId.CLEAR_ALL_LOG, ActionPlaces.POPUP);
+        CustomizationUtil.installPopupHandler(console, ZKConstant.ZOOKEEPER_LOG_POPUP, ActionPlaces.POPUP);
         logTabPane.setViewportView(console);
         logTab = new TabInfo(logTabPane);
         logTab.setText(ZKTab.Log.key());
@@ -297,7 +297,7 @@ public class ZKToolWindow extends SimpleToolWindowPanel {
     }
 
     private ActionToolbar initToolbar() {
-        ActionGroup actionGroup = (ActionGroup) ActionManager.getInstance().getAction(ZKPluginId.ZOOKEEPER_TOOLBAR);
+        ActionGroup actionGroup = (ActionGroup) ActionManager.getInstance().getAction(ZKConstant.ZOOKEEPER_NAVIGATOR_TOOLBAR);
         ActionToolbar toolbar = ActionManager.getInstance().createActionToolbar(ActionPlaces.TOOLBAR, actionGroup, true);
         toolbar.setTargetComponent(this);
         return toolbar;

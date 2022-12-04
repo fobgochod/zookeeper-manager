@@ -1,7 +1,7 @@
 package com.fobgochod.action.popup;
 
 import com.fobgochod.ZKClient;
-import com.fobgochod.util.IconUtil;
+import com.fobgochod.util.ZKIcons;
 import com.fobgochod.util.NoticeUtil;
 import com.fobgochod.util.ZKBundle;
 import com.fobgochod.view.vfs.ZKNodeFile;
@@ -21,9 +21,9 @@ import org.jetbrains.annotations.Nullable;
  * @author fobgochod
  * @date 2022/10/15 23:22
  */
-public class ModifyNodeInEditorAction extends EditorAction {
+public class UpdateDataInEditorAction extends EditorAction {
 
-    public ModifyNodeInEditorAction() {
+    public UpdateDataInEditorAction() {
         super(new EditorActionHandler() {
 
             @Override
@@ -44,8 +44,8 @@ public class ModifyNodeInEditorAction extends EditorAction {
             }
         });
 
-        getTemplatePresentation().setText(ZKBundle.message("action.popup.modify.node.data.text"));
-        getTemplatePresentation().setIcon(IconUtil.ZOOKEEPER);
+        getTemplatePresentation().setText(ZKBundle.message("action.popup.update.data.editor.text"));
+        getTemplatePresentation().setIcon(ZKIcons.ZOOKEEPER);
     }
 
 

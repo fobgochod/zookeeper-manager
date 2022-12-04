@@ -50,20 +50,20 @@ public class NodeUtil {
     public static Icon getIcon(CreateMode mode) {
         switch (mode) {
             case PERSISTENT:
-                return IconUtil.PERSISTENT;
+                return ZKIcons.PERSISTENT;
             case PERSISTENT_SEQUENTIAL:
-                return IconUtil.PERSISTENT_SEQUENTIAL;
+                return ZKIcons.PERSISTENT_SEQUENTIAL;
             case EPHEMERAL:
-                return IconUtil.EPHEMERAL;
+                return ZKIcons.EPHEMERAL;
             case EPHEMERAL_SEQUENTIAL:
-                return IconUtil.EPHEMERAL_SEQUENTIAL;
+                return ZKIcons.EPHEMERAL_SEQUENTIAL;
             case CONTAINER:
-                return IconUtil.CONTAINER;
+                return ZKIcons.CONTAINER;
             case PERSISTENT_WITH_TTL:
-                return IconUtil.PERSISTENT_WITH_TTL;
+                return ZKIcons.PERSISTENT_WITH_TTL;
             case PERSISTENT_SEQUENTIAL_WITH_TTL:
-                return IconUtil.PERSISTENT_SEQUENTIAL_WITH_TTL;
+                return ZKIcons.PERSISTENT_SEQUENTIAL_WITH_TTL;
         }
-        return IconUtil.PERSISTENT;
+        return ZKIcons.PERSISTENT;
     }
 }

@@ -30,7 +30,7 @@
     </extensions>
 
     <actions>
-        <group id="ZooKeeperToolbar">
+        <group id="ZooKeeperNavigatorToolbar">
             <action id="RefreshTreeAction" class="com.fobgochod.action.navigator.RefreshTreeAction"/>
             <action id="DeactivateTreeAction" class="com.fobgochod.action.navigator.DeactivateTreeAction"/>
             <separator/>
@@ -41,7 +41,7 @@
             <action id="EditSettingsAction" class="com.fobgochod.action.navigator.EditSettingsAction"/>
         </group>
 
-        <group id="ZooKeeperPopup" popup="true">
+        <group id="ZooKeeperNodePopup" popup="true">
             <action id="CreateNodeAction" class="com.fobgochod.action.popup.node.CreateNodeAction"/>
             <action id="DeleteNodeAction" class="com.fobgochod.action.popup.node.DeleteNodeAction"/>
             <action id="ModifyNodeAction" class="com.fobgochod.action.popup.node.ModifyNodeAction"/>
@@ -52,17 +52,17 @@
             <action id="ConfigNodeAclAction" class="com.fobgochod.action.popup.node.ConfigNodeAclAction"/>
         </group>
 
-        <group id="ModifyNodePopup">
-            <action id="UpdateNodeAction" class="com.fobgochod.action.popup.tab.data.UpdateNodeAction"/>
-            <action id="ReformatNodeAction" class="com.fobgochod.action.popup.tab.data.ReformatNodeAction"/>
+        <group id="ZooKeeperNodeDataPopup" popup="true">
+            <action id="UpdateNodeAction" class="com.fobgochod.action.popup.tab.data.UpdateDataAction"/>
+            <action id="ReformatNodeAction" class="com.fobgochod.action.popup.tab.data.ReformatDataAction"/>
         </group>
 
-        <group id="ClearAllPopup">
+        <group id="ZooKeeperLogPopup" popup="true">
             <action id="ClearAllAction" class="com.fobgochod.action.popup.tab.log.ClearAllAction"/>
         </group>
 
-        <action id="ModifyNodeInEditorAction" class="com.fobgochod.action.popup.ModifyNodeInEditorAction">
-            <add-to-group group-id="EditorPopupMenu" anchor="last"/>
+        <action id="ModifyNodeInEditorAction" class="com.fobgochod.action.popup.UpdateDataInEditorAction">
+            <add-to-group group-id="EditorPopupMenu" anchor="first"/>
         </action>
     </actions>
 </idea-plugin>

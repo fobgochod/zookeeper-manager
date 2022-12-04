@@ -15,7 +15,7 @@ import javax.swing.*;
  * @author fobgochod
  * @date 2022/10/23 22:19
  */
-public class IconUtil {
+public class ZKIcons {
 
     public static final Icon ZOOKEEPER = load("/icons/zookeeper.svg");
     public static final Icon NOTIFICATIONS = load("/icons/notifications.svg");
@@ -29,11 +29,11 @@ public class IconUtil {
     public static final Icon PERSISTENT_SEQUENTIAL_WITH_TTL = load("/icons/node/persistent_sequential_with_ttl.svg");
 
 
-    private IconUtil() {
+    private ZKIcons() {
     }
 
     @NotNull
     public static Icon load(@NotNull String path) {
-        return IconLoader.getIcon(path, IconUtil.class);
+        return IconLoader.getIcon(path, ZKIcons.class);
     }
 }
