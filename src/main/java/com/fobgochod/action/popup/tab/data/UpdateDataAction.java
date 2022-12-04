@@ -3,7 +3,7 @@ package com.fobgochod.action.popup.tab.data;
 import com.fobgochod.action.AbstractNodeAction;
 import com.fobgochod.domain.ZKNode;
 import com.fobgochod.util.ZKBundle;
-import com.intellij.icons.AllIcons;
+import com.fobgochod.util.ZKIcons;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import org.jetbrains.annotations.NotNull;
 
@@ -17,7 +17,7 @@ public class UpdateDataAction extends AbstractNodeAction {
 
     public UpdateDataAction() {
         getTemplatePresentation().setText(ZKBundle.message("action.popup.update.data.text"));
-        getTemplatePresentation().setIcon(AllIcons.General.InlineRefreshHover);
+        getTemplatePresentation().setIcon(ZKIcons.INLINE_REFRESH_HOVER);
     }
 
     public void actionPerformed(@NotNull AnActionEvent event) {

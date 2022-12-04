@@ -4,6 +4,15 @@
 
 ## [Unreleased]
 
+## [2020.3.2]
+
+### Changed
+
+- Update the plugin icon
+- Define different icons according to the node type
+- Update some actions icon and name
+- Add deactivate tree action
+
 ## [2020.3.1]
 
 ### Changed

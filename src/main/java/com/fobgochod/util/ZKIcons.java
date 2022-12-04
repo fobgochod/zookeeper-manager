@@ -19,6 +19,8 @@ public class ZKIcons {
 
     public static final Icon ZOOKEEPER = load("/icons/zookeeper.svg");
     public static final Icon NOTIFICATIONS = load("/icons/notifications.svg");
+    public static final Icon INLINE_COPY = load("/icons/inlineCopy.svg");
+    public static final Icon INLINE_REFRESH_HOVER = load("/icons/inlineRefreshHover.svg");
 
     public static final Icon PERSISTENT = load("/icons/node/persistent.svg");
     public static final Icon PERSISTENT_SEQUENTIAL = load("/icons/node/persistent_sequential.svg");

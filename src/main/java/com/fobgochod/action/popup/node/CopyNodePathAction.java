@@ -4,7 +4,7 @@ import com.fobgochod.action.NodeSelectedAction;
 import com.fobgochod.util.NoticeUtil;
 import com.fobgochod.domain.ZKNode;
 import com.fobgochod.util.ZKBundle;
-import com.intellij.icons.AllIcons;
+import com.fobgochod.util.ZKIcons;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import org.jetbrains.annotations.NotNull;
 
@@ -18,7 +18,7 @@ public class CopyNodePathAction extends NodeSelectedAction {
 
     public CopyNodePathAction() {
         getTemplatePresentation().setText(ZKBundle.message("action.popup.copy.path.text"));
-        getTemplatePresentation().setIcon(AllIcons.General.InlineCopy);
+        getTemplatePresentation().setIcon(ZKIcons.INLINE_COPY);
     }
 
     public void actionPerformed(@NotNull AnActionEvent event) {
