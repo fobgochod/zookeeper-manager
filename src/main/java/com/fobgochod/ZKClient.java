@@ -79,9 +79,7 @@ public class ZKClient implements Disposable {
 
     @Override
     public void dispose() {
-        if (curator != null) {
-            curator.close();
-        }
+        this.close();
     }
 
     public void addAuthInfo(String scheme, String auth) {

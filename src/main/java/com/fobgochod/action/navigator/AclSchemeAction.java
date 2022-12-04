@@ -1,6 +1,6 @@
 package com.fobgochod.action.navigator;
 
-import com.fobgochod.action.AbstractNodeAction;
+import com.fobgochod.action.ClientConnectedAction;
 import com.fobgochod.util.NoticeUtil;
 import com.fobgochod.util.ZKBundle;
 import com.fobgochod.view.action.navigator.AclSchemeUI;
@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import javax.swing.table.DefaultTableModel;
 import java.util.Vector;
 
-public class AclSchemeAction extends AbstractNodeAction {
+public class AclSchemeAction extends ClientConnectedAction {
 
     public AclSchemeAction() {
         getTemplatePresentation().setText(ZKBundle.message("action.toolbar.acl.schemes.text"));
@@ -23,8 +23,6 @@ public class AclSchemeAction extends AbstractNodeAction {
 
     @Override
     public void actionPerformed(@NotNull AnActionEvent event) {
-        super.actionPerformed(event);
-
         final DialogBuilder builder = new DialogBuilder();
         builder.setTitle(ZKBundle.message("action.toolbar.acl.schemes.text"));
 

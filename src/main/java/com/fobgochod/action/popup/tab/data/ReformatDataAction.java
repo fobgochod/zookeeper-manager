@@ -1,4 +1,4 @@
-package com.fobgochod.action.popup;
+package com.fobgochod.action.popup.tab.data;
 
 import com.fobgochod.action.AbstractNodeAction;
 import com.fobgochod.util.NoticeUtil;
@@ -15,18 +15,16 @@ import org.jetbrains.annotations.NotNull;
  * @author fobgochod
  * @date 2022/10/31 21:37
  */
-public class ReformatNodeAction extends AbstractNodeAction {
+public class ReformatDataAction extends AbstractNodeAction {
 
     private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-    public ReformatNodeAction() {
+    public ReformatDataAction() {
         getTemplatePresentation().setText(ZKBundle.message("action.popup.reformat.data.text"));
         getTemplatePresentation().setIcon(AllIcons.Json.Object);
     }
 
     public void actionPerformed(@NotNull AnActionEvent event) {
-        super.actionPerformed(event);
-
         try {
             JsonElement je = JsonParser.parseString(toolWindow.getData());
             toolWindow.setData(gson.toJson(je));

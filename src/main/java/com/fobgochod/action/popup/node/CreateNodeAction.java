@@ -1,6 +1,6 @@
-package com.fobgochod.action.popup;
+package com.fobgochod.action.popup.node;
 
-import com.fobgochod.action.AbstractNodeAction;
+import com.fobgochod.action.NodeSelectedAction;
 import com.fobgochod.domain.ZKNode;
 import com.fobgochod.util.StringUtil;
 import com.fobgochod.util.ZKBundle;
@@ -19,7 +19,7 @@ import org.jetbrains.annotations.NotNull;
  * @author fobgochod
  * @date 2022/10/15 20:39
  */
-public class CreateNodeAction extends AbstractNodeAction {
+public class CreateNodeAction extends NodeSelectedAction {
 
     public CreateNodeAction() {
         getTemplatePresentation().setText(ZKBundle.message("action.popup.create.node.text"));
@@ -27,8 +27,6 @@ public class CreateNodeAction extends AbstractNodeAction {
     }
 
     public void actionPerformed(@NotNull AnActionEvent event) {
-        super.actionPerformed(event);
-
         final DialogBuilder builder = new DialogBuilder();
         builder.setTitle(ZKBundle.message("action.popup.create.node.text"));
 
@@ -46,7 +44,7 @@ public class CreateNodeAction extends AbstractNodeAction {
                 } else {
                     zkClient.creatingParentsIfNeeded(fullPath, ui.getNodeData(), ui.getNodeMode());
                 }
-                toolWindow.flushTree();
+                toolWindow.updateTree();
             }
             builder.getDialogWrapper().close(DialogWrapper.OK_EXIT_CODE);
         });

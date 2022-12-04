@@ -12,7 +12,8 @@ public abstract class AbstractNodeAction extends AnAction {
     protected final ZKClient zkClient = ZKClient.getInstance();
     protected ZKToolWindow toolWindow;
 
-    public void actionPerformed(@NotNull AnActionEvent event) {
+    @Override
+    public void update(@NotNull AnActionEvent event) {
         Project project = event.getProject();
         if (project != null && this.toolWindow == null) {
             this.toolWindow = ZKToolWindow.getInstance(project);
