@@ -1,9 +1,9 @@
-package com.fobgochod.action.popup;
+package com.fobgochod.action.popup.node;
 
+import com.fobgochod.action.NodeSelectedAction;
 import com.fobgochod.util.ZKBundle;
 import com.fobgochod.view.window.ZKToolWindow;
 import com.intellij.icons.AllIcons;
-import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import org.jetbrains.annotations.NotNull;
 
@@ -13,11 +13,11 @@ import org.jetbrains.annotations.NotNull;
  * @author fobgochod
  * @date 2022/10/15 22:26
  */
-public class OpenNodeInEditorAction extends AnAction {
+public class OpenNodeInEditorAction extends NodeSelectedAction {
 
     public OpenNodeInEditorAction() {
         getTemplatePresentation().setText(ZKBundle.message("action.popup.open.editor.text"));
-        getTemplatePresentation().setIcon(AllIcons.General.Inline_edit);
+        getTemplatePresentation().setIcon(AllIcons.Actions.SplitVertically);
     }
 
     public void actionPerformed(@NotNull AnActionEvent event) {

@@ -33,9 +33,7 @@ public class RefreshTreeAction extends AnAction {
             if (StringUtil.isNotEmpty(config.getUsername())) {
                 ZKClient.getInstance().addAuthInfo(AclScheme.digest.name(), config.getUsername() + ":" + config.getPassword());
             }
-
-            ZKNode.ROOT.setName(config.getTitle());
-            ZKToolWindow.getInstance(event.getProject()).initTree(new ZKTreeModel(config.getPaths()));
+            ZKToolWindow.getInstance(event.getProject()).initTree();
         }
     }
 }

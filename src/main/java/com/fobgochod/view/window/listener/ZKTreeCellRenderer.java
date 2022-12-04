@@ -1,9 +1,11 @@
 package com.fobgochod.view.window.listener;
 
 import com.fobgochod.domain.ZKNode;
-import com.fobgochod.util.IconUtil;
+import com.fobgochod.util.ZKIcons;
+import com.fobgochod.util.NodeUtil;
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.fileTypes.FileTypes;
+import org.apache.zookeeper.CreateMode;
 import org.jdesktop.swingx.renderer.DefaultTreeRenderer;
 import org.jdesktop.swingx.renderer.WrappingIconPanel;
 
@@ -19,21 +21,21 @@ public class ZKTreeCellRenderer extends DefaultTreeRenderer {
             ZKNode node = (ZKNode) value;
             WrappingIconPanel panel = (WrappingIconPanel) component;
             if (node.isRoot()) {
-                panel.setIcon(IconUtil.Root);
+                panel.setIcon(ZKIcons.ZOOKEEPER);
             } else if (node.isLeaf()) {
-                if (node.isEphemeral()) {
-                    panel.setIcon(AllIcons.Nodes.Related);
-                } else {
-                    panel.setIcon(AllIcons.Nodes.Editorconfig);
-                }
+                CreateMode mode = NodeUtil.mode(node);
+                panel.setIcon(NodeUtil.getIcon(mode));
+
                 if (node.isBinary()) {
                     panel.setIcon(FileTypes.ARCHIVE.getIcon());
                 }
             } else {
-                panel.setIcon(AllIcons.Nodes.ConfigFolder);
+                panel.setIcon(AllIcons.Nodes.Package);
             }
-            panel.setToolTipText(node.getTooltip());
+            panel.setToolTipText(node.getFullPath());
         }
         return component;
     }
+
+
 }
