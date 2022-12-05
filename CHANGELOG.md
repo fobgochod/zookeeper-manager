@@ -4,6 +4,12 @@
 
 ## [Unreleased]
 
+## [2022.3.4]
+
+### Fixed
+
+- Fix non ttl node focus cannot be transferred.
+
 ## [2022.3.3]
 
 ### Changed
