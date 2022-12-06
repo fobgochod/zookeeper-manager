@@ -4,6 +4,9 @@ import com.fobgochod.domain.ZKNode;
 import org.apache.zookeeper.CreateMode;
 
 import javax.swing.*;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 
 public class NodeUtil {
 
@@ -65,5 +68,25 @@ public class NodeUtil {
                 return ZKIcons.PERSISTENT_SEQUENTIAL_WITH_TTL;
         }
         return ZKIcons.PERSISTENT;
+    }
+
+
+    /**
+     * <h1>digest</h1>
+     * uses a username:password string to generate MD5 hash which is then used as an ACL ID identity.
+     * <p>
+     * addauth digest username:password
+     *
+     * @param username
+     * @param password
+     */
+    public static String getAclId(String username, String password) {
+        try {
+            String aclId = String.format("%s:%s", username, password);
+            byte[] digest = MessageDigest.getInstance("SHA1").digest(aclId.getBytes());
+            return Base64.getEncoder().encodeToString(digest);
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
