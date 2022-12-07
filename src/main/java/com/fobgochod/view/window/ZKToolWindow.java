@@ -181,6 +181,10 @@ public class ZKToolWindow extends SimpleToolWindowPanel {
 
     public void setAcl(TableModel statModel) {
         aclTable.setModel(statModel);
+        aclTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+        aclTable.getColumnModel().getColumn(0).setPreferredWidth(80);
+        aclTable.getColumnModel().getColumn(1).setPreferredWidth(220);
+        aclTable.getColumnModel().getColumn(2).setPreferredWidth(100);
         aclTable.updateUI();
     }
 
