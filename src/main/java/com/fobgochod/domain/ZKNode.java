@@ -85,12 +85,12 @@ public class ZKNode {
         this.perms = perms;
     }
 
-    public boolean isLeaf() {
-        return stat != null && stat.getNumChildren() == 0;
-    }
-
     public boolean isRoot() {
         return root;
+    }
+
+    public boolean isLeaf() {
+        return stat != null && stat.getNumChildren() == 0;
     }
 
     public boolean isEphemeral() {

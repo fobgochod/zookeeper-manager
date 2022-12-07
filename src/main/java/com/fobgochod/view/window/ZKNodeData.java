@@ -3,6 +3,7 @@ package com.fobgochod.view.window;
 import com.fobgochod.constant.AclPermission;
 import com.fobgochod.constant.StatStructure;
 import com.fobgochod.domain.ZKNode;
+import com.fobgochod.domain.ZKTreeModel;
 import com.intellij.openapi.project.Project;
 import org.apache.zookeeper.ZooDefs;
 import org.apache.zookeeper.data.ACL;
@@ -45,50 +46,49 @@ public class ZKNodeData {
         }
     }
 
-    public void showZNode(ZKNode node) {
-        showTabData(node);
-        showTabStat(node);
-        showTabAcl(node);
-    }
-
     public void showTabData(ZKNode node) {
-        if (node.getData() != null) {
-            toolWindow.setData(new String(node.getData()));
-        }
+        ZKTreeModel.fillData(node);
+
+        toolWindow.setData(new String(node.getData()));
     }
 
     public void showTabStat(ZKNode node) {
+        ZKTreeModel.fillStat(node);
+
         Stat stat = node.getStat();
-        if (stat != null) {
-            long ctime = stat.getCtime();
-            long mtime = stat.getMtime();
-            String ctimeFormat = Instant.ofEpochMilli(ctime).atZone(ZoneOffset.systemDefault()).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-            String mtimeFormat = Instant.ofEpochMilli(mtime).atZone(ZoneOffset.systemDefault()).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-
-            DefaultTableModel statModel = new DefaultTableModel(
-                    new Object[][]{
-                            {StatStructure.czxid.key(), stat.getCzxid()},
-                            {StatStructure.mzxid.key(), stat.getMzxid()},
-                            {StatStructure.pzxid.key(), stat.getPzxid()},
-                            {StatStructure.ctime.key(), ctimeFormat},
-                            {StatStructure.mtime.key(), mtimeFormat},
-                            {StatStructure.version.key(), stat.getVersion()},
-                            {StatStructure.cversion.key(), stat.getCversion()},
-                            {StatStructure.aversion.key(), stat.getAversion()},
-                            {StatStructure.ephemeralOwner.key(), stat.getEphemeralOwner()},
-                            {StatStructure.dataLength.key(), stat.getDataLength()},
-                            {StatStructure.numChildren.key(), stat.getNumChildren()},
-                    },
-                    new String[]{
-                            "key", "value"
-                    }
-            );
-
-            toolWindow.setStat(statModel);
+        if (stat == null) {
+            toolWindow.setStat(new DefaultTableModel());
+            return;
         }
+        long ctime = stat.getCtime();
+        long mtime = stat.getMtime();
+        String ctimeFormat = Instant.ofEpochMilli(ctime).atZone(ZoneOffset.systemDefault()).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        String mtimeFormat = Instant.ofEpochMilli(mtime).atZone(ZoneOffset.systemDefault()).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+
+        DefaultTableModel statModel = new DefaultTableModel(
+                new Object[][]{
+                        {StatStructure.czxid.key(), stat.getCzxid()},
+                        {StatStructure.mzxid.key(), stat.getMzxid()},
+                        {StatStructure.pzxid.key(), stat.getPzxid()},
+                        {StatStructure.ctime.key(), ctimeFormat},
+                        {StatStructure.mtime.key(), mtimeFormat},
+                        {StatStructure.version.key(), stat.getVersion()},
+                        {StatStructure.cversion.key(), stat.getCversion()},
+                        {StatStructure.aversion.key(), stat.getAversion()},
+                        {StatStructure.ephemeralOwner.key(), stat.getEphemeralOwner()},
+                        {StatStructure.dataLength.key(), stat.getDataLength()},
+                        {StatStructure.numChildren.key(), stat.getNumChildren()},
+                },
+                new String[]{
+                        "key", "value"
+                }
+        );
+        toolWindow.setStat(statModel);
     }
 
     public void showTabAcl(ZKNode node) {
+        ZKTreeModel.fillAcl(node);
+
         Vector<String> tableHeader = new Vector<>();
         tableHeader.add("scheme");
         tableHeader.add("id");

@@ -31,7 +31,6 @@ import com.intellij.ui.tabs.TabsListener;
 import com.intellij.ui.tabs.impl.JBTabsImpl;
 import com.intellij.ui.treeStructure.Tree;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import javax.swing.table.TableCellRenderer;
@@ -161,9 +160,12 @@ public class ZKToolWindow extends SimpleToolWindowPanel {
         return (ZKNode) treePath.getLastPathComponent();
     }
 
-    public void selectionNodeChanged(@Nullable ZKNode selectionNode) {
-        this.zkFileTypePanel.setSelectionNode(selectionNode);
-        ZKNodeData.getInstance(project).showZNode(selectionNode);
+    public void selectionNodeChanged() {
+        ZKNode selectionNode = this.getSelectionNode();
+        if (selectionNode != null) {
+            this.zkFileTypePanel.setSelectionNode(selectionNode);
+            this.flushTabData(selectionNode);
+        }
     }
 
     public String getData() {
@@ -313,14 +315,7 @@ public class ZKToolWindow extends SimpleToolWindowPanel {
         tabs.addListener(new TabsListener() {
             @Override
             public void selectionChanged(TabInfo oldSelection, TabInfo newSelection) {
-                String selectedTab = newSelection.getText();
-                ZKNode selectionNode = getSelectionNode();
-                if (selectionNode != null) {
-                    if (ZKTab.Stat.key().equals(selectedTab) || ZKTab.ACL.key().equals(selectedTab)) {
-                        ZKTreeModel.fillNode(selectionNode);
-                        ZKNodeData.getInstance(project).showZNode(selectionNode);
-                    }
-                }
+                flushTabData(getSelectionNode());
             }
 
             @Override
@@ -338,5 +333,21 @@ public class ZKToolWindow extends SimpleToolWindowPanel {
                 }
             }
         });
+    }
+
+
+    private void flushTabData(ZKNode selectionNode) {
+        TabInfo selectedInfo = tabs.getSelectedInfo();
+        if (selectedInfo == null) {
+            this.showTab(ZKTab.Data.ordinal());
+        }
+        String tabName = selectedInfo == null ? ZKTab.Data.key() : selectedInfo.getText();
+        if (ZKTab.Data.key().equals(tabName)) {
+            ZKNodeData.getInstance(project).showTabData(selectionNode);
+        } else if (ZKTab.Stat.key().equals(tabName)) {
+            ZKNodeData.getInstance(project).showTabStat(selectionNode);
+        } else if (ZKTab.ACL.key().equals(tabName)) {
+            ZKNodeData.getInstance(project).showTabAcl(selectionNode);
+        }
     }
 }

@@ -34,13 +34,26 @@ public class ZKTreeModel extends AbstractTreeModel {
     }
 
     public static void fillNode(ZKNode zkNode) {
-        Stat stat = new Stat();
-        byte[] contents = zkClient.storingStatIn(zkNode.getFullPath(), stat);
+        fillData(zkNode);
+        fillStat(zkNode);
+        fillAcl(zkNode);
+    }
+
+    public static void fillData(ZKNode zkNode) {
+        byte[] contents = zkClient.getData(zkNode.getFullPath());
         zkNode.setData(contents);
+    }
+
+    public static void fillStat(ZKNode zkNode) {
+        Stat stat = zkClient.checkExists(zkNode.getFullPath());
         zkNode.setStat(stat);
+    }
+
+    public static void fillAcl(ZKNode zkNode) {
         List<ACL> perms = zkClient.getACL(zkNode.getFullPath());
         zkNode.setPerms(perms.stream().map(ZKAcl::new).collect(Collectors.toList()));
     }
+
 
     @Override
     public Object getRoot() {

@@ -1,6 +1,5 @@
 package com.fobgochod.view.window.listener;
 
-import com.fobgochod.domain.ZKNode;
 import com.fobgochod.view.window.ZKToolWindow;
 
 import javax.swing.event.TreeSelectionEvent;
@@ -16,9 +15,6 @@ public class ZKTreeSelectionListener implements TreeSelectionListener {
 
     @Override
     public void valueChanged(TreeSelectionEvent event) {
-        ZKNode selectionNode = toolWindow.getSelectionNode();
-        if (selectionNode != null) {
-            toolWindow.selectionNodeChanged(selectionNode);
-        }
+        toolWindow.selectionNodeChanged();
     }
 }

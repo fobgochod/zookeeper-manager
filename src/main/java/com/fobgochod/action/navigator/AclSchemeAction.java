@@ -46,6 +46,9 @@ public class AclSchemeAction extends ClientConnectedAction {
         builder.setOkOperation(() -> {
             zkClient.addAuthInfo(aclScheme.getScheme(), aclScheme.getAuth());
             NoticeUtil.info("add a authorized user [" + aclScheme.getUsername() + "]  success!");
+
+            toolWindow.selectionNodeChanged();
+
             builder.getDialogWrapper().close(DialogWrapper.OK_EXIT_CODE);
         });
         builder.showModal(true);
