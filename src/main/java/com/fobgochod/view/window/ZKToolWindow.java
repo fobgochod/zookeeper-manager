@@ -33,6 +33,7 @@ import com.intellij.ui.treeStructure.Tree;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 import javax.swing.tree.TreePath;
@@ -161,11 +162,8 @@ public class ZKToolWindow extends SimpleToolWindowPanel {
     }
 
     public void selectionNodeChanged() {
-        ZKNode selectionNode = this.getSelectionNode();
-        if (selectionNode != null) {
-            this.zkFileTypePanel.setSelectionNode(selectionNode);
-            this.flushTabData(selectionNode);
-        }
+        this.zkFileTypePanel.setSelectionNode(this.getSelectionNode());
+        this.flushTabData();
     }
 
     public String getData() {
@@ -183,10 +181,12 @@ public class ZKToolWindow extends SimpleToolWindowPanel {
 
     public void setAcl(TableModel statModel) {
         aclTable.setModel(statModel);
-        aclTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-        aclTable.getColumnModel().getColumn(0).setPreferredWidth(80);
-        aclTable.getColumnModel().getColumn(1).setPreferredWidth(220);
-        aclTable.getColumnModel().getColumn(2).setPreferredWidth(100);
+        if (statModel.getColumnCount() > 3) {
+            aclTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+            aclTable.getColumnModel().getColumn(0).setPreferredWidth(80);
+            aclTable.getColumnModel().getColumn(1).setPreferredWidth(220);
+            aclTable.getColumnModel().getColumn(2).setPreferredWidth(100);
+        }
         aclTable.updateUI();
     }
 
@@ -315,7 +315,7 @@ public class ZKToolWindow extends SimpleToolWindowPanel {
         tabs.addListener(new TabsListener() {
             @Override
             public void selectionChanged(TabInfo oldSelection, TabInfo newSelection) {
-                flushTabData(getSelectionNode());
+                flushTabData();
             }
 
             @Override
@@ -336,12 +336,21 @@ public class ZKToolWindow extends SimpleToolWindowPanel {
     }
 
 
-    private void flushTabData(ZKNode selectionNode) {
+    private void flushTabData() {
         TabInfo selectedInfo = tabs.getSelectedInfo();
         if (selectedInfo == null) {
             this.showTab(ZKTab.Data.ordinal());
         }
-        String tabName = selectedInfo == null ? ZKTab.Data.key() : selectedInfo.getText();
+
+        ZKNode selectionNode = this.getSelectionNode();
+        if (selectionNode == null) {
+            setData(ZKConstant.EMPTY);
+            setStat(new DefaultTableModel());
+            setAcl(new DefaultTableModel());
+            return;
+        }
+
+        String tabName = tabs.getSelectedInfo().getText();
         if (ZKTab.Data.key().equals(tabName)) {
             ZKNodeData.getInstance(project).showTabData(selectionNode);
         } else if (ZKTab.Stat.key().equals(tabName)) {

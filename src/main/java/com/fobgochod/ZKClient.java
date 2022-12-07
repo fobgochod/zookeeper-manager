@@ -44,7 +44,7 @@ public class ZKClient implements Disposable {
 
     public boolean initZookeeper() {
         ZKConfigState config = ZKConfigState.getInstance();
-        return initZookeeper(config.getZkUrl(), config.getBlockUntilConnected(), config.isSaslClientEnabled());
+        return initZookeeper(config.connectString(), config.getBlockUntilConnected(), config.isSaslClientEnabled());
     }
 
     public boolean initZookeeper(String connectString, int maxWaitTime, boolean saslClientEnabled) {
@@ -158,9 +158,7 @@ public class ZKClient implements Disposable {
 
     public Stat checkExists(String path) {
         try {
-            Stat stat = curator.checkExists().forPath(path);
-            NoticeUtil.debug(ZKCli.getLog(ZKCli.stat, path));
-            return stat;
+            return curator.checkExists().forPath(path);
         } catch (Exception e) {
             NoticeUtil.error(ZKCli.getLog(ZKCli.stat, path), e.getMessage());
         }

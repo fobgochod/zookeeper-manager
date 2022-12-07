@@ -101,6 +101,10 @@ public class ZKNode {
         return stat != null ? stat.getNumChildren() : 0;
     }
 
+    public boolean isFill() {
+        return stat != null;
+    }
+
     public boolean isBinary() {
         String extName = null;
         if (name.contains(".")) {

@@ -48,7 +48,6 @@ public class ZKNodeData {
 
     public void showTabData(ZKNode node) {
         ZKTreeModel.fillData(node);
-
         toolWindow.setData(new String(node.getData()));
     }
 
@@ -60,6 +59,7 @@ public class ZKNodeData {
             toolWindow.setStat(new DefaultTableModel());
             return;
         }
+
         long ctime = stat.getCtime();
         long mtime = stat.getMtime();
         String ctimeFormat = Instant.ofEpochMilli(ctime).atZone(ZoneOffset.systemDefault()).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
