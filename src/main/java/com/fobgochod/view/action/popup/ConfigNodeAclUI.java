@@ -84,6 +84,20 @@ public class ConfigNodeAclUI {
                         .setRemoveAction(anActionButton -> data.removeElement(perms.getSelectedValue()))
                         .createPanel(),
                 BorderLayout.CENTER);
+
+        perms.addListSelectionListener(e -> {
+            ACL source = perms.getSelectedValue();
+            if (source != null) {
+                schemeBox.setSelectedItem(AclScheme.valueOf(source.getId().getScheme()));
+                idField.setText(source.getId().getId());
+
+                createBox.setSelected((source.getPerms() & ZooDefs.Perms.CREATE) != 0);
+                deleteBox.setSelected((source.getPerms() & ZooDefs.Perms.DELETE) != 0);
+                writeBox.setSelected((source.getPerms() & ZooDefs.Perms.WRITE) != 0);
+                readBox.setSelected((source.getPerms() & ZooDefs.Perms.READ) != 0);
+                adminBox.setSelected((source.getPerms() & ZooDefs.Perms.ADMIN) != 0);
+            }
+        });
     }
 
     private ACL newAcl() {
