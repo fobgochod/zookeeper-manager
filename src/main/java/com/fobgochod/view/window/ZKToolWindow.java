@@ -39,6 +39,8 @@ import javax.swing.table.TableModel;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class ZKToolWindow extends SimpleToolWindowPanel {
 
@@ -320,6 +322,16 @@ public class ZKToolWindow extends SimpleToolWindowPanel {
             @Override
             public void beforeSelectionChanged(TabInfo oldSelection, TabInfo newSelection) {
                 zkFileTypePanel.setVisible(dataTab.getText().equalsIgnoreCase(newSelection.getText()));
+            }
+        });
+
+        aclTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent event) {
+                if (event.getClickCount() == 2 && event.getButton() == MouseEvent.BUTTON1) {
+                    int selectedRow = aclTable.getSelectedRow();
+                    NoticeUtil.clipboard(aclTable.getValueAt(selectedRow, 1) + "");
+                }
             }
         });
     }
