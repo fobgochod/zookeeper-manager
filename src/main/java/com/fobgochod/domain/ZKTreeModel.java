@@ -33,15 +33,13 @@ public class ZKTreeModel extends AbstractTreeModel {
         }
     }
 
-    public static void fillNode(ZKNode node) {
+    public static void fillNode(ZKNode zkNode) {
         Stat stat = new Stat();
-        byte[] contents = zkClient.storingStatIn(node.getFullPath(), stat);
-        if (contents != null) {
-            node.setData(contents);
-            node.setStat(stat);
-            List<ACL> perms = zkClient.getACL(node.getFullPath());
-            node.setPerms(perms.stream().map(ZKAcl::new).collect(Collectors.toList()));
-        }
+        byte[] contents = zkClient.storingStatIn(zkNode.getFullPath(), stat);
+        zkNode.setData(contents);
+        zkNode.setStat(stat);
+        List<ACL> perms = zkClient.getACL(zkNode.getFullPath());
+        zkNode.setPerms(perms.stream().map(ZKAcl::new).collect(Collectors.toList()));
     }
 
     @Override
@@ -60,23 +58,23 @@ public class ZKTreeModel extends AbstractTreeModel {
 
     @Override
     public int getChildCount(Object parent) {
-        ZKNode zooNode = (ZKNode) parent;
-        if (zooNode.getStat() == null) {
-            fillNode(zooNode);
+        ZKNode zkNode = (ZKNode) parent;
+        if (zkNode.getStat() == null) {
+            fillNode(zkNode);
         }
-        if (!zooNode.isLeaf() && !paths.isEmpty()) {
-            return getChildren(zooNode).size();
+        if (!zkNode.isLeaf() && !paths.isEmpty()) {
+            return getChildren(zkNode).size();
         }
-        return zooNode.getChildrenCount();
+        return zkNode.getChildrenCount();
     }
 
     @Override
     public boolean isLeaf(Object node) {
-        ZKNode zooNode = (ZKNode) node;
-        if (zooNode.getStat() == null) {
-            fillNode(zooNode);
+        ZKNode zkNode = (ZKNode) node;
+        if (zkNode.getStat() == null) {
+            fillNode(zkNode);
         }
-        return zooNode.isLeaf();
+        return zkNode.isLeaf();
     }
 
     @Override
@@ -85,20 +83,20 @@ public class ZKTreeModel extends AbstractTreeModel {
         return IntStream.range(0, children.size()).filter(i -> ((ZKNode) child).getFullPath().equals(children.get(i).getFullPath())).findFirst().orElse(-1);
     }
 
-    public List<ZKNode> getChildren(ZKNode node) {
+    public List<ZKNode> getChildren(ZKNode zkNode) {
         List<ZKNode> children = new ArrayList<>();
-        if (node.getStat() == null) {
-            fillNode(node);
+        if (zkNode.getStat() == null) {
+            fillNode(zkNode);
         }
 
-        if (node.isLeaf()) {
+        if (zkNode.isLeaf()) {
             return children;
         }
 
-        List<String> childPaths = zkClient.getChildren(node.getFullPath());
+        List<String> childPaths = zkClient.getChildren(zkNode.getFullPath());
         childPaths.sort(String::compareTo);
         for (String childPath : childPaths) {
-            ZKNode childNode = new ZKNode(node.getFullPath(), childPath);
+            ZKNode childNode = new ZKNode(zkNode.getFullPath(), childPath);
             if (isWhiteListPath(childNode.getFullPath())) {
                 children.add(childNode);
             }
