@@ -6,9 +6,17 @@
 
 ## [2022.3.4]
 
+### Changed
+
+- Adjust acl table column width
+- Double click acl table row copy id
+- Associate form when click acl item
+
 ### Fixed
 
 - Fix non ttl node focus cannot be transferred.
+- Fix NPE when node not selected.
+- Fix expand tree when node not have read permission.
 
 ## [2022.3.3]
 
