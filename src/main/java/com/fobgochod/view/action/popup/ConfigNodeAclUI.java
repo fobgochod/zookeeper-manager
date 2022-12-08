@@ -4,6 +4,7 @@ import com.fobgochod.constant.AclScheme;
 import com.fobgochod.constant.ZKConstant;
 import com.fobgochod.domain.ZKAcl;
 import com.intellij.icons.AllIcons;
+import com.intellij.openapi.actionSystem.ActionToolbarPosition;
 import com.intellij.ui.ToolbarDecorator;
 import com.intellij.ui.components.JBList;
 import org.apache.zookeeper.ZooDefs;
@@ -82,6 +83,7 @@ public class ConfigNodeAclUI {
                             }
                         })
                         .setRemoveAction(anActionButton -> data.removeElement(perms.getSelectedValue()))
+                        .setToolbarPosition(ActionToolbarPosition.RIGHT)
                         .createPanel(),
                 BorderLayout.CENTER);
 

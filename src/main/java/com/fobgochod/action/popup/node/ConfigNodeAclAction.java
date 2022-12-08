@@ -3,6 +3,7 @@ package com.fobgochod.action.popup.node;
 import com.fobgochod.action.NodeSelectedAction;
 import com.fobgochod.constant.ZKTab;
 import com.fobgochod.domain.ZKNode;
+import com.fobgochod.domain.ZKTreeModel;
 import com.fobgochod.util.ZKBundle;
 import com.fobgochod.view.action.popup.ConfigNodeAclUI;
 import com.fobgochod.view.window.ZKNodeData;
@@ -30,13 +31,13 @@ public class ConfigNodeAclAction extends NodeSelectedAction {
         builder.setTitle(ZKBundle.message("action.popup.config.acl.text"));
 
         ZKNode selectionNode = toolWindow.getSelectionNode();
+        ZKTreeModel.fillAcl(selectionNode);
 
         ConfigNodeAclUI ui = new ConfigNodeAclUI(selectionNode.getPerms());
         builder.setPreferredFocusComponent(ui.getScheme());
         builder.setCenterPanel(ui.getRoot());
         builder.setOkOperation(() -> {
             zkClient.setACL(selectionNode.getFullPath(), ui.getData());
-            selectionNode.setPerms(ui.getData());
             if (toolWindow.getTab() == ZKTab.ACL) {
                 ZKNodeData.getInstance(event.getProject()).showTabAcl(selectionNode);
             } else {
