@@ -1,6 +1,7 @@
 package com.fobgochod;
 
 import com.fobgochod.constant.ZKCli;
+import com.fobgochod.constant.ZKConstant;
 import com.fobgochod.setting.ZKConfigState;
 import com.fobgochod.util.NoticeUtil;
 import com.fobgochod.view.vfs.ZKNodeFile;
@@ -43,7 +44,7 @@ public class ZKClient implements Disposable {
 
     public boolean initZookeeper() {
         ZKConfigState config = ZKConfigState.getInstance();
-        return initZookeeper(config.getZkUrl(), config.getBlockUntilConnected(), config.isSaslClientEnabled());
+        return initZookeeper(config.connectString(), config.getBlockUntilConnected(), config.isSaslClientEnabled());
     }
 
     public boolean initZookeeper(String connectString, int maxWaitTime, boolean saslClientEnabled) {
@@ -157,9 +158,7 @@ public class ZKClient implements Disposable {
 
     public Stat checkExists(String path) {
         try {
-            Stat stat = curator.checkExists().forPath(path);
-            NoticeUtil.debug(ZKCli.getLog(ZKCli.stat, path));
-            return stat;
+            return curator.checkExists().forPath(path);
         } catch (Exception e) {
             NoticeUtil.error(ZKCli.getLog(ZKCli.stat, path), e.getMessage());
         }
@@ -170,20 +169,27 @@ public class ZKClient implements Disposable {
         try {
             byte[] data = curator.getData().forPath(path);
             NoticeUtil.debug(ZKCli.getLog(ZKCli.get, path));
-            return data;
+            if (data != null) {
+                // 通过cli执行create /hello  返回数据未null
+                return data;
+            }
         } catch (Exception e) {
             NoticeUtil.error(ZKCli.getLog(ZKCli.get, path), e.getMessage());
         }
-        return null;
+        return ZKConstant.EMPTY_BYTE;
     }
 
     public byte[] storingStatIn(String path, Stat stat) {
         try {
-            return curator.getData().storingStatIn(stat).forPath(path);
+            byte[] data = curator.getData().storingStatIn(stat).forPath(path);
+            if (data != null) {
+                // 通过cli执行create /hello  返回数据未null
+                return data;
+            }
         } catch (Exception e) {
             NoticeUtil.error(ZKCli.getLog(ZKCli.get_s, path), e.getMessage());
         }
-        return null;
+        return ZKConstant.EMPTY_BYTE;
     }
 
     public void setData(String path, byte[] data) {

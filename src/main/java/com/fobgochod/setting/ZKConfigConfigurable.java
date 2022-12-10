@@ -45,7 +45,7 @@ public class ZKConfigConfigurable implements Configurable {
         String name = component.getName().getText().trim();
         String host = component.getHost().getText().trim();
         int port = Integer.parseInt(component.getPort().getText().trim());
-        String paths = component.getPaths().getText().trim();
+        String path = component.getPath().getText().trim();
         int blockUntilConnected = Integer.parseInt(component.getBlockUntilConnected().getText().trim());
         boolean saslClientEnabled = component.getSaslClientEnabled().isSelected();
         String username = component.getUsername().getText();
@@ -54,7 +54,7 @@ public class ZKConfigConfigurable implements Configurable {
         return !(name.equals(config.getName())
                 && host.equals(config.getHost())
                 && port == config.getPort()
-                && paths.equals(config.getHost())
+                && path.equals(config.getPath())
                 && blockUntilConnected == config.getBlockUntilConnected()
                 && saslClientEnabled == config.isSaslClientEnabled()
                 && username.equals(config.getUsername())
@@ -68,7 +68,7 @@ public class ZKConfigConfigurable implements Configurable {
         config.setName(component.getName().getText().trim());
         config.setHost(component.getHost().getText().trim());
         config.setPort(Integer.parseInt(component.getPort().getText().trim()));
-        config.setPaths(component.getPaths().getText());
+        config.setPath(component.getPath().getText());
         config.setBlockUntilConnected(Integer.parseInt(component.getBlockUntilConnected().getText()));
         config.setSaslClientEnabled(component.getSaslClientEnabled().isSelected());
         config.setUsername(component.getUsername().getText());
@@ -85,7 +85,7 @@ public class ZKConfigConfigurable implements Configurable {
         component.getName().setText(config.getName());
         component.getHost().setText(config.getHost());
         component.getPort().setText(String.valueOf(config.getPort()));
-        component.getPaths().setText(config.getPaths());
+        component.getPath().setText(config.getPath());
         component.getBlockUntilConnected().setText(String.valueOf(config.getBlockUntilConnected()));
         component.getSaslClientEnabled().setSelected(config.isSaslClientEnabled());
         component.getUsername().setText(config.getUsername());

@@ -34,9 +34,13 @@ public class CreateNodeAction extends NodeSelectedAction {
         builder.setPreferredFocusComponent(ui.getNodePath());
         builder.setCenterPanel(ui.getRoot());
         builder.setOkOperation(() -> {
+            if (ui.getError() != null) {
+                builder.setErrorText(ui.getError());
+                return;
+            }
+
             String nodePath = ui.getNodePath().getText();
             if (StringUtil.isNotEmpty(nodePath)) {
-
                 ZKNode selectionNode = toolWindow.getSelectionNode();
                 String fullPath = StringUtil.rebuild(selectionNode.getFullPath(), nodePath);
                 if (ui.getNodeMode().isTTL()) {

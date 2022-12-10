@@ -1,6 +1,7 @@
 package com.fobgochod.view.action.popup;
 
 import com.fobgochod.constant.ZKConstant;
+import com.fobgochod.util.StringUtil;
 import com.fobgochod.util.ZKBundle;
 import com.fobgochod.view.editor.ZKFileTypePanel;
 import com.fobgochod.view.editor.ZKNodeEditor;
@@ -51,19 +52,6 @@ public class CreateNodeUI {
             nodeTtl.setEditable(item.isTTL());
         });
 
-        // 控制非数字，无法转移焦点
-        nodeTtl.setInputVerifier(new InputVerifier() {
-            @Override
-            public boolean verify(JComponent input) {
-                return isNumber();
-            }
-
-            @Override
-            public boolean shouldYieldFocus(JComponent source, JComponent target) {
-                return isNumber();
-            }
-        });
-
         // 非数字弹出提示
         new ComponentValidator(project).withValidator(() -> {
             if (isNumber()) {
@@ -108,5 +96,18 @@ public class CreateNodeUI {
     public long getTTL() {
         String text = nodeTtl.getText();
         return Long.parseLong(text);
+    }
+
+    public String getError() {
+        if (StringUtil.isEmpty(nodePath.getText())) {
+            return ZKBundle.message("please.enter.a.path");
+        }
+        CreateMode selectedItem = (CreateMode) nodeMode.getSelectedItem();
+        if (selectedItem != null && selectedItem.isTTL()) {
+            if (!isNumber()) {
+                return ZKBundle.message("please.enter.a.number");
+            }
+        }
+        return null;
     }
 }

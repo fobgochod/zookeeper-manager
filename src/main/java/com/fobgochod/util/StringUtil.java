@@ -23,8 +23,8 @@ public class StringUtil {
     }
 
     /**
-     * 截取字符串结尾指定的字符
-     * /hello/world/ => /hello/world
+     * 截取字符串开头和结尾指定的字符(/)
+     * /hello/world/ => hello/world
      */
     public static String trim(String str) {
         if (str.startsWith(ZKConstant.SLASH)) {
@@ -34,6 +34,19 @@ public class StringUtil {
             str = str.substring(0, str.length() - 1);
         }
         return str;
+    }
+
+    /**
+     * 返回path  去掉、补上多余 /
+     * / => ""
+     * /hello => /hello
+     * /hello/world/ = > /hello/world
+     */
+    public static String getPath(String str) {
+        if (isEmpty(str) || ZKConstant.SLASH.equals(str)) {
+            return ZKConstant.EMPTY;
+        }
+        return rebuild(str, ZKConstant.EMPTY);
     }
 
     public static String trimLeft(String str) {

@@ -4,6 +4,7 @@ import com.fobgochod.constant.AclScheme;
 import com.fobgochod.constant.ZKConstant;
 import com.fobgochod.domain.ZKAcl;
 import com.intellij.icons.AllIcons;
+import com.intellij.openapi.actionSystem.ActionToolbarPosition;
 import com.intellij.ui.ToolbarDecorator;
 import com.intellij.ui.components.JBList;
 import org.apache.zookeeper.ZooDefs;
@@ -82,8 +83,23 @@ public class ConfigNodeAclUI {
                             }
                         })
                         .setRemoveAction(anActionButton -> data.removeElement(perms.getSelectedValue()))
+                        .setToolbarPosition(ActionToolbarPosition.RIGHT)
                         .createPanel(),
                 BorderLayout.CENTER);
+
+        perms.addListSelectionListener(e -> {
+            ACL source = perms.getSelectedValue();
+            if (source != null) {
+                schemeBox.setSelectedItem(AclScheme.valueOf(source.getId().getScheme()));
+                idField.setText(source.getId().getId());
+
+                createBox.setSelected((source.getPerms() & ZooDefs.Perms.CREATE) != 0);
+                deleteBox.setSelected((source.getPerms() & ZooDefs.Perms.DELETE) != 0);
+                writeBox.setSelected((source.getPerms() & ZooDefs.Perms.WRITE) != 0);
+                readBox.setSelected((source.getPerms() & ZooDefs.Perms.READ) != 0);
+                adminBox.setSelected((source.getPerms() & ZooDefs.Perms.ADMIN) != 0);
+            }
+        });
     }
 
     private ACL newAcl() {
