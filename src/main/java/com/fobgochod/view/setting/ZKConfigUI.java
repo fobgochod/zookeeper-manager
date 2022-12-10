@@ -22,7 +22,7 @@ public class ZKConfigUI {
     private JTextField name;
     private JTextField host;
     private JTextField port;
-    private JTextField paths;
+    private JTextField path;
     private JTextField blockUntilConnected;
     private JButton testConnectionButton;
     private JCheckBox saslClientEnabled;
@@ -33,7 +33,7 @@ public class ZKConfigUI {
         testConnectionButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                String connectString = ZKConfigState.zkUrl(host.getText(), Integer.parseInt(port.getText()));
+                String connectString = ZKConfigState.connectString(host.getText(), Integer.parseInt(port.getText()), path.getText());
                 boolean zookeeper = ZKClient.getInstance().initZookeeper(connectString, Integer.parseInt(blockUntilConnected.getText()), saslClientEnabled.isSelected());
                 if (zookeeper) {
                     String title = "Connection to " + host.getText();
@@ -69,8 +69,8 @@ public class ZKConfigUI {
         return port;
     }
 
-    public JTextField getPaths() {
-        return paths;
+    public JTextField getPath() {
+        return path;
     }
 
     public JTextField getBlockUntilConnected() {

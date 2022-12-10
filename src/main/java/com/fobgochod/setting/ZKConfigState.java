@@ -1,5 +1,6 @@
 package com.fobgochod.setting;
 
+import com.fobgochod.constant.ZKConstant;
 import com.fobgochod.util.StringUtil;
 import com.intellij.credentialStore.CredentialAttributes;
 import com.intellij.credentialStore.CredentialAttributesKt;
@@ -30,7 +31,7 @@ public class ZKConfigState implements PersistentStateComponent<ZKConfigState> {
     private String name;
     private String host = "127.0.0.1";
     private int port = 2181;
-    private String paths;
+    private String path;
     private int blockUntilConnected = 6 * 1000;
     private boolean saslClientEnabled;
     private String username;
@@ -40,14 +41,31 @@ public class ZKConfigState implements PersistentStateComponent<ZKConfigState> {
         return ApplicationManager.getApplication().getService(ZKConfigState.class);
     }
 
-    public static String zkUrl(String host, int port) {
+    /**
+     * example1:
+     * input:  host=192.168.10.10:2181  port=
+     * output: 192.168.10.10:2181
+     * <p>
+     * example2:
+     * input:  host=192.168.10.10,192.168.10.11,192.168.10.10  port=2181
+     * output: 192.168.10.10:2181,192.168.10.11:2181,192.168.10.12:2181
+     * <p>
+     * example3:
+     * input:  host=192.168.10.10  port=2181
+     * output: 192.168.10.10:2181
+     *
+     * @return connectString
+     */
+    public static String connectString(String host, int port, String path) {
+        String address;
         if (host.contains(":")) {
-            return host;
+            address = host;
         } else if (host.contains(",")) {
-            return host.replaceAll("[\\s,]+", ":" + port + ",");
+            address = host.replaceAll("[\\s,]+", ":" + port + ",");
         } else {
-            return host + ":" + port;
+            address = host + ":" + port;
         }
+        return address  + StringUtil.getPath(path);
     }
 
     public static CredentialAttributes credentialAttributes() {
@@ -88,12 +106,12 @@ public class ZKConfigState implements PersistentStateComponent<ZKConfigState> {
         this.port = port;
     }
 
-    public String getPaths() {
-        return paths;
+    public String getPath() {
+        return path;
     }
 
-    public void setPaths(String paths) {
-        this.paths = paths;
+    public void setPath(String path) {
+        this.path = path;
     }
 
     public int getBlockUntilConnected() {
@@ -124,18 +142,24 @@ public class ZKConfigState implements PersistentStateComponent<ZKConfigState> {
         return PasswordSafe.getInstance().getPassword(credentialAttributes());
     }
 
-    public String getZkUrl() {
-        return zkUrl(host, port);
+    public String connectString() {
+        return connectString(host, port, path);
     }
 
+    /**
+     * 根据连接字符串获取一个name
+     * <p>
+     * input:  192.168.10.10:2181,192.168.10.11:2181,192.168.10.12:2181/hello
+     * output: 192.168.10.10:2181/hello
+     */
     public String getTitle() {
         if (StringUtil.isNotEmpty(name)) {
             return name;
         }
-        String zkUrl = getZkUrl();
-        if (zkUrl.contains(",")) {
-            return zkUrl.substring(0, zkUrl.indexOf(","));
+        String connectString = connectString();
+        if (connectString.contains(",")) {
+            return connectString.substring(0, connectString.indexOf(",")) + connectString.substring(connectString.indexOf(ZKConstant.SLASH));
         }
-        return zkUrl;
+        return connectString;
     }
 }

@@ -4,6 +4,7 @@ import com.fobgochod.action.ClientConnectedAction;
 import com.fobgochod.util.NoticeUtil;
 import com.fobgochod.util.ZKBundle;
 import com.fobgochod.view.action.navigator.AclSchemeUI;
+import com.fobgochod.view.window.ZKToolWindow;
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.ui.DialogBuilder;
@@ -46,6 +47,9 @@ public class AclSchemeAction extends ClientConnectedAction {
         builder.setOkOperation(() -> {
             zkClient.addAuthInfo(aclScheme.getScheme(), aclScheme.getAuth());
             NoticeUtil.info("add a authorized user [" + aclScheme.getUsername() + "]  success!");
+
+            toolWindow.initTree();
+
             builder.getDialogWrapper().close(DialogWrapper.OK_EXIT_CODE);
         });
         builder.showModal(true);

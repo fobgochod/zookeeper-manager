@@ -67,7 +67,6 @@ public class NoticeUtil {
 
     public static void error(String command, String message) {
         render(command + " - " + message, ZKStyle.ERROR);
-        toolWindow.showTab(ZKTab.Log.ordinal());
     }
 
     public static void render(String content, ZKStyle style) {

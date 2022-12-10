@@ -31,14 +31,16 @@ import com.intellij.ui.tabs.TabsListener;
 import com.intellij.ui.tabs.impl.JBTabsImpl;
 import com.intellij.ui.treeStructure.Tree;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class ZKToolWindow extends SimpleToolWindowPanel {
 
@@ -159,9 +161,9 @@ public class ZKToolWindow extends SimpleToolWindowPanel {
         return (ZKNode) treePath.getLastPathComponent();
     }
 
-    public void selectionNodeChanged(@Nullable ZKNode selectionNode) {
-        this.zkFileTypePanel.setSelectionNode(selectionNode);
-        ZKNodeData.getInstance(project).showZNode(selectionNode);
+    public void selectionNodeChanged() {
+        this.zkFileTypePanel.setSelectionNode(this.getSelectionNode());
+        this.flushTabData();
     }
 
     public String getData() {
@@ -179,6 +181,12 @@ public class ZKToolWindow extends SimpleToolWindowPanel {
 
     public void setAcl(TableModel statModel) {
         aclTable.setModel(statModel);
+        if (statModel.getColumnCount() == 3) {
+            aclTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+            aclTable.getColumnModel().getColumn(0).setPreferredWidth(80);
+            aclTable.getColumnModel().getColumn(1).setPreferredWidth(220);
+            aclTable.getColumnModel().getColumn(2).setPreferredWidth(100);
+        }
         aclTable.updateUI();
     }
 
@@ -307,14 +315,7 @@ public class ZKToolWindow extends SimpleToolWindowPanel {
         tabs.addListener(new TabsListener() {
             @Override
             public void selectionChanged(TabInfo oldSelection, TabInfo newSelection) {
-                String selectedTab = newSelection.getText();
-                ZKNode selectionNode = getSelectionNode();
-                if (selectionNode != null) {
-                    if (ZKTab.Stat.key().equals(selectedTab) || ZKTab.ACL.key().equals(selectedTab)) {
-                        ZKTreeModel.fillNode(selectionNode);
-                        ZKNodeData.getInstance(project).showZNode(selectionNode);
-                    }
-                }
+                flushTabData();
             }
 
             @Override
@@ -322,5 +323,40 @@ public class ZKToolWindow extends SimpleToolWindowPanel {
                 zkFileTypePanel.setVisible(dataTab.getText().equalsIgnoreCase(newSelection.getText()));
             }
         });
+
+        aclTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent event) {
+                if (event.getClickCount() == 2 && event.getButton() == MouseEvent.BUTTON1) {
+                    int selectedRow = aclTable.getSelectedRow();
+                    NoticeUtil.clipboard(aclTable.getValueAt(selectedRow, 1) + "");
+                }
+            }
+        });
+    }
+
+
+    private void flushTabData() {
+        TabInfo selectedInfo = tabs.getSelectedInfo();
+        if (selectedInfo == null) {
+            this.showTab(ZKTab.Data.ordinal());
+        }
+
+        ZKNode selectionNode = this.getSelectionNode();
+        if (selectionNode == null) {
+            setData(ZKConstant.EMPTY);
+            setStat(new DefaultTableModel());
+            setAcl(new DefaultTableModel());
+            return;
+        }
+
+        String tabName = tabs.getSelectedInfo().getText();
+        if (ZKTab.Data.key().equals(tabName)) {
+            ZKNodeData.getInstance(project).showTabData(selectionNode);
+        } else if (ZKTab.Stat.key().equals(tabName)) {
+            ZKNodeData.getInstance(project).showTabStat(selectionNode);
+        } else if (ZKTab.ACL.key().equals(tabName)) {
+            ZKNodeData.getInstance(project).showTabAcl(selectionNode);
+        }
     }
 }
