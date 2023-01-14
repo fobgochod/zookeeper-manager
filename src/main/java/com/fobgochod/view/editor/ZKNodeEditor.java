@@ -1,5 +1,6 @@
 package com.fobgochod.view.editor;
 
+import com.fobgochod.util.NoticeUtil;
 import com.fobgochod.util.ZKBundle;
 import com.intellij.ide.highlighter.HtmlFileType;
 import com.intellij.ide.highlighter.XmlFileType;
@@ -56,7 +57,7 @@ public class ZKNodeEditor extends EditorTextField {
         super(null, project, fileType, false, false);
     }
 
-    public static void setupTextFieldEditor(@NotNull EditorEx editor) {
+    public static void setupCustomTextFieldEditor(@NotNull EditorEx editor) {
         EditorSettings settings = editor.getSettings();
         settings.setFoldingOutlineShown(true);
         settings.setLineNumbersShown(true);
@@ -79,7 +80,7 @@ public class ZKNodeEditor extends EditorTextField {
                         }
                 );
             } catch (Exception e) {
-                e.printStackTrace();
+                NoticeUtil.error(e.getMessage());
             }
         }
     }
@@ -105,7 +106,7 @@ public class ZKNodeEditor extends EditorTextField {
     protected EditorEx createEditor() {
         EditorEx editor = super.createEditor();
         initOneLineModePre(editor);
-        setupTextFieldEditor(editor);
+        setupCustomTextFieldEditor(editor);
         return editor;
     }
 

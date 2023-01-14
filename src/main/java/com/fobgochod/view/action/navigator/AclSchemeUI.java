@@ -4,7 +4,6 @@ import com.fobgochod.constant.AclScheme;
 import com.fobgochod.constant.ZKConstant;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class AclSchemeUI {
 
@@ -27,7 +26,11 @@ public class AclSchemeUI {
     }
 
     public String getScheme() {
-        return schemeBox.getSelectedItem().toString();
+        Object selectedItem = schemeBox.getSelectedItem();
+        if (selectedItem == null) {
+            throw new RuntimeException("please select at least a scheme.");
+        }
+        return selectedItem.toString();
     }
 
     public String getAuth() {

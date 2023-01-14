@@ -22,6 +22,10 @@ public class DeactivateTreeAction extends ClientConnectedAction {
     }
 
     public void actionPerformed(@NotNull AnActionEvent event) {
+        if (event.getProject() == null) {
+            return;
+        }
+
         ZKClient.getInstance().close();
         ZKToolWindow.getInstance(event.getProject()).closeTree();
     }

@@ -27,6 +27,10 @@ public class CreateNodeAction extends NodeSelectedAction {
     }
 
     public void actionPerformed(@NotNull AnActionEvent event) {
+        if (event.getProject() == null) {
+            return;
+        }
+
         final DialogBuilder builder = new DialogBuilder();
         builder.setTitle(ZKBundle.message("action.popup.create.node.text"));
 

@@ -78,7 +78,7 @@ public class ConfigNodeAclUI {
                 ToolbarDecorator.createDecorator(perms)
                         .setAddAction(anActionButton -> {
                             ACL acl = newAcl();
-                            if (!data.contains(acl)) {
+                            if (acl != null && !data.contains(acl)) {
                                 data.addElement(acl);
                             }
                         })
@@ -103,13 +103,17 @@ public class ConfigNodeAclUI {
     }
 
     private ACL newAcl() {
-        AclScheme schema = (AclScheme) schemeBox.getSelectedItem();
+        Object selectedItem = schemeBox.getSelectedItem();
+        if (selectedItem == null) {
+            return null;
+        }
+        AclScheme schema = (AclScheme) selectedItem;
         String id = idField.getText();
         int perms = (createBox.isSelected() ? ZooDefs.Perms.CREATE : 0)
-                | (deleteBox.isSelected() ? ZooDefs.Perms.DELETE : 0)
-                | (writeBox.isSelected() ? ZooDefs.Perms.WRITE : 0)
-                | (readBox.isSelected() ? ZooDefs.Perms.READ : 0)
-                | (adminBox.isSelected() ? ZooDefs.Perms.ADMIN : 0);
+                    | (deleteBox.isSelected() ? ZooDefs.Perms.DELETE : 0)
+                    | (writeBox.isSelected() ? ZooDefs.Perms.WRITE : 0)
+                    | (readBox.isSelected() ? ZooDefs.Perms.READ : 0)
+                    | (adminBox.isSelected() ? ZooDefs.Perms.ADMIN : 0);
 
         return new ZKAcl(perms, new Id(schema.key(), id));
     }

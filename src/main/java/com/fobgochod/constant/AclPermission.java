@@ -38,7 +38,7 @@ public enum AclPermission {
 
     public interface Perms {
 
-        int READ = 1 << 0;
+        int READ = 1;
 
         int WRITE = 1 << 1;
 

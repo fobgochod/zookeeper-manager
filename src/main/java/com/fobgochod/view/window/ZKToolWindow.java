@@ -329,7 +329,7 @@ public class ZKToolWindow extends SimpleToolWindowPanel {
             public void mouseClicked(MouseEvent event) {
                 if (event.getClickCount() == 2 && event.getButton() == MouseEvent.BUTTON1) {
                     int selectedRow = aclTable.getSelectedRow();
-                    NoticeUtil.clipboard(aclTable.getValueAt(selectedRow, 1) + "");
+                    NoticeUtil.clipboard(String.valueOf(aclTable.getValueAt(selectedRow, 1)));
                 }
             }
         });

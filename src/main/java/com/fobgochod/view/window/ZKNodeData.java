@@ -18,6 +18,7 @@ import java.util.Vector;
 
 public class ZKNodeData {
 
+    private static final Object lock = new Object();
     private static volatile ZKNodeData instance;
     private final ZKToolWindow toolWindow;
 
@@ -27,7 +28,7 @@ public class ZKNodeData {
 
     public static ZKNodeData getInstance(@NotNull Project project) {
         if (instance == null) {
-            synchronized (ZKNodeData.class) {
+            synchronized (lock) {
                 if (instance == null) {
                     instance = new ZKNodeData(project);
                 }

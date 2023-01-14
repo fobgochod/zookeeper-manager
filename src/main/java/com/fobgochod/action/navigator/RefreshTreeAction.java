@@ -27,6 +27,10 @@ public class RefreshTreeAction extends AnAction {
     }
 
     public void actionPerformed(@NotNull AnActionEvent event) {
+        if (event.getProject() == null) {
+            return;
+        }
+
         ZKConfigState config = ZKConfigState.getInstance();
         boolean reloadSuccess = ZKClient.getInstance().initZookeeper();
         if (reloadSuccess) {
