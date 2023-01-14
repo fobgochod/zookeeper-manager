@@ -1,5 +1,9 @@
-IntelliJ IDEA ZooKeeper Plugin
-=======================================
+# IntelliJ IDEA ZooKeeper Plugin
+
+[![Build](https://github.com/fobgochod/zookeeper-manager/workflows/Build/badge.svg)](https://github.com/fobgochod/zookeeper-manager/actions?query=workflow%3ABuild)
+[![Version](https://img.shields.io/jetbrains/plugin/v/20317.svg)](https://plugins.jetbrains.com/plugin/20317)
+[![Downloads](https://img.shields.io/jetbrains/plugin/d/20317.svg)](https://plugins.jetbrains.com/plugin/20317)
+
 
 <!-- Plugin description -->
 
@@ -49,20 +53,18 @@ Plugin based on the [IntelliJ Platform Plugin Template][template].
 
 [template]: https://github.com/JetBrains/intellij-platform-plugin-template
 
-## Other
+## Reference
 
 - Zookeeper source material
     - https://svn.apache.org/repos/asf/zookeeper/logo
 - Zookeeper SVG:
     - https://github.com/cncf/landscape/issues/396
     - https://github.com/cncf/landscape/issues/271
+- Platform UI Guidelines:
+    - [Icons list](https://jetbrains.design/intellij/resources/icons_list)
+    - [Icons](https://jetbrains.design/intellij/principles/icons)
 
-### Platform UI Guidelines:
-
-- [Icons list](https://jetbrains.design/intellij/resources/icons_list)
-- [Icons](https://jetbrains.design/intellij/principles/icons)
-
-### icon settings
+## IntelliJ Icon Generator
 
 - [IntelliJ Icon Generator](https://bjansen.github.io/intellij-icon-generator)
 
@@ -82,4 +84,3 @@ Plugin based on the [IntelliJ Platform Plugin Template][template].
 | X.offset       | 35         | 35        | 35                    | 35                   | 35        | 35                  | 35                             |
 | Y.offset       | 25         | 25        | 45                    | 45                   | 25        | 25                  | 45                             |
 | Scale          | 77         | 77        | 60                    | 60                   | 77        | 77                  | 60                             |
-
