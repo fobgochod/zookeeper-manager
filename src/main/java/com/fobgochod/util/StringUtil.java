@@ -2,6 +2,7 @@ package com.fobgochod.util;
 
 import com.fobgochod.constant.ZKConstant;
 
+import javax.swing.*;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
@@ -82,5 +83,13 @@ public class StringUtil {
         String full = first + ZKConstant.SLASH + second;
         String[] array = full.split(ZKConstant.SLASH);
         return ZKConstant.SLASH + Arrays.stream(array).filter(p -> !"".equals(p)).collect(Collectors.joining(ZKConstant.SLASH));
+    }
+
+    public static void main(String[] args) {
+        String s = "fit - sdsahdksadksadksahd";
+        String s1 = s.split("-")[0];
+        String trim = s1.trim();
+
+
     }
 }
