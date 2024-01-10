@@ -4,6 +4,10 @@
 
 ## [Unreleased]
 
+### Fixed
+
+- Fix chinese disorderly code
+
 ## [2022.3.4]
 
 ### Changed
