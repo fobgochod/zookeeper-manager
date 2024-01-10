@@ -11,6 +11,7 @@ import org.apache.zookeeper.data.Stat;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.table.DefaultTableModel;
+import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
@@ -49,7 +50,7 @@ public class ZKNodeData {
 
     public void showTabData(ZKNode node) {
         ZKTreeModel.fillData(node);
-        toolWindow.setData(new String(node.getData()));
+        toolWindow.setData(new String(node.getData(), StandardCharsets.UTF_8));
     }
 
     public void showTabStat(ZKNode node) {
