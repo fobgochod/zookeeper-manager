@@ -4,6 +4,7 @@ import com.fobgochod.constant.AclPermission;
 import com.fobgochod.constant.StatStructure;
 import com.fobgochod.domain.ZKNode;
 import com.fobgochod.domain.ZKTreeModel;
+import com.fobgochod.util.StringUtil;
 import com.intellij.openapi.project.Project;
 import org.apache.zookeeper.ZooDefs;
 import org.apache.zookeeper.data.ACL;
@@ -11,7 +12,6 @@ import org.apache.zookeeper.data.Stat;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.table.DefaultTableModel;
-import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
@@ -50,7 +50,7 @@ public class ZKNodeData {
 
     public void showTabData(ZKNode node) {
         ZKTreeModel.fillData(node);
-        toolWindow.setData(new String(node.getData(), StandardCharsets.UTF_8));
+        toolWindow.setData(new String(node.getData(), StringUtil.charset()));
     }
 
     public void showTabStat(ZKNode node) {

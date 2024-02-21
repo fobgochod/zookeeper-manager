@@ -1,7 +1,10 @@
 package com.fobgochod.util;
 
 import com.fobgochod.constant.ZKConstant;
+import com.fobgochod.settings.ZKSettings;
 
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
@@ -82,5 +85,17 @@ public class StringUtil {
         String full = first + ZKConstant.SLASH + second;
         String[] array = full.split(ZKConstant.SLASH);
         return ZKConstant.SLASH + Arrays.stream(array).filter(p -> !p.isEmpty()).collect(Collectors.joining(ZKConstant.SLASH));
+    }
+
+    public static Charset charset() {
+        return charset(ZKSettings.getInstance().getCharset());
+    }
+
+    public static Charset charset(String charsetName) {
+        try {
+            return Charset.forName(charsetName);
+        } catch (Exception ignored) {
+        }
+        return StandardCharsets.UTF_8;
     }
 }

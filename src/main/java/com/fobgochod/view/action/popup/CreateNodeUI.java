@@ -90,7 +90,7 @@ public class CreateNodeUI {
     }
 
     public byte[] getNodeData() {
-        return nodeData.getText().getBytes();
+        return nodeData.getText().getBytes(StringUtil.charset());
     }
 
     public long getTTL() {
