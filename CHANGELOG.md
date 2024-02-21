@@ -4,6 +4,14 @@
 
 ## [Unreleased]
 
+### Added
+
+- Add charset settings
+
+### Changed
+
+- Use kotlin refactor settings
+
 ## [2022.3.5] - 2024-01-10
 
 ### Fixed
