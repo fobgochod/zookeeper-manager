@@ -2,9 +2,7 @@ package com.fobgochod.action.navigator;
 
 import com.fobgochod.ZKClient;
 import com.fobgochod.constant.AclScheme;
-import com.fobgochod.domain.ZKNode;
-import com.fobgochod.domain.ZKTreeModel;
-import com.fobgochod.setting.ZKConfigState;
+import com.fobgochod.settings.ZKSettings;
 import com.fobgochod.util.StringUtil;
 import com.fobgochod.util.ZKBundle;
 import com.fobgochod.view.window.ZKToolWindow;
@@ -31,11 +29,11 @@ public class RefreshTreeAction extends AnAction {
             return;
         }
 
-        ZKConfigState config = ZKConfigState.getInstance();
+        ZKSettings state = ZKSettings.getInstance();
         boolean reloadSuccess = ZKClient.getInstance().initZookeeper();
         if (reloadSuccess) {
-            if (StringUtil.isNotEmpty(config.getUsername())) {
-                ZKClient.getInstance().addAuthInfo(AclScheme.digest.name(), config.getUsername() + ":" + config.getPassword());
+            if (StringUtil.isNotEmpty(state.getUsername())) {
+                ZKClient.getInstance().addAuthInfo(AclScheme.digest.name(), state.getUsername() + ":" + state.getPassword());
             }
             ZKToolWindow.getInstance(event.getProject()).initTree();
         }

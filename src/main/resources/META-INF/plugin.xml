@@ -13,11 +13,12 @@
                     doNotActivateOnStart="true" icon="/icons/logo.svg"/>
 
         <applicationConfigurable parentId="tools"
-                                 id="com.fobgochod.setting.ZKConfigConfigurable"
-                                 instance="com.fobgochod.setting.ZKConfigConfigurable"
+                                 id="zookeeper.manager"
+                                 instance="com.fobgochod.settings.ZKSettingsConfigurable"
                                  bundle="i18n.messages"
                                  key="setting.configurable.displayName"/>
-        <applicationService serviceImplementation="com.fobgochod.setting.ZKConfigState"/>
+        <applicationService serviceImplementation="com.fobgochod.settings.ZKSettings"/>
+
         <projectService serviceImplementation="com.fobgochod.view.window.ZKToolWindow"/>
 
         <applicationService serviceImplementation="com.fobgochod.ZKClient"/>

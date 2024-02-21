@@ -2,7 +2,7 @@ package com.fobgochod.domain;
 
 import com.fobgochod.ZKClient;
 import com.fobgochod.constant.ZKConstant;
-import com.fobgochod.setting.ZKConfigState;
+import com.fobgochod.settings.ZKSettings;
 import com.intellij.util.ui.tree.AbstractTreeModel;
 import org.apache.zookeeper.data.ACL;
 import org.apache.zookeeper.data.Stat;
@@ -20,9 +20,9 @@ import java.util.stream.IntStream;
  */
 public class ZKTreeModel extends AbstractTreeModel {
 
-    private static final ZKConfigState config = ZKConfigState.getInstance();
+    private static final ZKSettings state = ZKSettings.getInstance();
     private static final ZKClient zkClient = ZKClient.getInstance();
-    private final ZKNode ROOT = new ZKNode(ZKConstant.SLASH, config.getTitle(), true);
+    private final ZKNode ROOT = new ZKNode(ZKConstant.SLASH, state.getTitle(), true);
 
     public ZKTreeModel() {
     }

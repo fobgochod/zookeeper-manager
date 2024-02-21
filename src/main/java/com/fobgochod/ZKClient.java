@@ -2,7 +2,7 @@ package com.fobgochod;
 
 import com.fobgochod.constant.ZKCli;
 import com.fobgochod.constant.ZKConstant;
-import com.fobgochod.setting.ZKConfigState;
+import com.fobgochod.settings.ZKSettings;
 import com.fobgochod.util.NoticeUtil;
 import com.fobgochod.view.vfs.ZKNodeFile;
 import com.intellij.notification.NotificationType;
@@ -43,8 +43,8 @@ public class ZKClient implements Disposable {
     }
 
     public boolean initZookeeper() {
-        ZKConfigState config = ZKConfigState.getInstance();
-        return initZookeeper(config.connectString(), config.getBlockUntilConnected(), config.isSaslClientEnabled());
+        ZKSettings state = ZKSettings.getInstance();
+        return initZookeeper(state.connectString(), state.getBlockUntilConnected(), state.getSaslClientEnabled());
     }
 
     public boolean initZookeeper(String connectString, int maxWaitTime, boolean saslClientEnabled) {
