@@ -30,7 +30,7 @@ public class RefreshTreeAction extends AnAction {
         }
 
         ZKSettings state = ZKSettings.getInstance();
-        boolean reloadSuccess = ZKClient.getInstance().initZookeeper();
+        boolean reloadSuccess = ZKClient.getInstance().init();
         if (reloadSuccess) {
             if (StringUtil.isNotEmpty(state.getUsername())) {
                 ZKClient.getInstance().addAuthInfo(AclScheme.digest.name(), state.getUsername() + ":" + state.getPassword());

@@ -42,12 +42,12 @@ public class ZKClient implements Disposable {
         }
     }
 
-    public boolean initZookeeper() {
+    public boolean init() {
         ZKSettings state = ZKSettings.getInstance();
-        return initZookeeper(state.connectString(), state.getBlockUntilConnected(), state.getSaslClientEnabled());
+        return init(state.connectString(), state.getBlockUntilConnected(), state.getSaslClientEnabled());
     }
 
-    public boolean initZookeeper(String connectString, int maxWaitTime, boolean saslClientEnabled) {
+    public boolean init(String connectString, int maxWaitTime, boolean saslClientEnabled) {
         if (isConnected() && curator.getZookeeperClient().getCurrentConnectionString().equals(connectString)) {
             return true;
         }
@@ -55,7 +55,9 @@ public class ZKClient implements Disposable {
             close();
             System.setProperty(ZKClientConfig.ENABLE_CLIENT_SASL_KEY, String.valueOf(saslClientEnabled));
             RetryPolicy retryPolicy = new ExponentialBackoffRetry(1000, 3);
-            curator = CuratorFrameworkFactory.builder().connectString(connectString).retryPolicy(retryPolicy).build();
+            curator = CuratorFrameworkFactory.builder().connectString(connectString)
+                    .retryPolicy(retryPolicy)
+                    .build();
             curator.start();
             boolean connected = curator.blockUntilConnected(maxWaitTime, TimeUnit.MILLISECONDS);
             if (connected) {

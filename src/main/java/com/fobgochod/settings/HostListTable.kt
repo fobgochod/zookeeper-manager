@@ -9,9 +9,21 @@ import java.util.*
 import javax.swing.DefaultCellEditor
 import javax.swing.table.TableCellEditor
 
-
 /**
- *  zookeeper host
+ *  multi host config
+ *
+ *  fun multiHost(): DialogPanel {
+ *     return panel {
+ *         row {
+ *             val hostList = HostListTable()
+ *             cell(hostList.component).verticalAlign(VerticalAlign.FILL)
+ *                 .onIsModified { hostList.isModified() }
+ *                 .onApply { hostList.apply() }
+ *                 .onReset { hostList.reset() }
+ *             panel { }
+ *         }
+ *     }
+ * }
  *
  * @author fobgochod
  * @date 2024/2/21 1:09

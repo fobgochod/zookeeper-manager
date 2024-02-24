@@ -6,6 +6,8 @@
 
     <depends>com.intellij.modules.platform</depends>
 
+    <resource-bundle>i18n.messages</resource-bundle>
+
     <extensions defaultExtensionNs="com.intellij">
         <toolWindow id="Zookeeper" anchor="right"
                     factoryClass="com.fobgochod.ZKToolWindowFactory"
@@ -15,8 +17,8 @@
         <applicationConfigurable parentId="tools"
                                  id="zookeeper.manager"
                                  instance="com.fobgochod.settings.ZKSettingsConfigurable"
-                                 bundle="i18n.messages"
-                                 key="setting.configurable.displayName"/>
+                                 key="configurable.display.name"
+                                 bundle="i18n.messages"/>
         <applicationService serviceImplementation="com.fobgochod.settings.ZKSettings"/>
 
         <projectService serviceImplementation="com.fobgochod.view.window.ZKToolWindow"/>
@@ -26,8 +28,8 @@
         <virtualFileSystem key="zookeeper-node"
                            implementationClass="com.fobgochod.view.vfs.ZKNodeFileSystem"/>
 
-        <notificationGroup id="Zookeeper" displayType="BALLOON" bundle="i18n.messages"
-                           key="notification.group.zookeeper"/>
+        <notificationGroup id="Zookeeper" displayType="BALLOON" key="notification.group.zookeeper"
+                           bundle="i18n.messages"/>
     </extensions>
 
     <actions>

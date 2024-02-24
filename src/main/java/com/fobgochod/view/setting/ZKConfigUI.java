@@ -34,7 +34,7 @@ public class ZKConfigUI {
             @Override
             public void mouseClicked(MouseEvent e) {
                 String connectString = ZKConfigState.connectString(host.getText(), Integer.parseInt(port.getText()), path.getText());
-                boolean zookeeper = ZKClient.getInstance().initZookeeper(connectString, Integer.parseInt(blockUntilConnected.getText()), saslClientEnabled.isSelected());
+                boolean zookeeper = ZKClient.getInstance().init(connectString, Integer.parseInt(blockUntilConnected.getText()), saslClientEnabled.isSelected());
                 if (zookeeper) {
                     String title = "Connection to " + host.getText();
                     String content = "Successfully connected!";
