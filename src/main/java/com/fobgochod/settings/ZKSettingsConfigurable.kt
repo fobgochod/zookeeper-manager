@@ -108,7 +108,7 @@ class ZKSettingsConfigurable : BoundSearchableConfigurable(
                 }
                 row(message("settings.sasl.password")) {
                     cell(JBPasswordField().columns(28).bind(PasswordProperty()))
-                }.resizableRow()
+                }
             }
         }
     }
