@@ -4,7 +4,6 @@ import com.fobgochod.action.ClientConnectedAction;
 import com.fobgochod.util.NoticeUtil;
 import com.fobgochod.util.ZKBundle;
 import com.fobgochod.view.action.navigator.AclSchemeUI;
-import com.fobgochod.view.window.ZKToolWindow;
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.ui.DialogBuilder;

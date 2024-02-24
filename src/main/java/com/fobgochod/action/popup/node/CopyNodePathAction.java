@@ -1,8 +1,8 @@
 package com.fobgochod.action.popup.node;
 
 import com.fobgochod.action.NodeSelectedAction;
-import com.fobgochod.util.NoticeUtil;
 import com.fobgochod.domain.ZKNode;
+import com.fobgochod.util.NoticeUtil;
 import com.fobgochod.util.ZKBundle;
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.actionSystem.AnActionEvent;
@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
  * copy node path
  *
  * @author fobgochod
- * @date 2022/10/15 22:21
+ * @since 1.0
  */
 public class CopyNodePathAction extends NodeSelectedAction {
 

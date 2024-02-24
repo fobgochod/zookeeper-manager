@@ -65,22 +65,16 @@ public class ZKToolWindow extends SimpleToolWindowPanel {
     /**
      * node stat
      */
-    private transient TabInfo statTab;
-    private JScrollPane statTabPane;
     private JTable statTable;
 
     /**
      * node ACL
      */
-    private transient TabInfo aclTab;
-    private JScrollPane aclTabPane;
     private JTable aclTable;
 
     /**
      * system log
      */
-    private transient TabInfo logTab;
-    private JScrollPane logTabPane;
     private JTextPane console;
 
     public ZKToolWindow(@NotNull Project project) {
@@ -241,7 +235,7 @@ public class ZKToolWindow extends SimpleToolWindowPanel {
         tabs.addTab(dataTab);
 
         // node stat
-        statTabPane = new JBScrollPane();
+        JScrollPane statTabPane = new JBScrollPane();
         statTable = new JBTable() {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -255,14 +249,14 @@ public class ZKToolWindow extends SimpleToolWindowPanel {
             }
         };
         statTabPane.setViewportView(statTable);
-        statTab = new TabInfo(statTabPane);
+        TabInfo statTab = new TabInfo(statTabPane);
         statTab.setText(ZKTab.Stat.key());
         statTab.setIcon(ZKTab.Stat.icon());
         statTab.setTooltipText(ZKTab.Stat.intro());
         tabs.addTab(statTab);
 
         // node ACL
-        aclTabPane = new JBScrollPane();
+        JScrollPane aclTabPane = new JBScrollPane();
         aclTable = new JBTable() {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -270,18 +264,18 @@ public class ZKToolWindow extends SimpleToolWindowPanel {
             }
         };
         aclTabPane.setViewportView(aclTable);
-        aclTab = new TabInfo(aclTabPane);
+        TabInfo aclTab = new TabInfo(aclTabPane);
         aclTab.setText(ZKTab.ACL.key());
         aclTab.setIcon(ZKTab.ACL.icon());
         aclTab.setTooltipText(ZKTab.ACL.intro());
         tabs.addTab(aclTab);
 
         // system log
-        logTabPane = new JBScrollPane();
+        JScrollPane logTabPane = new JBScrollPane();
         console = new JTextPane();
         CustomizationUtil.installPopupHandler(console, ZKConstant.ZOOKEEPER_LOG_POPUP, ActionPlaces.POPUP);
         logTabPane.setViewportView(console);
-        logTab = new TabInfo(logTabPane);
+        TabInfo logTab = new TabInfo(logTabPane);
         logTab.setText(ZKTab.Log.key());
         logTab.setIcon(ZKTab.Log.icon());
         logTab.setTooltipText(ZKTab.Log.intro());

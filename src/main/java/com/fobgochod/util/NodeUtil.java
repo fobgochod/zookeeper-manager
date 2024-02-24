@@ -51,23 +51,15 @@ public class NodeUtil {
      * 获取节点图标
      */
     public static Icon getIcon(CreateMode mode) {
-        switch (mode) {
-            case PERSISTENT:
-                return ZKIcons.PERSISTENT;
-            case PERSISTENT_SEQUENTIAL:
-                return ZKIcons.PERSISTENT_SEQUENTIAL;
-            case EPHEMERAL:
-                return ZKIcons.EPHEMERAL;
-            case EPHEMERAL_SEQUENTIAL:
-                return ZKIcons.EPHEMERAL_SEQUENTIAL;
-            case CONTAINER:
-                return ZKIcons.CONTAINER;
-            case PERSISTENT_WITH_TTL:
-                return ZKIcons.PERSISTENT_WITH_TTL;
-            case PERSISTENT_SEQUENTIAL_WITH_TTL:
-                return ZKIcons.PERSISTENT_SEQUENTIAL_WITH_TTL;
-        }
-        return ZKIcons.PERSISTENT;
+        return switch (mode) {
+            case PERSISTENT -> ZKIcons.PERSISTENT;
+            case PERSISTENT_SEQUENTIAL -> ZKIcons.PERSISTENT_SEQUENTIAL;
+            case EPHEMERAL -> ZKIcons.EPHEMERAL;
+            case EPHEMERAL_SEQUENTIAL -> ZKIcons.EPHEMERAL_SEQUENTIAL;
+            case CONTAINER -> ZKIcons.CONTAINER;
+            case PERSISTENT_WITH_TTL -> ZKIcons.PERSISTENT_WITH_TTL;
+            case PERSISTENT_SEQUENTIAL_WITH_TTL -> ZKIcons.PERSISTENT_SEQUENTIAL_WITH_TTL;
+        };
     }
 
 
@@ -77,8 +69,8 @@ public class NodeUtil {
      * <p>
      * addauth digest username:password
      *
-     * @param username
-     * @param password
+     * @param username authorized user username
+     * @param password authorized user password
      */
     public static String getAclId(String username, String password) {
         try {

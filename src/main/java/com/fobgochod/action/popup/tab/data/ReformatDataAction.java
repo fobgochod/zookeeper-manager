@@ -8,12 +8,11 @@ import com.intellij.icons.AllIcons;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import org.jetbrains.annotations.NotNull;
 
-
 /**
  * reformat node data
  *
  * @author fobgochod
- * @date 2022/10/31 21:37
+ * @since 1.0
  */
 public class ReformatDataAction extends AbstractNodeAction {
 

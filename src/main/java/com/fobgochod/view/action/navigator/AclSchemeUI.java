@@ -42,7 +42,7 @@ public class AclSchemeUI {
     }
 
     public String getPassword() {
-        return password.getText();
+        return new String(password.getPassword());
     }
 
     public JTable getAuthInfo() {

@@ -17,7 +17,7 @@ import org.jetbrains.annotations.NotNull;
  * ${@link org.apache.zookeeper.CreateMode}
  *
  * @author fobgochod
- * @date 2022/10/15 20:39
+ * @since 1.0
  */
 public class CreateNodeAction extends NodeSelectedAction {
 

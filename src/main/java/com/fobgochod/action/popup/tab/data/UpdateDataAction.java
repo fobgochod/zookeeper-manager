@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
  * update node data
  *
  * @author fobgochod
- * @date 2022/10/15 20:39
+ * @since 1.0
  */
 public class UpdateDataAction extends AbstractNodeAction {
 

@@ -20,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
  * modify node data
  *
  * @author fobgochod
- * @date 2022/10/15 23:22
+ * @since 1.0
  */
 public class UpdateDataInEditorAction extends EditorAction {
 

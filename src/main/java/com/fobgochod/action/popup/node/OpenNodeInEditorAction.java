@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
  * open node in editor
  *
  * @author fobgochod
- * @date 2022/10/15 22:26
+ * @since 1.0
  */
 public class OpenNodeInEditorAction extends NodeSelectedAction {
 

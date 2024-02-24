@@ -28,7 +28,7 @@ import javax.swing.border.Border;
  * data editor
  *
  * @author fobgochod
- * @date 2022/11/26 22:57
+ * @since 1.0
  */
 public class ZKNodeEditor extends EditorTextField {
 

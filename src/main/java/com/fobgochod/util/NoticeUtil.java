@@ -2,7 +2,6 @@ package com.fobgochod.util;
 
 import com.fobgochod.constant.ZKConstant;
 import com.fobgochod.constant.ZKStyle;
-import com.fobgochod.constant.ZKTab;
 import com.fobgochod.view.window.ZKToolWindow;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;

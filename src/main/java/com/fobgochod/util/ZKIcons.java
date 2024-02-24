@@ -13,7 +13,7 @@ import javax.swing.*;
  * <a href="https://bjansen.github.io/intellij-icon-generator">IntelliJ Icon Generator</a>
  *
  * @author fobgochod
- * @date 2022/10/23 22:19
+ * @since 1.0
  */
 public class ZKIcons {
 

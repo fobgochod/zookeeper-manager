@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
  * modify node data
  *
  * @author fobgochod
- * @date 2022/12/4 0:39
+ * @since 1.0
  */
 public class ModifyNodeAction extends NodeSelectedAction {
 

@@ -8,7 +8,7 @@ import org.apache.zookeeper.CreateMode;
  * <a href="https://zookeeper.apache.org/doc/current/zookeeperCLI.html">ZooKeeper CLI</a>
  *
  * @author fobgochod
- * @date 2022/10/28 0:38
+ * @since 1.0
  */
 public class ZKCli {
 

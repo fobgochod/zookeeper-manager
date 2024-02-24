@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
  * collapse all tree node
  *
  * @author fobgochod
- * @date 2022/10/23 19:36
+ * @since  1.0
  */
 public class CollapseTreeAction extends ClientConnectedAction {
 

@@ -30,9 +30,9 @@ public class ZKBundle extends AbstractBundle {
     }
 
     @Override
-    protected ResourceBundle findBundle(@NotNull @NonNls String pathToBundle,
-                                        @NotNull ClassLoader loader,
-                                        @NotNull ResourceBundle.Control control) {
+    protected @NotNull ResourceBundle findBundle(@NotNull @NonNls String pathToBundle,
+                                                 @NotNull ClassLoader loader,
+                                                 @NotNull ResourceBundle.Control control) {
         final String chineseLanguagePlugin = "com.intellij.zh";
         if (!PluginManager.isPluginInstalled(PluginId.getId(chineseLanguagePlugin))) {
             // 未安装 IDE中文语言包 插件则使用默认

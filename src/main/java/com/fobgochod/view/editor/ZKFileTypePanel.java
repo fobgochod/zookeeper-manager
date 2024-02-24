@@ -19,7 +19,6 @@ public class ZKFileTypePanel extends JPanel {
     private final transient Map<ZKNode, FileType> dataFileTypeCache = new HashMap<>();
     private final ZKNodeEditor nodeData;
     private transient ZKNode selectionNode;
-    private JLabel fileTypeLabel;
     private ComboBox<FileType> dataFileType;
 
     public ZKFileTypePanel(ZKNodeEditor nodeData) {
@@ -55,7 +54,7 @@ public class ZKFileTypePanel extends JPanel {
     }
 
     private void initView() {
-        fileTypeLabel = new JBLabel(ZKBundle.message("zookeeper.tab.data.FileType"));
+        JLabel fileTypeLabel = new JBLabel(ZKBundle.message("zookeeper.tab.data.FileType"));
         add(fileTypeLabel, BorderLayout.WEST);
 
         dataFileType = new ComboBox<>(new FileType[]{

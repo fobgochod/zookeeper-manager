@@ -19,23 +19,23 @@ import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 /**
- *  ZooKeeper node virtual file
+ * ZooKeeper node virtual file
  *
  * @author fobgochod
- * @date 2022/11/26 22:56
+ * @since 1.0
  */
 public class ZKNodeFile extends VirtualFile {
 
     protected final ZKClient zkClient = ZKClient.getInstance();
 
     private final long myTimeStamp = System.currentTimeMillis();
-    private String myPath;
-    private ZKNodeFileSystem myFS;
+    private final String myPath;
+    private final ZKNodeFileSystem myFS;
     private byte[] myContent;
 
-    private String fileName;
+    private final String fileName;
     private boolean isLeaf;
-    private Stat stat = new Stat();
+    private final Stat stat = new Stat();
     private long myModStamp = LocalTimeCounter.currentTime();
 
     public ZKNodeFile(ZKNodeFileSystem FS, String path) {

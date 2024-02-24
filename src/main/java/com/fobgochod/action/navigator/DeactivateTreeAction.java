@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
  * Deactivate ZooKeeper
  *
  * @author fobgochod
- * @date 2022/12/2 23:45
+ * @since 1.0
  */
 public class DeactivateTreeAction extends ClientConnectedAction {
 

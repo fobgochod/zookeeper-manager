@@ -16,7 +16,7 @@ import javax.swing.*;
  * delete node and children if they exist.
  *
  * @author fobgochod
- * @date 2022/10/15 22:21
+ * @since 1.0
  */
 public class DeleteNodeAction extends NodeSelectedAction {
 

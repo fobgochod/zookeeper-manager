@@ -20,6 +20,6 @@ public class EditSettingsAction extends AnAction {
     }
 
     public void actionPerformed(@NotNull AnActionEvent event) {
-        ShowSettingsUtil.getInstance().showSettingsDialog(event.getProject(), ZKBundle.message("setting.configurable.displayName"));
+        ShowSettingsUtil.getInstance().showSettingsDialog(event.getProject(), ZKBundle.message("configurable.display.name"));
     }
 }

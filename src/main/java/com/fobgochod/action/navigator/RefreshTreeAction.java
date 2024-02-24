@@ -15,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
  * Refresh ZooKeeper Tree
  *
  * @author fobgochod
- * @date 2022/10/15 22:37
+ * @since 1.0
  */
 public class RefreshTreeAction extends AnAction {
 

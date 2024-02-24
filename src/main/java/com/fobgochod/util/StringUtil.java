@@ -12,8 +12,8 @@ import java.util.stream.Collectors;
  * StringUtil.java
  *
  * @author fobgochod
- * @date 2022/10/22 12:12
  * @see com.intellij.openapi.util.text.StringUtil
+ * @since 1.0
  */
 public class StringUtil {
 

@@ -25,7 +25,6 @@ public class CreateNodeUI {
     private JTextField nodeTtl;
     private JPanel dataPanel;
     private ZKNodeEditor nodeData;
-    private ZKFileTypePanel zkFileTypePanel;
 
     public CreateNodeUI(@NotNull Project project) {
         this.project = project;
@@ -41,7 +40,7 @@ public class CreateNodeUI {
         nodeData = new ZKNodeEditor(project);
         dataPanel.add(nodeData, BorderLayout.CENTER);
 
-        zkFileTypePanel = new ZKFileTypePanel(nodeData);
+        ZKFileTypePanel zkFileTypePanel = new ZKFileTypePanel(nodeData);
         dataPanel.add(zkFileTypePanel, BorderLayout.SOUTH);
     }
 

@@ -22,7 +22,7 @@ public class ConfigNodeAclUI {
 
     private final DefaultListModel<ACL> data = new DefaultListModel<>();
     private final JList<ACL> perms = new JBList<>(data);
-    private List<? extends ACL> aclList;
+    private final List<? extends ACL> aclList;
     private JMenuItem removeMenuItem;
 
     private JPanel root;

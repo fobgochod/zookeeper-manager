@@ -14,7 +14,7 @@ import java.util.List;
  * <a href="https://zookeeper.apache.org/doc/r3.8.0/zookeeperProgrammers.html#sc_zkDataModel_znodes">ZNodes<a/>
  *
  * @author fobgochod
- * @date 2022/10/16 1:00
+ * @since 1.0
  */
 public class ZKNode {
 
