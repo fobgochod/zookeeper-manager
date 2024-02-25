@@ -2,7 +2,7 @@
 # libraries
 annotations = "24.1.0"
 zookeeper = "3.8.0"
-slf4j-api = "1.7.36"
+slf4j-api = "2.0.12"
 guava = "31.1-jre"
 curator = "5.3.0"
 
