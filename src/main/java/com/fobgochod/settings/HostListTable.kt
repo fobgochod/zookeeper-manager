@@ -26,7 +26,7 @@ import javax.swing.table.TableCellEditor
  * }
  *
  * @author fobgochod
- * @date 2024/2/21 1:09
+ * @since 1.0
  */
 class HostListTable : ListTableWithButtons<HostListTable.Item>() {
 

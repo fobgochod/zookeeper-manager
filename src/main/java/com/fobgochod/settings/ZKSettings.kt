@@ -4,6 +4,7 @@ import com.fobgochod.constant.ZKConstant
 import com.fobgochod.util.StringUtil
 import com.fobgochod.util.ZKBundle
 import com.intellij.credentialStore.CredentialAttributes
+import com.intellij.credentialStore.Credentials
 import com.intellij.credentialStore.generateServiceName
 import com.intellij.ide.passwordSafe.PasswordSafe
 import com.intellij.openapi.components.*
@@ -17,7 +18,7 @@ import java.nio.charset.StandardCharsets
  * zookeeper configuration persistence
  *
  * @author fobgochod
- * @date 2024/2/21 22:39
+ * @since 1.0
  */
 @State(name = ZKSettings.NAME, storages = [Storage(ZKSettings.STORAGES)], category = SettingsCategory.TOOLS)
 class ZKSettings : PersistentStateComponent<ZKSettingsState> {
@@ -82,13 +83,21 @@ class ZKSettings : PersistentStateComponent<ZKSettingsState> {
             state.username = value
         }
 
+    /**
+     *  [Persisting Sensitive Data](https://plugins.jetbrains.com/docs/intellij/persisting-sensitive-data.html)
+     */
+    var password: String
+        get() {
+            val pwd = PasswordSafe.instance.getPassword(credentialAttributes())
+            return pwd ?: ""
+        }
+        set(value) {
+            val credentials = Credentials("password", value)
+            PasswordSafe.instance.set(credentialAttributes(), credentials)
+        }
+
     fun credentialAttributes(): CredentialAttributes {
         return CredentialAttributes(generateServiceName(ZKBundle.message("plugin.name"), "password"))
-    }
-
-    fun getPassword(): String {
-        val pwd = PasswordSafe.instance.getPassword(credentialAttributes())
-        return pwd ?: ""
     }
 
     /**
@@ -137,8 +146,7 @@ class ZKSettings : PersistentStateComponent<ZKSettingsState> {
         val connectString = connectString()
         if (connectString.contains(",")) {
             return connectString.substring(
-                0,
-                connectString.indexOf(",")
+                0, connectString.indexOf(",")
             ) + connectString.substring(connectString.indexOf(ZKConstant.SLASH))
         }
         return connectString

@@ -7,7 +7,6 @@ import com.intellij.application.options.editor.checkBox
 import com.intellij.icons.AllIcons
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
-import com.intellij.openapi.observable.util.bind
 import com.intellij.openapi.options.BoundSearchableConfigurable
 import com.intellij.openapi.ui.DialogPanel
 import com.intellij.openapi.ui.messages.MessageDialog
@@ -19,12 +18,14 @@ import com.intellij.ui.dsl.builder.bindText
 import com.intellij.ui.dsl.builder.columns
 import com.intellij.ui.dsl.builder.panel
 import com.intellij.ui.dsl.gridLayout.HorizontalAlign
+import com.intellij.ui.layout.selected
+import java.awt.Dimension
 
 /**
  * Zookeeper Settings Configurable
  *
  * @author fobgochod
- * @date 2024/2/21 22:38
+ * @since 1.0
  */
 class ZKSettingsConfigurable : BoundSearchableConfigurable(
     message("configurable.display.name"), "zookeeper.manager"
@@ -43,7 +44,7 @@ class ZKSettingsConfigurable : BoundSearchableConfigurable(
         return panel {
             group(message("settings.group.connection")) {
                 row(message("settings.connection.name")) {
-                    textField().resizableColumn().horizontalAlign(HorizontalAlign.FILL).bindText(state::name)
+                    textField().horizontalAlign(HorizontalAlign.FILL).bindText(state::name)
                 }
 
                 row(message("settings.connection.host")) {
@@ -67,27 +68,26 @@ class ZKSettingsConfigurable : BoundSearchableConfigurable(
                         .bindIntText(state::blockUntilConnected).component
 
                     button(
-                        message("settings.connection.test"),
-                        object : AnAction() {
+                        message("settings.connection.test"), object : AnAction() {
                             // @formatter:off
-                                    override fun actionPerformed(action: AnActionEvent) {
-                                        val connectString = ZKSettings.instance.connectString(hostModel.text, portModel.text.toInt(), pathModel.text)
-                                        val zookeeper = ZKClient.getInstance().init(connectString, blockUntilConnectedModel.text.toInt(), saslClientEnabledModel.isSelected)
-                                        if (zookeeper) {
-                                            val title = "Connection to " + hostModel.text
-                                            val content = "Successfully connected!"
-                                            val messageDialog = MessageDialog(content, title, arrayOf("OK"), 0, AllIcons.General.BalloonInformation)
-                                            messageDialog.setSize(300, 120)
-                                            messageDialog.show()
-                                        } else {
-                                            val title = "Connection to " + hostModel.text
-                                            val content = "Cannot connect to remote host"
-                                            val messageDialog = MessageDialog(content, title, arrayOf("OK"), 0, AllIcons.General.BalloonError)
-                                            messageDialog.setSize(300, 120)
-                                            messageDialog.show()
-                                        }
-                                    }
-                                    // @formatter:on
+                            override fun actionPerformed(action: AnActionEvent) {
+                                val connectString = ZKSettings.instance.connectString(hostModel.text, portModel.text.toInt(), pathModel.text)
+                                val zookeeper = ZKClient.getInstance().init(connectString, blockUntilConnectedModel.text.toInt(), saslClientEnabledModel.isSelected)
+                                if (zookeeper) {
+                                    val title = "Connection to " + hostModel.text
+                                    val content = "Successfully connected!"
+                                    val messageDialog = MessageDialog(content, title, arrayOf("OK"), 0, AllIcons.General.BalloonInformation)
+                                    messageDialog.setSize(300, 120)
+                                    messageDialog.show()
+                                } else {
+                                    val title = "Connection to " + hostModel.text
+                                    val content = "Cannot connect to remote host"
+                                    val messageDialog = MessageDialog(content, title, arrayOf("OK"), 0, AllIcons.General.BalloonError)
+                                    messageDialog.setSize(300, 120)
+                                    messageDialog.show()
+                                }
+                            }
+                            // @formatter:on
                         }
                     ).horizontalAlign(HorizontalAlign.RIGHT)
                 }
@@ -103,12 +103,17 @@ class ZKSettingsConfigurable : BoundSearchableConfigurable(
                 row {
                     saslClientEnabledModel = checkBox(saslClientEnabled).component
                 }
-                row(message("settings.sasl.username")) {
-                    textField().bindText(state::username)
-                }
-                row(message("settings.sasl.password")) {
-                    cell(JBPasswordField().columns(28).bind(PasswordProperty()))
-                 }
+
+                indent {
+                    row(message("settings.sasl.username")) {
+                        textField().bindText(state::username)
+                    }
+                    row(message("settings.sasl.password")) {
+                        val result = cell(JBPasswordField())
+                        result.apply { component.preferredSize = Dimension(200, component.preferredSize.height) }
+                        result.bindText(state::password)
+                    }
+                }.enabledIf(saslClientEnabledModel.selected)
             }
         }
     }
