@@ -1,5 +1,6 @@
 package com.fobgochod.constant;
 
+import com.fobgochod.util.StringUtil;
 import org.apache.zookeeper.CreateMode;
 
 /**
@@ -31,8 +32,12 @@ public class ZKCli {
         return String.format(cli, args);
     }
 
-    public static String data(byte[] data) {
-        return new String(data);
+    public static byte[] getBytes(String string) {
+        return string.getBytes(StringUtil.charset());
+    }
+
+    public static String getString(byte[] data) {
+        return new String(data, StringUtil.charset());
     }
 
     public static String mode(CreateMode mode) {

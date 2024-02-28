@@ -2,9 +2,9 @@ package com.fobgochod.view.window;
 
 import com.fobgochod.constant.AclPermission;
 import com.fobgochod.constant.StatStructure;
+import com.fobgochod.constant.ZKCli;
 import com.fobgochod.domain.ZKNode;
 import com.fobgochod.domain.ZKTreeModel;
-import com.fobgochod.util.StringUtil;
 import com.intellij.openapi.project.Project;
 import org.apache.zookeeper.ZooDefs;
 import org.apache.zookeeper.data.ACL;
@@ -50,7 +50,7 @@ public class ZKNodeData {
 
     public void showTabData(ZKNode node) {
         ZKTreeModel.fillData(node);
-        toolWindow.setData(new String(node.getData(), StringUtil.charset()));
+        toolWindow.setData(ZKCli.getString(node.getData()));
     }
 
     public void showTabStat(ZKNode node) {

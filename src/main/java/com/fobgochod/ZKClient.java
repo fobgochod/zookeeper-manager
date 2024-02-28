@@ -55,9 +55,7 @@ public class ZKClient implements Disposable {
             close();
             System.setProperty(ZKClientConfig.ENABLE_CLIENT_SASL_KEY, String.valueOf(saslClientEnabled));
             RetryPolicy retryPolicy = new ExponentialBackoffRetry(1000, 3);
-            curator = CuratorFrameworkFactory.builder().connectString(connectString)
-                    .retryPolicy(retryPolicy)
-                    .build();
+            curator = CuratorFrameworkFactory.builder().connectString(connectString).retryPolicy(retryPolicy).build();
             curator.start();
             boolean connected = curator.blockUntilConnected(maxWaitTime, TimeUnit.MILLISECONDS);
             if (connected) {
@@ -74,9 +72,9 @@ public class ZKClient implements Disposable {
 
     public void update(ZKNodeFile virtualFile, String data) {
         if (virtualFile.isSingleFileZip()) {
-            this.setData(virtualFile.getMyPath(), ZKNodeFile.zip(virtualFile.getName().replace(".zip", ""), data.getBytes()));
+            this.setData(virtualFile.getMyPath(), ZKNodeFile.zip(virtualFile.getName().replace(".zip", ""), ZKCli.getBytes(data)));
         } else {
-            this.setData(virtualFile.getMyPath(), data.getBytes());
+            this.setData(virtualFile.getMyPath(), ZKCli.getBytes(data));
         }
     }
 
@@ -116,27 +114,27 @@ public class ZKClient implements Disposable {
     public void create(String path, byte[] data) {
         try {
             curator.create().forPath(path, data);
-            NoticeUtil.debug(ZKCli.getLog(ZKCli.create_data, path, ZKCli.data(data)));
+            NoticeUtil.debug(ZKCli.getLog(ZKCli.create_data, path, ZKCli.getString(data)));
         } catch (Exception e) {
-            NoticeUtil.error(ZKCli.getLog(ZKCli.create_data, path, ZKCli.data(data)), e.getMessage());
+            NoticeUtil.error(ZKCli.getLog(ZKCli.create_data, path, ZKCli.getString(data)), e.getMessage());
         }
     }
 
     public void creatingParentsIfNeeded(String path, byte[] data, CreateMode mode) {
         try {
             curator.create().creatingParentsIfNeeded().withMode(mode).forPath(path, data);
-            NoticeUtil.debug(ZKCli.getLog(ZKCli.create_e_s_data, ZKCli.mode(mode), path, ZKCli.data(data)));
+            NoticeUtil.debug(ZKCli.getLog(ZKCli.create_e_s_data, ZKCli.mode(mode), path, ZKCli.getString(data)));
         } catch (Exception e) {
-            NoticeUtil.error(ZKCli.getLog(ZKCli.create_e_s_data, ZKCli.mode(mode), path, ZKCli.data(data)), e.getMessage());
+            NoticeUtil.error(ZKCli.getLog(ZKCli.create_e_s_data, ZKCli.mode(mode), path, ZKCli.getString(data)), e.getMessage());
         }
     }
 
     public void createTTL(String path, byte[] data, long ttl, CreateMode mode) {
         try {
             curator.create().withTtl(ttl).creatingParentsIfNeeded().withMode(mode).forPath(path, data);
-            NoticeUtil.debug(ZKCli.getLog(ZKCli.create_e_s_data, ZKCli.mode(mode) + ttl, path, ZKCli.data(data)));
+            NoticeUtil.debug(ZKCli.getLog(ZKCli.create_e_s_data, ZKCli.mode(mode) + ttl, path, ZKCli.getString(data)));
         } catch (Exception e) {
-            NoticeUtil.error(ZKCli.getLog(ZKCli.create_e_s_data, ZKCli.mode(mode) + ttl, path, ZKCli.data(data)), e.getMessage());
+            NoticeUtil.error(ZKCli.getLog(ZKCli.create_e_s_data, ZKCli.mode(mode) + ttl, path, ZKCli.getString(data)), e.getMessage());
         }
     }
 
@@ -197,9 +195,9 @@ public class ZKClient implements Disposable {
     public void setData(String path, byte[] data) {
         try {
             curator.setData().forPath(path, data);
-            NoticeUtil.debug(ZKCli.getLog(ZKCli.set, path, ZKCli.data(data)));
+            NoticeUtil.debug(ZKCli.getLog(ZKCli.set, path, ZKCli.getString(data)));
         } catch (Exception e) {
-            NoticeUtil.error(ZKCli.getLog(ZKCli.set, path, ZKCli.data(data)), e.getMessage());
+            NoticeUtil.error(ZKCli.getLog(ZKCli.set, path, ZKCli.getString(data)), e.getMessage());
         }
     }
 

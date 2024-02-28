@@ -1,6 +1,7 @@
 package com.fobgochod.view.vfs;
 
 import com.fobgochod.ZKClient;
+import com.fobgochod.constant.ZKCli;
 import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.openapi.fileTypes.FileTypeManager;
 import com.intellij.openapi.fileTypes.FileTypes;
@@ -12,7 +13,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
-import java.nio.charset.Charset;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -171,7 +171,9 @@ public class ZKNodeFile extends VirtualFile {
 
     public void checkContent() {
         if (this.myContent == null && zkClient.isConnected()) {
-            this.myContent = zkClient.storingStatIn(myPath, stat);
+            byte[] data = zkClient.storingStatIn(myPath, stat);
+            this.myContent = ZKCli.getString(data).getBytes();
+
             if (isSingleFileZip()) {
                 this.myContent = unzip(myContent);
             }
@@ -206,12 +208,6 @@ public class ZKNodeFile extends VirtualFile {
     public InputStream getInputStream() throws IOException {
         checkContent();
         return new ByteArrayInputStream(myContent);
-    }
-
-    @NotNull
-    @Override
-    public Charset getCharset() {
-        return myFS.getCharset();
     }
 
     @NotNull

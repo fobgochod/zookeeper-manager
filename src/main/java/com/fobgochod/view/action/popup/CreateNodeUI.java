@@ -1,5 +1,6 @@
 package com.fobgochod.view.action.popup;
 
+import com.fobgochod.constant.ZKCli;
 import com.fobgochod.constant.ZKConstant;
 import com.fobgochod.util.StringUtil;
 import com.fobgochod.util.ZKBundle;
@@ -89,7 +90,7 @@ public class CreateNodeUI {
     }
 
     public byte[] getNodeData() {
-        return nodeData.getText().getBytes(StringUtil.charset());
+        return ZKCli.getBytes(nodeData.getText());
     }
 
     public long getTTL() {

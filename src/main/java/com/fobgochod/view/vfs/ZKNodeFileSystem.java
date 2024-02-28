@@ -8,8 +8,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 
 /**
  * zookeeper virtual file system
@@ -75,9 +73,5 @@ public class ZKNodeFileSystem extends DummyFileSystem {
     @Override
     public boolean isReadOnly() {
         return false;
-    }
-
-    public Charset getCharset() {
-        return StandardCharsets.UTF_8;
     }
 }

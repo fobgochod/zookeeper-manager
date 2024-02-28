@@ -1,6 +1,7 @@
 package com.fobgochod.action.popup.tab.data;
 
 import com.fobgochod.action.AbstractNodeAction;
+import com.fobgochod.constant.ZKCli;
 import com.fobgochod.domain.ZKNode;
 import com.fobgochod.util.ZKBundle;
 import com.intellij.icons.AllIcons;
@@ -23,7 +24,7 @@ public class UpdateDataAction extends AbstractNodeAction {
     public void actionPerformed(@NotNull AnActionEvent event) {
         ZKNode selectionNode = toolWindow.getSelectionNode();
         if (selectionNode != null) {
-            byte[] updateData = toolWindow.getData().getBytes();
+            byte[] updateData = ZKCli.getBytes(toolWindow.getData());
             zkClient.setData(selectionNode.getFullPath(), updateData);
             selectionNode.setData(updateData);
         }
