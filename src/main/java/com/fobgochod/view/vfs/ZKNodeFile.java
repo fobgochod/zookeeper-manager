@@ -171,7 +171,7 @@ public class ZKNodeFile extends VirtualFile {
 
     public void checkContent() {
         if (this.myContent == null && zkClient.isConnected()) {
-            byte[] data = zkClient.storingStatIn(myPath, stat);
+            byte[] data = zkClient.getData(myPath, stat);
             this.myContent = ZKCli.getString(data).getBytes();
 
             if (isSingleFileZip()) {

@@ -34,7 +34,7 @@ public class ZKTreeModel extends AbstractTreeModel {
 
     public static void fillStat(ZKNode zkNode) {
         if (!zkNode.isFill()) {
-            Stat stat = zkClient.checkExists(zkNode.getFullPath());
+            Stat stat = zkClient.exists(zkNode.getFullPath());
             zkNode.setStat(stat);
         }
     }

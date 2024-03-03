@@ -2,7 +2,7 @@ package com.fobgochod.view.window.listener;
 
 import com.fobgochod.domain.ZKNode;
 import com.fobgochod.util.ZKIcons;
-import com.fobgochod.util.NodeUtil;
+import com.fobgochod.util.ZKPaths;
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.fileTypes.FileTypes;
 import org.apache.zookeeper.CreateMode;
@@ -23,8 +23,8 @@ public class ZKTreeCellRenderer extends DefaultTreeRenderer {
             if (node.isRoot()) {
                 panel.setIcon(ZKIcons.ZOOKEEPER);
             } else if (node.isLeaf()) {
-                CreateMode mode = NodeUtil.mode(node);
-                panel.setIcon(NodeUtil.getIcon(mode));
+                CreateMode mode = ZKPaths.mode(node);
+                panel.setIcon(ZKPaths.getIcon(mode));
 
                 if (node.isBinary()) {
                     panel.setIcon(FileTypes.ARCHIVE.getIcon());

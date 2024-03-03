@@ -1,6 +1,7 @@
 package com.fobgochod.action.popup;
 
 import com.fobgochod.ZKClient;
+import com.fobgochod.constant.ZKCli;
 import com.fobgochod.util.NoticeUtil;
 import com.fobgochod.util.ZKBundle;
 import com.fobgochod.util.ZKIcons;
@@ -47,8 +48,13 @@ public class UpdateDataInEditorAction extends EditorAction {
             VirtualFile virtualFile = CommonDataKeys.VIRTUAL_FILE.getData(dataContext);
             if (virtualFile instanceof ZKNodeFile) {
                 ZKNodeFile nodeFile = (ZKNodeFile) virtualFile;
-                ZKClient.getInstance().update(nodeFile, editor.getDocument().getText());
-
+                String data = editor.getDocument().getText();
+                if (nodeFile.isSingleFileZip()) {
+                    String replace = nodeFile.getName().replace(".zip", "");
+                    ZKClient.getInstance().setData(nodeFile.getMyPath(), ZKNodeFile.zip(replace, ZKCli.getBytes(data)));
+                } else {
+                    ZKClient.getInstance().setData(nodeFile.getMyPath(), ZKCli.getBytes(data));
+                }
                 NoticeUtil.status("'" + nodeFile.getMyPath() + "' has been updated!");
             }
         }

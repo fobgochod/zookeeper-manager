@@ -48,9 +48,9 @@ public class CreateNodeAction extends NodeSelectedAction {
                 ZKNode selectionNode = toolWindow.getSelectionNode();
                 String fullPath = StringUtil.rebuild(selectionNode.getFullPath(), nodePath);
                 if (ui.getNodeMode().isTTL()) {
-                    zkClient.createTTL(fullPath, ui.getNodeData(), ui.getTTL(), ui.getNodeMode());
+                    zkClient.create(fullPath, ui.getNodeData(), ui.getNodeMode(), ui.getTTL());
                 } else {
-                    zkClient.creatingParentsIfNeeded(fullPath, ui.getNodeData(), ui.getNodeMode());
+                    zkClient.create(fullPath, ui.getNodeData(), ui.getNodeMode());
                 }
                 toolWindow.updateTree();
             }

@@ -36,7 +36,7 @@ public class DeleteNodeAction extends NodeSelectedAction {
         JLabel jTextField = new JLabel("Path: " + selectionNode.getFullPath());
         builder.setCenterPanel(jTextField);
         builder.setOkOperation(() -> {
-            zkClient.deletingChildrenIfNeeded(selectionNode.getFullPath());
+            zkClient.deleteChildren(selectionNode.getFullPath());
             toolWindow.updateTree();
             builder.getDialogWrapper().close(DialogWrapper.OK_EXIT_CODE);
 

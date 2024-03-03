@@ -11,6 +11,7 @@
 ### Changed
 
 - Use kotlin refactor settings
+- Use zookeeper replace curator
 
 ## [2022.3.5] - 2024-01-10
 
