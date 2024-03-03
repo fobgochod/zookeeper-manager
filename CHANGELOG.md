@@ -13,6 +13,11 @@
 - Use kotlin refactor settings
 - Use zookeeper replace curator
 
+### Removed
+
+- Remove dependencies curator-framework
+- Remove dependencies curator-client
+
 ## [2022.3.5] - 2024-01-10
 
 ### Fixed
@@ -114,14 +119,25 @@
 - Initial project scaffold
 
 [Unreleased]: https://github.com/fobgochod/zookeeper-manager/compare/v2022.3.5...HEAD
+
 [2022.3.5]: https://github.com/fobgochod/zookeeper-manager/compare/v2022.3.4...v2022.3.5
+
 [2022.3.4]: https://github.com/fobgochod/zookeeper-manager/compare/v2022.3.3...v2022.3.4
+
 [2022.3.3]: https://github.com/fobgochod/zookeeper-manager/compare/v2022.3.2...v2022.3.3
+
 [2022.3.2]: https://github.com/fobgochod/zookeeper-manager/compare/v2022.3.1...v2022.3.2
+
 [2022.3.1]: https://github.com/fobgochod/zookeeper-manager/compare/v2022.3.0...v2022.3.1
+
 [2022.3.0]: https://github.com/fobgochod/zookeeper-manager/compare/v2022.2.0...v2022.3.0
+
 [2022.2.0]: https://github.com/fobgochod/zookeeper-manager/compare/v2022.1.0...v2022.2.0
+
 [2022.1.0]: https://github.com/fobgochod/zookeeper-manager/compare/v2021.3.0...v2022.1.0
+
 [2021.3.0]: https://github.com/fobgochod/zookeeper-manager/compare/v2020.3.0...v2021.3.0
+
 [2020.3.0]: https://github.com/fobgochod/zookeeper-manager/compare/v1.0.0...v2020.3.0
+
 [1.0.0]: https://github.com/fobgochod/zookeeper-manager/commits/v1.0.0

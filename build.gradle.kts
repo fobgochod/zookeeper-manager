@@ -27,8 +27,6 @@ dependencies {
     implementation(libs.zookeeper)
     implementation(libs.guava)
     implementation(libs.slf4jApi)
-    implementation(libs.curatorFramework)
-    implementation(libs.curatorClient)
 }
 
 // Set the JVM language level used to build the project. Use Java 11 for 2020.3+, and Java 17 for 2022.2+.
