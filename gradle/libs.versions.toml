@@ -3,7 +3,6 @@
 annotations = "24.1.0"
 zookeeper = "3.9.1"
 slf4j-api = "2.0.12"
-guava = "31.1-jre"
 
 # plugins
 kotlin = "1.9.21"
@@ -16,7 +15,6 @@ kover = "0.7.5"
 annotations = { group = "org.jetbrains", name = "annotations", version.ref = "annotations" }
 zookeeper = { group = "org.apache.zookeeper", name = "zookeeper", version.ref = "zookeeper" }
 slf4jApi = { group = "org.slf4j", name = "slf4j-api", version.ref = "slf4j-api" }
-guava = { group = "com.google.guava", name = "guava", version.ref = "guava" }
 
 [plugins]
 changelog = { id = "org.jetbrains.changelog", version.ref = "changelog" }

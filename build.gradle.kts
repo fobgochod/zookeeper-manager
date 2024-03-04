@@ -25,7 +25,6 @@ repositories {
 dependencies {
 //    implementation(libs.annotations)
     implementation(libs.zookeeper)
-    implementation(libs.guava)
     implementation(libs.slf4jApi)
 }
 
