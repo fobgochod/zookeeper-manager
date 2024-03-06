@@ -7,6 +7,7 @@ import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
 import com.intellij.openapi.wm.impl.status.StatusBarUtil;
+import org.apache.commons.lang.StringUtils;
 
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
@@ -14,16 +15,19 @@ import javax.swing.text.Document;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.HashSet;
+import java.util.Set;
 
 public class NoticeUtil {
 
     private static final ZKToolWindow toolWindow = ZKToolWindow.getInstance();
     private static final JTextPane console = toolWindow.getConsole();
+    private static final Set<String> days = new HashSet<>();
 
     public static void status(String message) {
         StatusBarUtil.setStatusBarInfo(toolWindow.getProject(), message);
-        info(message);
     }
 
     public static void notify(String message, NotificationType type) {
@@ -45,7 +49,7 @@ public class NoticeUtil {
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         clipboard.setContents(stringSelection, stringSelection);
         String message = "'" + content + "' has been copied into clipboard!";
-        info(message);
+        status(message);
     }
 
     public static void debug(String message) {
@@ -71,8 +75,15 @@ public class NoticeUtil {
     public static void render(String content, ZKStyle style) {
         Document document = console.getDocument();
         try {
-            String message = String.format("%s - %s\n", LocalDateTime.now().format(ZKConstant.DATETIME), content);
+            String message = String.format("%s - %s" + System.lineSeparator(), LocalTime.now().format(ZKConstant.TIME), content);
             document.insertString(0, message, style.get());
+            // 处理日期，每天插入一条
+            String now = LocalDate.now().format(ZKConstant.DATE);
+            if (days.isEmpty() || !days.contains(now)) {
+                days.add(now);
+                String newDay = StringUtils.center(now, 50, '-');
+                document.insertString(0, newDay + System.lineSeparator(), ZKStyle.ERROR.get());
+            }
         } catch (BadLocationException ignored) {
         }
     }

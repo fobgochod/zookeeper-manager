@@ -18,6 +18,7 @@ public class ZKCli {
     public static final String create = "create %s";
     public static final String create_data = "create %s %s";
     public static final String create_e_s_data = "create %s %s %s";
+    public static final String create_e_s_t_data = "create %s %s %s %s";
     public static final String delete = "delete %s";
     public static final String deleteall = "deleteall %s";
     public static final String stat = "stat %s";

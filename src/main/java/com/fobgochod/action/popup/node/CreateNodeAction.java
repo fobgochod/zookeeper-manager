@@ -30,9 +30,13 @@ public class CreateNodeAction extends NodeSelectedAction {
         if (event.getProject() == null) {
             return;
         }
+        ZKNode selectionNode = toolWindow.getSelectionNode();
+        if (selectionNode == null) {
+            return;
+        }
 
         final DialogBuilder builder = new DialogBuilder();
-        builder.setTitle(ZKBundle.message("action.popup.create.node.text"));
+        builder.setTitle(ZKBundle.message("action.popup.create.node.text") + String.format("(%s)", selectionNode.getFullPath()));
 
         CreateNodeUI ui = new CreateNodeUI(event.getProject());
         builder.setPreferredFocusComponent(ui.getNodePath());
@@ -42,10 +46,9 @@ public class CreateNodeAction extends NodeSelectedAction {
                 builder.setErrorText(ui.getError());
                 return;
             }
-
             String nodePath = ui.getNodePath().getText();
             if (StringUtil.isNotEmpty(nodePath)) {
-                ZKNode selectionNode = toolWindow.getSelectionNode();
+
                 String fullPath = StringUtil.rebuild(selectionNode.getFullPath(), nodePath);
                 if (ui.getNodeMode().isTTL()) {
                     zkClient.create(fullPath, ui.getNodeData(), ui.getNodeMode(), ui.getTTL());

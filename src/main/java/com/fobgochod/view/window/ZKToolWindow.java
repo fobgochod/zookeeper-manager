@@ -156,8 +156,10 @@ public class ZKToolWindow extends SimpleToolWindowPanel {
     }
 
     public void selectionNodeChanged() {
-        this.zkFileTypePanel.setSelectionNode(this.getSelectionNode());
-        this.flushTabData();
+        if (tree != null && tree.getSelectionPath() != null) {
+            this.zkFileTypePanel.setSelectionNode(this.getSelectionNode());
+            this.flushTabData();
+        }
     }
 
     public String getData() {

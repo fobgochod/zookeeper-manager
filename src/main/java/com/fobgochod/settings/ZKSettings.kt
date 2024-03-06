@@ -96,7 +96,7 @@ class ZKSettings : PersistentStateComponent<ZKSettingsState> {
             PasswordSafe.instance.set(credentialAttributes(), credentials)
         }
 
-    fun credentialAttributes(): CredentialAttributes {
+    private fun credentialAttributes(): CredentialAttributes {
         return CredentialAttributes(generateServiceName(ZKBundle.message("plugin.name"), "password"))
     }
 

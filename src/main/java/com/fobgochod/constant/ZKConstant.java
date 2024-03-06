@@ -9,7 +9,8 @@ public class ZKConstant {
     public static final String SLASH = "/";
     public static final byte[] EMPTY_BYTE = new byte[0];
 
-    public static final DateTimeFormatter DATETIME = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    public static final DateTimeFormatter DATE = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    public static final DateTimeFormatter TIME = DateTimeFormatter.ofPattern("HH:mm:ss");
 
     /**
      * 弹窗内容默认大小

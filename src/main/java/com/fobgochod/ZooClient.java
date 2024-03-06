@@ -30,8 +30,7 @@ public final class ZooClient implements ZKClient {
         if (zooKeeper != null) {
             try {
                 zooKeeper.close();
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+            } catch (InterruptedException ignored) {
             }
         }
     }
@@ -46,9 +45,6 @@ public final class ZooClient implements ZKClient {
     }
 
     public boolean init(String connectString, int maxWaitTime, boolean saslClientEnabled) {
-        if (isConnected()) {
-            return true;
-        }
         try {
             close();
             System.setProperty(ZKClientConfig.ENABLE_CLIENT_SASL_KEY, String.valueOf(saslClientEnabled));
@@ -59,7 +55,7 @@ public final class ZooClient implements ZKClient {
                 }
             });
             if (latch.await(maxWaitTime, TimeUnit.MILLISECONDS) && isConnected()) {
-                NoticeUtil.debug(connectString + " successfully connected!");
+                NoticeUtil.warn(connectString + " successfully connected!");
                 return true;
             }
         } catch (Exception e) {
@@ -96,7 +92,7 @@ public final class ZooClient implements ZKClient {
 
     public void create(String path) {
         try {
-            zooKeeper.create(path, new byte[0], ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
+            zooKeeper.create(path, ZKConstant.EMPTY_BYTE, ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
             NoticeUtil.debug(ZKCli.getLog(ZKCli.create, path));
         } catch (Exception e) {
             NoticeUtil.error(ZKCli.getLog(ZKCli.create, path), e.getMessage());
@@ -114,7 +110,7 @@ public final class ZooClient implements ZKClient {
 
     public void create(String path, byte[] data, CreateMode mode) {
         try {
-            ZKPaths.creatingParentsIfNeeded(zooKeeper, path, data, mode, null, -1);
+            ZKPaths.createNodes(zooKeeper, path, data, mode, null, -1);
             NoticeUtil.debug(ZKCli.getLog(ZKCli.create_e_s_data, ZKCli.mode(mode), path, ZKCli.getString(data)));
         } catch (Exception e) {
             NoticeUtil.error(ZKCli.getLog(ZKCli.create_e_s_data, ZKCli.mode(mode), path, ZKCli.getString(data)), e.getMessage());
@@ -123,10 +119,10 @@ public final class ZooClient implements ZKClient {
 
     public void create(String path, byte[] data, CreateMode mode, long ttl) {
         try {
-            ZKPaths.creatingParentsIfNeeded(zooKeeper, path, data, CreateMode.PERSISTENT_WITH_TTL, null, ttl);
-            NoticeUtil.debug(ZKCli.getLog(ZKCli.create_e_s_data, ZKCli.mode(mode) + ttl, path, ZKCli.getString(data)));
+            ZKPaths.createNodes(zooKeeper, path, data, mode, null, ttl);
+            NoticeUtil.debug(ZKCli.getLog(ZKCli.create_e_s_t_data, ZKCli.mode(mode), ttl, path, ZKCli.getString(data)));
         } catch (Exception e) {
-            NoticeUtil.error(ZKCli.getLog(ZKCli.create_e_s_data, ZKCli.mode(mode) + ttl, path, ZKCli.getString(data)), e.getMessage());
+            NoticeUtil.error(ZKCli.getLog(ZKCli.create_e_s_t_data, ZKCli.mode(mode), ttl, path, ZKCli.getString(data)), e.getMessage());
         }
     }
 
@@ -204,7 +200,9 @@ public final class ZooClient implements ZKClient {
 
     public List<ACL> getACL(String path) {
         try {
-            return zooKeeper.getACL(path, null);
+            List<ACL> acl = zooKeeper.getACL(path, null);
+            NoticeUtil.debug(ZKCli.getLog(ZKCli.getAcl, path));
+            return acl;
         } catch (Exception e) {
             NoticeUtil.error(ZKCli.getLog(ZKCli.getAcl, path), e.getMessage());
         }

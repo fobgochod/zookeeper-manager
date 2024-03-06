@@ -1,5 +1,6 @@
 package com.fobgochod.util;
 
+import com.fobgochod.constant.ZKConstant;
 import com.fobgochod.domain.ZKNode;
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.KeeperException;
@@ -14,9 +15,7 @@ import java.util.Base64;
 import java.util.List;
 
 /**
- * NodeUtil.java
- * <p>
- * {@link org.apache.curator.utils.ZKPaths}
+ * ZKPaths {@link org.apache.curator.utils.ZKPaths}
  *
  * @author fobgochod
  * @since 1.0
@@ -26,8 +25,6 @@ public class ZKPaths {
     /**
      * Zookeeper's path separator character.
      */
-    public static final String PATH_SEPARATOR = "/";
-
     private static final char PATH_SEPARATOR_CHAR = '/';
 
     // Hardcoded in {@link org.apache.zookeeper.server.PrepRequestProcessor}
@@ -140,8 +137,8 @@ public class ZKPaths {
         }
     }
 
-    public static void creatingParentsIfNeeded(ZooKeeper zooKeeper, String path, byte[] data,
-                                               CreateMode mode, Stat stat, long ttl)
+    public static void createNodes(ZooKeeper zooKeeper, String path, byte[] data,
+                                   CreateMode mode, Stat stat, long ttl)
             throws KeeperException, InterruptedException {
         try {
             zooKeeper.create(path, data, ZooDefs.Ids.OPEN_ACL_UNSAFE, mode, stat, ttl);
@@ -169,7 +166,7 @@ public class ZKPaths {
             String subPath = path.substring(0, pos);
             if (zookeeper.exists(subPath, false) == null) {
                 try {
-                    zookeeper.create(subPath, new byte[0], ZooDefs.Ids.OPEN_ACL_UNSAFE, mode);
+                    zookeeper.create(subPath, ZKConstant.EMPTY_BYTE, ZooDefs.Ids.OPEN_ACL_UNSAFE, mode);
                 } catch (KeeperException.NodeExistsException ignore) {
                     // ignore... someone else has created it since we checked
                 }
@@ -184,7 +181,7 @@ public class ZKPaths {
      * @param child  the child
      * @return full path
      */
-    public static String makePath(String parent, String child) {
+    private static String makePath(String parent, String child) {
         // 2 is the maximum number of additional path separators inserted
         int maxPathLength = nullableStringLength(parent) + nullableStringLength(child) + 2;
         // Avoid internal StringBuilder's buffer reallocation by specifying the max path length
