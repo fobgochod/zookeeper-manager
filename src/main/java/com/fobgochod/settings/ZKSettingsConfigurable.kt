@@ -10,13 +10,11 @@ import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.options.BoundSearchableConfigurable
 import com.intellij.openapi.ui.DialogPanel
 import com.intellij.openapi.ui.messages.MessageDialog
+import com.intellij.openapi.ui.setEmptyState
 import com.intellij.ui.components.JBCheckBox
 import com.intellij.ui.components.JBPasswordField
 import com.intellij.ui.components.JBTextField
-import com.intellij.ui.dsl.builder.bindIntText
-import com.intellij.ui.dsl.builder.bindText
-import com.intellij.ui.dsl.builder.columns
-import com.intellij.ui.dsl.builder.panel
+import com.intellij.ui.dsl.builder.*
 import com.intellij.ui.dsl.gridLayout.HorizontalAlign
 import com.intellij.ui.layout.selected
 import java.awt.Dimension
@@ -32,14 +30,14 @@ class ZKSettingsConfigurable : BoundSearchableConfigurable(
 ) {
     private val state: ZKSettings get() = ZKSettings.instance
 
-    private val saslClientEnabled get() = CheckboxDescriptor(message("settings.sasl.enable"), state::saslClientEnabled)
+    private val enableSasl get() = CheckboxDescriptor(message("settings.sasl.enable"), state::enableSasl)
 
     override fun createPanel(): DialogPanel {
         lateinit var hostModel: JBTextField
         lateinit var portModel: JBTextField
         lateinit var pathModel: JBTextField
-        lateinit var blockUntilConnectedModel: JBTextField
-        lateinit var saslClientEnabledModel: JBCheckBox
+        lateinit var sessionTimeoutModel: JBTextField
+        lateinit var enableSaslModel: JBCheckBox
 
         return panel {
             group(message("settings.group.connection")) {
@@ -48,31 +46,37 @@ class ZKSettingsConfigurable : BoundSearchableConfigurable(
                 }
 
                 row(message("settings.connection.host")) {
-                    hostModel = textField().resizableColumn().horizontalAlign(HorizontalAlign.FILL)
+                    hostModel = textField()
+                        .applyToComponent { setEmptyState("172.16.2.1,172.16.2.2,172.16.2.3") }
+                        .resizableColumn()
+                        .horizontalAlign(HorizontalAlign.FILL)
                         .bindText(state::host).component
 
-                    portModel = intTextField(0..65536).label("Port:")
+                    portModel = intTextField(0..65536)
+                        .label(message("settings.connection.port"))
                         .columns(10)
                         .horizontalAlign(HorizontalAlign.RIGHT)
                         .bindIntText(state::port).component
                 }
 
                 row(message("settings.connection.path")) {
-                    pathModel = textField().horizontalAlign(HorizontalAlign.FILL)
+                    pathModel = textField()
+                        .applyToComponent { setEmptyState("/zookeeper") }
+                        .horizontalAlign(HorizontalAlign.FILL)
                         .bindText(state::path).component
                 }
 
-                row(message("settings.connection.block.timeout")) {
-                    blockUntilConnectedModel = intTextField()
+                row(message("settings.connection.session.timeout")) {
+                    sessionTimeoutModel = intTextField()
                         .columns(10)
-                        .bindIntText(state::blockUntilConnected).component
+                        .bindIntText(state::sessionTimeout).component
 
                     button(
                         message("settings.connection.test"), object : AnAction() {
                             // @formatter:off
                             override fun actionPerformed(action: AnActionEvent) {
                                 val connectString = ZKSettings.instance.connectString(hostModel.text, portModel.text.toInt(), pathModel.text)
-                                val zookeeper = ZKClient.getInstance().init(connectString, blockUntilConnectedModel.text.toInt(), saslClientEnabledModel.isSelected)
+                                val zookeeper = ZKClient.getInstance().init(connectString, sessionTimeoutModel.text.toInt(), enableSaslModel.isSelected)
                                 if (zookeeper) {
                                     val title = "Connection to " + hostModel.text
                                     val content = "Successfully connected!"
@@ -97,11 +101,20 @@ class ZKSettingsConfigurable : BoundSearchableConfigurable(
                 row(message("settings.other.charset")) {
                     textField().bindText(state::charset)
                 }
+
+                row(message("settings.other.admin.server")) {
+                    textField()
+                        .horizontalAlign(HorizontalAlign.FILL)
+                        .bindText(state::adminServer)
+                }.rowComment(
+                    "Config admin.enableServer=false to disable the <a href='https://zookeeper.apache.org/doc/current/zookeeperAdmin.html#sc_adminserver'>AdminServer</a>.",
+                    MAX_LINE_LENGTH_WORD_WRAP
+                )
             }
 
             group(message("settings.group.sasl")) {
                 row {
-                    saslClientEnabledModel = checkBox(saslClientEnabled).component
+                    enableSaslModel = checkBox(enableSasl).component
                 }
 
                 indent {
@@ -113,7 +126,7 @@ class ZKSettingsConfigurable : BoundSearchableConfigurable(
                         result.apply { component.preferredSize = Dimension(200, component.preferredSize.height) }
                         result.bindText(state::password)
                     }
-                }.enabledIf(saslClientEnabledModel.selected)
+                }.enabledIf(enableSaslModel.selected)
             }
         }
     }

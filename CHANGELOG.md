@@ -7,6 +7,7 @@
 ### Added
 
 - Add charset settings
+- Add AdminServer URL
 
 ### Changed
 

@@ -96,7 +96,7 @@ public class ZKPaths {
      */
     public static String getAclId(String username, String password) {
         try {
-            String aclId = String.format("%s:%s", username, password);
+            String aclId = String.format("`%s:%s", username, password);
             byte[] digest = MessageDigest.getInstance("SHA1").digest(aclId.getBytes());
             return Base64.getEncoder().encodeToString(digest);
         } catch (NoSuchAlgorithmException e) {

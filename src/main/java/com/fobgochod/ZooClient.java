@@ -39,22 +39,17 @@ public final class ZooClient implements ZKClient {
         return zooKeeper != null && zooKeeper.getState().isConnected();
     }
 
-    public boolean init() {
-        ZKSettings state = ZKSettings.getInstance();
-        return init(state.connectString(), state.getBlockUntilConnected(), state.getSaslClientEnabled());
-    }
-
-    public boolean init(String connectString, int maxWaitTime, boolean saslClientEnabled) {
+    public boolean init(String connectString, int sessionTimeout, boolean enableClientSasl) {
         try {
             close();
-            System.setProperty(ZKClientConfig.ENABLE_CLIENT_SASL_KEY, String.valueOf(saslClientEnabled));
+            System.setProperty(ZKClientConfig.ENABLE_CLIENT_SASL_KEY, String.valueOf(enableClientSasl));
             CountDownLatch latch = new CountDownLatch(1);
-            zooKeeper = new ZooKeeper(connectString, maxWaitTime, event -> {
+            zooKeeper = new ZooKeeper(connectString, sessionTimeout, event -> {
                 if (zooKeeper.getState().isConnected()) {
                     latch.countDown();
                 }
             });
-            if (latch.await(maxWaitTime, TimeUnit.MILLISECONDS) && isConnected()) {
+            if (latch.await(sessionTimeout, TimeUnit.MILLISECONDS) && isConnected()) {
                 NoticeUtil.warn(connectString + " successfully connected!");
                 return true;
             }

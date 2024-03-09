@@ -42,6 +42,8 @@
             <separator/>
             <action id="AclSchemeAction" class="com.fobgochod.action.navigator.AclSchemeAction"/>
             <action id="EditSettingsAction" class="com.fobgochod.action.navigator.EditSettingsAction"/>
+            <separator/>
+            <action id="CommandsUrlAction" class="com.fobgochod.action.navigator.CommandsUrlAction"/>
         </group>
 
         <group id="ZooKeeperNodePopup" popup="true">

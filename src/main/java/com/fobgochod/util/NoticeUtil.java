@@ -6,6 +6,7 @@ import com.fobgochod.view.window.ZKToolWindow;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
+import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.wm.impl.status.StatusBarUtil;
 import org.apache.commons.lang.StringUtils;
 
@@ -28,6 +29,10 @@ public class NoticeUtil {
 
     public static void status(String message) {
         StatusBarUtil.setStatusBarInfo(toolWindow.getProject(), message);
+    }
+
+    public static void message(String message) {
+        Messages.showErrorDialog(toolWindow.getProject(), message, "Error");
     }
 
     public static void notify(String message, NotificationType type) {
@@ -81,7 +86,7 @@ public class NoticeUtil {
             String now = LocalDate.now().format(ZKConstant.DATE);
             if (days.isEmpty() || !days.contains(now)) {
                 days.add(now);
-                String newDay = StringUtils.center(now, 50, '-');
+                String newDay = StringUtils.center(now, 50, ZKConstant.HYPHEN);
                 document.insertString(0, newDay + System.lineSeparator(), ZKStyle.ERROR.get());
             }
         } catch (BadLocationException ignored) {

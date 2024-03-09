@@ -3,12 +3,18 @@ package com.fobgochod.settings
 import com.fobgochod.constant.ZKConstant
 import com.fobgochod.util.StringUtil
 import com.fobgochod.util.ZKBundle
+import com.google.gson.JsonObject
+import com.google.gson.JsonParser
 import com.intellij.credentialStore.CredentialAttributes
 import com.intellij.credentialStore.Credentials
 import com.intellij.credentialStore.generateServiceName
 import com.intellij.ide.passwordSafe.PasswordSafe
 import com.intellij.openapi.components.*
 import com.intellij.util.xmlb.XmlSerializerUtil
+import java.net.URI
+import java.net.http.HttpClient
+import java.net.http.HttpRequest
+import java.net.http.HttpResponse
 import java.nio.charset.StandardCharsets
 
 /**
@@ -36,7 +42,7 @@ class ZKSettings : PersistentStateComponent<ZKSettingsState> {
         }
 
     var name: String
-        get() = state.name ?: ""
+        get() = state.name ?: ZKConstant.EMPTY
         set(value) {
             state.name = value
         }
@@ -47,8 +53,14 @@ class ZKSettings : PersistentStateComponent<ZKSettingsState> {
             state.charset = StringUtil.charset(value).name()
         }
 
+    var adminServer: String
+        get() = state.adminServer ?: ZKConstant.EMPTY
+        set(value) {
+            state.adminServer = value
+        }
+
     var host: String
-        get() = state.host ?: ""
+        get() = state.host ?: ZKConstant.EMPTY
         set(value) {
             state.host = value
         }
@@ -60,25 +72,25 @@ class ZKSettings : PersistentStateComponent<ZKSettingsState> {
         }
 
     var path: String
-        get() = state.path ?: ""
+        get() = state.path ?: ZKConstant.EMPTY
         set(value) {
             state.path = value
         }
 
-    var blockUntilConnected: Int
-        get() = state.blockUntilConnected
+    var sessionTimeout: Int
+        get() = state.sessionTimeout
         set(value) {
-            state.blockUntilConnected = value
+            state.sessionTimeout = value
         }
 
-    var saslClientEnabled: Boolean
-        get() = state.saslClientEnabled
+    var enableSasl: Boolean
+        get() = state.enableSasl
         set(value) {
-            state.saslClientEnabled = value
+            state.enableSasl = value
         }
 
     var username: String
-        get() = state.username ?: ""
+        get() = state.username ?: ZKConstant.EMPTY
         set(value) {
             state.username = value
         }
@@ -89,7 +101,7 @@ class ZKSettings : PersistentStateComponent<ZKSettingsState> {
     var password: String
         get() {
             val pwd = PasswordSafe.instance.getPassword(credentialAttributes())
-            return pwd ?: ""
+            return pwd ?: ZKConstant.EMPTY
         }
         set(value) {
             val credentials = Credentials("password", value)
@@ -122,10 +134,10 @@ class ZKSettings : PersistentStateComponent<ZKSettingsState> {
     }
 
     fun connectString(host: String, port: Int, path: String?): String {
-        val address = if (host.contains(":")) {
+        val address = if (host.contains(ZKConstant.COLON)) {
             host
-        } else if (host.contains(",")) {
-            host.replace("[\\s,]+".toRegex(), ":$port,")
+        } else if (host.contains(ZKConstant.COMMA)) {
+            host.split(ZKConstant.COMMA).joinToString(",") { "$it:$port" }
         } else {
             "$host:$port"
         }
@@ -135,7 +147,6 @@ class ZKSettings : PersistentStateComponent<ZKSettingsState> {
     /**
      * 根据连接字符串获取一个name
      *
-     *
      * input:  192.168.10.10:2181,192.168.10.11:2181,192.168.10.12:2181/hello
      * output: 192.168.10.10:2181/hello
      */
@@ -144,12 +155,36 @@ class ZKSettings : PersistentStateComponent<ZKSettingsState> {
             return name
         }
         val connectString = connectString()
-        if (connectString.contains(",")) {
-            return connectString.substring(
-                0, connectString.indexOf(",")
-            ) + connectString.substring(connectString.indexOf(ZKConstant.SLASH))
+        if (connectString.contains(ZKConstant.COMMA)) {
+            return connectString.split(ZKConstant.COMMA)[0] + StringUtil.getPath(path)
         }
         return connectString
+    }
+
+    fun adminServerUrl(): String {
+        val singleHost = connectString().split(ZKConstant.COLON)[0]
+        return adminServer.replace(ZKConstant.LOCALHOST, singleHost)
+    }
+
+    fun getVersion(): String {
+        try {
+            val client: HttpClient = HttpClient.newBuilder()
+                .connectTimeout(ZKConstant.ADMIN_SERVER_TIMEOUT)
+                .build()
+            val request: HttpRequest = HttpRequest.newBuilder()
+                .uri(URI.create(adminServerUrl() + ZKConstant.COMMAND_ENVIRONMENT))
+                .timeout(ZKConstant.ADMIN_SERVER_TIMEOUT)
+                .GET()
+                .build()
+            val response: HttpResponse<String> = client.send(request, HttpResponse.BodyHandlers.ofString())
+            val json = JsonParser.parseString(response.body())
+            if (json is JsonObject) {
+                val version = json.get(ZKConstant.ZOOKEEPER_VERSION_KEY).asString.split(ZKConstant.HYPHEN)[0]
+                return "(v$version)"
+            }
+        } catch (_: Exception) {
+        }
+        return ZKConstant.EMPTY
     }
 
     companion object {

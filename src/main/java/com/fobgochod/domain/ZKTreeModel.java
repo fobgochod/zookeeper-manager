@@ -22,7 +22,7 @@ public class ZKTreeModel extends AbstractTreeModel {
 
     private static final ZKSettings state = ZKSettings.getInstance();
     private static final ZKClient zkClient = ZKClient.getInstance();
-    private final ZKNode ROOT = new ZKNode(ZKConstant.SLASH, state.getTitle(), true);
+    private final ZKNode ROOT = new ZKNode(ZKConstant.SLASH, state.getTitle() + state.getVersion(), true);
 
     public ZKTreeModel() {
     }

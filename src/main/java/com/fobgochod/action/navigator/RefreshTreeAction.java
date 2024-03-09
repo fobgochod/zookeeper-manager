@@ -29,11 +29,12 @@ public class RefreshTreeAction extends AnAction {
             return;
         }
 
+        ZKClient zkClient = ZKClient.getInstance();
         ZKSettings state = ZKSettings.getInstance();
-        boolean reloadSuccess = ZKClient.getInstance().init();
-        if (reloadSuccess) {
-            if (StringUtil.isNotEmpty(state.getUsername())) {
-                ZKClient.getInstance().addAuthInfo(AclScheme.digest.name(), state.getUsername() + ":" + state.getPassword());
+        boolean success = zkClient.init(state.connectString(), state.getSessionTimeout(), state.getEnableSasl());
+        if (success) {
+            if (state.getEnableSasl() && StringUtil.isNotEmpty(state.getUsername())) {
+                zkClient.addAuthInfo(AclScheme.digest.name(), state.getUsername() + ":" + state.getPassword());
             }
             ZKToolWindow.getInstance(event.getProject()).initTree();
         }

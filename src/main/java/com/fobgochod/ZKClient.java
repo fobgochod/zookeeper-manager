@@ -24,9 +24,7 @@ public interface ZKClient extends Disposable {
 
     boolean isConnected();
 
-    boolean init();
-
-    boolean init(String connectString, int maxWaitTime, boolean saslClientEnabled);
+    boolean init(String connectString, int sessionTimeout, boolean enableClientSasl);
 
     void addAuthInfo(String scheme, String auth);
 
