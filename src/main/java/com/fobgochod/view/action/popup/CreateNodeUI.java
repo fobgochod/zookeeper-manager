@@ -25,6 +25,7 @@ public class CreateNodeUI {
     private JComboBox<CreateMode> nodeMode;
     private JTextField nodeTtl;
     private JPanel dataPanel;
+    private JLabel nodeModeTip;
     private ZKNodeEditor nodeData;
 
     public CreateNodeUI(@NotNull Project project) {
@@ -50,6 +51,13 @@ public class CreateNodeUI {
         nodeMode.addItemListener(e -> {
             CreateMode item = (CreateMode) e.getItem();
             nodeTtl.setEditable(item.isTTL());
+            if (item.isTTL()) {
+                nodeModeTip.setVisible(true);
+                nodeModeTip.setText("Config extendedTypesEnabled=true to enable the creation of TTL Nodes.");
+            } else {
+                nodeModeTip.setVisible(false);
+                nodeModeTip.setText(null);
+            }
         });
 
         // 非数字弹出提示
@@ -63,7 +71,7 @@ public class CreateNodeUI {
         nodeTtl.getDocument().addDocumentListener(new DocumentAdapter() {
             @Override
             protected void textChanged(@NotNull DocumentEvent e) {
-                ComponentValidator.getInstance(nodeTtl).ifPresent(v -> v.revalidate());
+                ComponentValidator.getInstance(nodeTtl).ifPresent(ComponentValidator::revalidate);
             }
         });
     }

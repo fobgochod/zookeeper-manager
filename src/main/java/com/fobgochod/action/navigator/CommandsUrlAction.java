@@ -7,6 +7,7 @@ import com.intellij.icons.AllIcons;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import org.apache.zookeeper.server.admin.JettyAdminServer;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.net.URI;
@@ -29,7 +30,7 @@ public class CommandsUrlAction extends AnAction {
     }
 
     @Override
-    public void actionPerformed(AnActionEvent event) {
+    public void actionPerformed(@NotNull AnActionEvent event) {
         try {
             if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
                 Desktop.getDesktop().browse(URI.create(state.adminServerUrl()));

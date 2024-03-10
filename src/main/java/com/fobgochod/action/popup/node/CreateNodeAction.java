@@ -48,7 +48,6 @@ public class CreateNodeAction extends NodeSelectedAction {
             }
             String nodePath = ui.getNodePath().getText();
             if (StringUtil.isNotEmpty(nodePath)) {
-
                 String fullPath = StringUtil.rebuild(selectionNode.getFullPath(), nodePath);
                 if (ui.getNodeMode().isTTL()) {
                     zkClient.create(fullPath, ui.getNodeData(), ui.getNodeMode(), ui.getTTL());

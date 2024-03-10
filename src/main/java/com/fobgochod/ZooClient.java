@@ -2,7 +2,6 @@ package com.fobgochod;
 
 import com.fobgochod.constant.ZKCli;
 import com.fobgochod.constant.ZKConstant;
-import com.fobgochod.settings.ZKSettings;
 import com.fobgochod.util.NoticeUtil;
 import com.fobgochod.util.ZKPaths;
 import com.intellij.notification.NotificationType;
