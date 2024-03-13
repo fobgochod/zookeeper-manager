@@ -2,21 +2,18 @@ package com.fobgochod.view.vfs;
 
 import com.fobgochod.ZKClient;
 import com.fobgochod.constant.ZKCli;
+import com.fobgochod.constant.ZKConstant;
+import com.fobgochod.util.ByteUtil;
+import com.fobgochod.util.StringUtil;
 import com.intellij.openapi.fileTypes.FileType;
-import com.intellij.openapi.fileTypes.FileTypeManager;
-import com.intellij.openapi.fileTypes.FileTypes;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileSystem;
 import com.intellij.util.LocalTimeCounter;
 import org.apache.zookeeper.data.Stat;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
 import java.util.List;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
-import java.util.zip.ZipOutputStream;
 
 /**
  * ZooKeeper node virtual file
@@ -29,79 +26,35 @@ public class ZKNodeFile extends VirtualFile {
     protected final ZKClient zkClient = ZKClient.getInstance();
 
     private final long myTimeStamp = System.currentTimeMillis();
-    private final String myPath;
-    private final ZKNodeFileSystem myFS;
-    private byte[] myContent;
-
-    private final String fileName;
-    private boolean isLeaf;
-    private final Stat stat = new Stat();
     private long myModStamp = LocalTimeCounter.currentTime();
 
+    private final ZKNodeFileSystem myFS;
+    private final String myPath;
+    private final String myParentPath;
+    private final String myName;
+
+    private byte[] myContent;
+    private final Stat stat;
+    private boolean isLeaf;
+
     public ZKNodeFile(ZKNodeFileSystem FS, String path) {
-        this.myPath = path;
         this.myFS = FS;
-        this.fileName = path.substring(path.lastIndexOf("/") + 1);
-        this.checkContent();
+        this.myPath = path;
+        this.myParentPath = StringUtil.pathParent(myPath);
+        this.myName = StringUtil.pathName(path);
+        this.stat = zkClient.exists(path);
         this.isLeaf = stat.getNumChildren() == 0;
     }
 
-    public static byte[] unzip(byte[] zipContent) {
-        try {
-            ZipInputStream zis = new ZipInputStream(new ByteArrayInputStream(zipContent));
-            zis.getNextEntry();
-            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            int b;
-            while ((b = zis.read()) != -1) {
-                bos.write(b);
-            }
-            zis.closeEntry();
-            zis.close();
-            return bos.toByteArray();
-        } catch (Exception ignored) {
-        }
-        return null;
+    public @NotNull String getName() {
+        return myName;
     }
 
-    public static byte[] zip(String name, byte[] content) {
-        try {
-            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            ZipOutputStream zipOutput = new ZipOutputStream(bos);
-            ZipEntry entry = new ZipEntry(name);
-            entry.setSize(content.length);
-            zipOutput.putNextEntry(entry);
-            zipOutput.write(content);
-            zipOutput.closeEntry();
-            zipOutput.close();
-            return bos.toByteArray();
-        } catch (Exception ignored) {
-        }
-        return null;
-    }
-
-    public void setLeaf() {
-        this.isLeaf = true;
-    }
-
-    @NotNull
-    public String getName() {
-        return this.fileName;
-    }
-
-    @NotNull
-    public VirtualFileSystem getFileSystem() {
-        return this.myFS;
+    public @NotNull VirtualFileSystem getFileSystem() {
+        return myFS;
     }
 
     public @NotNull String getPath() {
-        String path = "/";
-        if (myPath.lastIndexOf("/") > 0) {
-            path = myPath.substring(0, myPath.lastIndexOf("/"));
-        }
-        return path;
-    }
-
-    public String getMyPath() {
         return myPath;
     }
 
@@ -122,32 +75,17 @@ public class ZKNodeFile extends VirtualFile {
 
     @Override
     public VirtualFile getParent() {
-        if ("/".equals(myPath)) {
-            return null;
-        }
-        int slashIndex = myPath.lastIndexOf("/");
-        if (slashIndex == 0) {
-            return new ZKNodeFile(this.myFS, "/");
-        } else {
-            String parentPath = myPath.substring(0, slashIndex);
-            return new ZKNodeFile(this.myFS, parentPath);
-        }
+        return myParentPath == null ? null : new ZKNodeFile(this.myFS, myParentPath);
     }
 
     @Override
     public VirtualFile[] getChildren() {
         try {
             List<String> children = zkClient.getChildren(myPath);
-            if (!children.isEmpty()) {
-                VirtualFile[] files = new VirtualFile[children.size()];
-                for (int i = 0; i < children.size(); i++) {
-                    String childName = children.get(i);
-                    files[i] = new ZKNodeFile(myFS, myPath.endsWith("/") ? myPath + childName : myPath + "/" + childName);
-                }
-                return files;
-            }
+            return children.stream()
+                    .map(childName -> new ZKNodeFile(myFS, StringUtil.join(myPath, childName)))
+                    .toArray(VirtualFile[]::new);
         } catch (Exception ignore) {
-
         }
         return new VirtualFile[0];
     }
@@ -157,30 +95,18 @@ public class ZKNodeFile extends VirtualFile {
         return new ByteArrayOutputStream() {
             @Override
             public void close() {
-                // disable save to update node operation
-                setContent(requestor, toByteArray(), newModificationStamp);
+                byte[] content = toByteArray();
+                myModStamp = newModificationStamp;
+                myContent = content;
+                zkClient.setData(myPath, content);
             }
         };
     }
 
     @Override
     public byte @NotNull [] contentsToByteArray() throws IOException {
-        checkContent();
+        fillContent();
         return this.myContent;
-    }
-
-    public void checkContent() {
-        if (this.myContent == null && zkClient.isConnected()) {
-            byte[] data = zkClient.getData(myPath, stat);
-            this.myContent = ZKCli.getString(data).getBytes();
-
-            if (isSingleFileZip()) {
-                this.myContent = unzip(myContent);
-            }
-        }
-        if (this.myContent == null) {
-            this.myContent = new byte[0];
-        }
     }
 
     @Override
@@ -195,50 +121,43 @@ public class ZKNodeFile extends VirtualFile {
 
     @Override
     public long getLength() {
-        checkContent();
-        return this.myContent.length;
+        return stat.getDataLength();
     }
 
     @Override
     public void refresh(boolean asynchronous, boolean recursive, Runnable postRunnable) {
-
     }
 
     @NotNull
     public InputStream getInputStream() throws IOException {
-        checkContent();
+        fillContent();
         return new ByteArrayInputStream(myContent);
     }
 
     @NotNull
     public FileType getFileType() {
-        String newFileName = this.fileName;
-        if (isSingleFileZip()) {
-            newFileName = newFileName.replace(".zip", "");
-        }
-        FileType fileType = FileTypeManager.getInstance().getFileTypeByFileName(newFileName);
-        if (fileType.getName().equalsIgnoreCase(FileTypes.UNKNOWN.getName())) {
-            return FileTypes.PLAIN_TEXT;
-        }
-        return fileType;
+        return StringUtil.fileType(myName);
     }
 
     public boolean equals(Object obj) {
         return obj instanceof ZKNodeFile && ((ZKNodeFile) obj).myPath.equals(myPath);
     }
 
-    @Override
-    public String toString() {
-        return this.myPath;
+    public void setLeaf() {
+        this.isLeaf = true;
     }
 
-    public boolean isSingleFileZip() {
-        return isLeaf && fileName.endsWith(".zip") && fileName.replace(".zip", "").contains(".");
+    public boolean isZip() {
+        return myName.endsWith(ZKConstant.ZIP);
     }
 
-    public void setContent(@Nullable Object requestor, byte[] content, long newModificationStamp) {
-        myModStamp = newModificationStamp;
-        this.myContent = content;
-        zkClient.setData(this.myPath, content);
+    public void fillContent() {
+        if (this.myContent == null) {
+            byte[] data = zkClient.getData(myPath);
+            if (isZip()) {
+                data = ByteUtil.unzip(data);
+            }
+            this.myContent = ZKCli.getString(data).getBytes();
+        }
     }
 }

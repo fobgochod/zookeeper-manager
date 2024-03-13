@@ -2,9 +2,7 @@ package com.fobgochod.action.popup;
 
 import com.fobgochod.ZKClient;
 import com.fobgochod.constant.ZKCli;
-import com.fobgochod.util.NoticeUtil;
-import com.fobgochod.util.ZKBundle;
-import com.fobgochod.util.ZKIcons;
+import com.fobgochod.util.*;
 import com.fobgochod.view.vfs.ZKNodeFile;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
@@ -46,16 +44,14 @@ public class UpdateDataInEditorAction extends EditorAction {
         @Override
         protected void doExecute(@NotNull Editor editor, @Nullable Caret caret, DataContext dataContext) {
             VirtualFile virtualFile = CommonDataKeys.VIRTUAL_FILE.getData(dataContext);
-            if (virtualFile instanceof ZKNodeFile) {
-                ZKNodeFile nodeFile = (ZKNodeFile) virtualFile;
-                String data = editor.getDocument().getText();
-                if (nodeFile.isSingleFileZip()) {
-                    String replace = nodeFile.getName().replace(".zip", "");
-                    ZKClient.getInstance().setData(nodeFile.getMyPath(), ZKNodeFile.zip(replace, ZKCli.getBytes(data)));
-                } else {
-                    ZKClient.getInstance().setData(nodeFile.getMyPath(), ZKCli.getBytes(data));
+            if (virtualFile instanceof ZKNodeFile nodeFile) {
+                byte[] data = ZKCli.getBytes(editor.getDocument().getText());
+                if (nodeFile.isZip()) {
+                    data = ByteUtil.zip(StringUtil.fileName(nodeFile.getName()), data);
                 }
-                NoticeUtil.status("'" + nodeFile.getMyPath() + "' has been updated!");
+                String myPath = nodeFile.getPath();
+                ZKClient.getInstance().setData(myPath, data);
+                NoticeUtil.status("'" + myPath + "' has been updated!");
             }
         }
 

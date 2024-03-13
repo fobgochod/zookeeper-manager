@@ -1,10 +1,10 @@
 package com.fobgochod.action.navigator;
 
+import com.fobgochod.action.ClientConnectedAction;
 import com.fobgochod.settings.ZKSettings;
 import com.fobgochod.util.NoticeUtil;
 import com.fobgochod.util.ZKBundle;
 import com.intellij.icons.AllIcons;
-import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import org.apache.zookeeper.server.admin.JettyAdminServer;
 import org.jetbrains.annotations.NotNull;
@@ -20,7 +20,7 @@ import java.net.URI;
  * @author fobgochod
  * @since 1.0
  */
-public class CommandsUrlAction extends AnAction {
+public class CommandsUrlAction extends ClientConnectedAction {
 
     private static final ZKSettings state = ZKSettings.getInstance();
 

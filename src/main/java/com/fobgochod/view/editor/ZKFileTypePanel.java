@@ -34,6 +34,10 @@ public class ZKFileTypePanel extends JPanel {
         this.dataFileType.setSelectedItem(getCacheType());
     }
 
+    public void setDataFileType(FileType fileType) {
+        this.dataFileType.setSelectedItem(fileType);
+    }
+
     @Override
     public void setVisible(boolean aFlag) {
         super.setVisible(aFlag);
@@ -81,8 +85,7 @@ public class ZKFileTypePanel extends JPanel {
                 return;
             }
             Object select = selects[0];
-            if (select instanceof FileType) {
-                FileType fileType = (FileType) select;
+            if (select instanceof FileType fileType) {
                 this.nodeData.setFileType(fileType);
                 setCacheType(fileType);
             }

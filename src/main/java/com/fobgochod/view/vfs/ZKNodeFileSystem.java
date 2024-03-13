@@ -1,11 +1,11 @@
 package com.fobgochod.view.vfs;
 
 import com.fobgochod.ZKClient;
+import com.fobgochod.util.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileManager;
 import com.intellij.openapi.vfs.ex.dummy.DummyFileSystem;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 
@@ -30,42 +30,41 @@ public class ZKNodeFileSystem extends DummyFileSystem {
         return PROTOCOL;
     }
 
-    @Nullable
     @Override
-    public VirtualFile findFileByPath(@NotNull String path) {
+    public ZKNodeFile findFileByPath(@NotNull String path) {
         return new ZKNodeFile(this, path);
     }
 
     @Override
-    public void deleteFile(Object o, @NotNull VirtualFile virtualFile) throws IOException {
-        zkClient.delete(virtualFile.getPath());
+    public void deleteFile(Object requestor, @NotNull VirtualFile vFile) throws IOException {
+        zkClient.delete(vFile.getPath());
     }
 
     @Override
-    public void moveFile(Object o, @NotNull VirtualFile virtualFile, @NotNull VirtualFile virtualFile2) {
-        byte[] content = zkClient.getData(virtualFile.getPath());
-        zkClient.create(virtualFile2.getPath(), content);
-        zkClient.delete(virtualFile.getPath());
+    public void moveFile(Object requestor, @NotNull VirtualFile vFile, @NotNull VirtualFile newParent) {
+        byte[] content = zkClient.getData(vFile.getPath());
+        zkClient.create(newParent.getPath(), content);
+        zkClient.delete(vFile.getPath());
     }
 
     @Override
-    public void renameFile(Object o, @NotNull VirtualFile virtualFile, @NotNull String name) {
-        String newFilePath = virtualFile.getPath().substring(0, virtualFile.getPath().indexOf("/")) + "/" + name;
-        moveFile(o, virtualFile, new ZKNodeFile(this, newFilePath));
+    public void renameFile(Object requestor, @NotNull VirtualFile vFile, @NotNull String newName) {
+        String newFilePath = StringUtil.join(vFile.getParent().getPath(), newName);
+        moveFile(requestor, vFile, new ZKNodeFile(this, newFilePath));
     }
 
     @NotNull
     @Override
-    public VirtualFile createChildFile(Object o, @NotNull VirtualFile virtualFile, @NotNull String fileName) throws IOException {
-        String filePath = virtualFile.getPath() + "/" + fileName;
+    public VirtualFile createChildFile(Object requestor, @NotNull VirtualFile vDir, @NotNull String fileName) throws IOException {
+        String filePath = StringUtil.join(vDir.getPath(), fileName);
         zkClient.create(filePath);
         return new ZKNodeFile(this, filePath);
     }
 
     @NotNull
     @Override
-    public VirtualFile createChildDirectory(Object o, @NotNull VirtualFile virtualFile, @NotNull String directory) {
-        String filePath = virtualFile.getPath() + "/" + directory;
+    public VirtualFile createChildDirectory(Object requestor, @NotNull VirtualFile vDir, @NotNull String dirName) {
+        String filePath = StringUtil.join(vDir.getPath(), dirName);
         zkClient.create(filePath);
         return new ZKNodeFile(this, filePath);
     }

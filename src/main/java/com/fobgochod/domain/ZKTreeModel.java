@@ -7,7 +7,6 @@ import com.intellij.util.ui.tree.AbstractTreeModel;
 import org.apache.zookeeper.data.ACL;
 import org.apache.zookeeper.data.Stat;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -33,10 +32,8 @@ public class ZKTreeModel extends AbstractTreeModel {
     }
 
     public static void fillStat(ZKNode zkNode) {
-        if (!zkNode.isFill()) {
-            Stat stat = zkClient.exists(zkNode.getFullPath());
-            zkNode.setStat(stat);
-        }
+        Stat stat = zkClient.exists(zkNode.getFullPath());
+        if (stat != null) zkNode.setStat(stat);
     }
 
     public static void fillAcl(ZKNode zkNode) {
@@ -77,12 +74,6 @@ public class ZKTreeModel extends AbstractTreeModel {
     public List<ZKNode> getChildren(ZKNode parent) {
         List<String> childPaths = zkClient.getChildren(parent.getFullPath());
         childPaths.sort(String::compareTo);
-
-        List<ZKNode> children = new ArrayList<>();
-        for (String childPath : childPaths) {
-            ZKNode childNode = new ZKNode(parent.getFullPath(), childPath);
-            children.add(childNode);
-        }
-        return children;
+        return childPaths.stream().map(child -> new ZKNode(parent.getFullPath(), child)).collect(Collectors.toList());
     }
 }

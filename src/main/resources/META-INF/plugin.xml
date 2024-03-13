@@ -23,8 +23,6 @@
 
         <projectService serviceImplementation="com.fobgochod.view.window.ZKToolWindow"/>
 
-<!--        <applicationService serviceImplementation="com.fobgochod.ZooClient"/>-->
-
         <virtualFileSystem key="zookeeper-node"
                            implementationClass="com.fobgochod.view.vfs.ZKNodeFileSystem"/>
 

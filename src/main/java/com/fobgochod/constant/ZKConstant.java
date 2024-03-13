@@ -6,6 +6,7 @@ import java.time.format.DateTimeFormatter;
 
 public class ZKConstant {
 
+    public static final String DOT = ".";
     public static final String EMPTY = "";
     public static final String COMMA = ",";
     public static final String COLON = ":";
@@ -13,6 +14,7 @@ public class ZKConstant {
     public static final String HYPHEN = "-";
     public static final byte[] EMPTY_BYTE = new byte[0];
     public static final String LOCALHOST = "localhost";
+    public static final String ZIP = ".zip";
 
     public static final Integer DEFAULT_CLIENT_PORT = 2181;
     public static final Integer DEFAULT_SESSION_TIMEOUT = 6 * 1000;

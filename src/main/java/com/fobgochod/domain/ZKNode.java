@@ -1,6 +1,7 @@
 package com.fobgochod.domain;
 
 import com.fobgochod.constant.ZKConstant;
+import com.fobgochod.util.StringUtil;
 import org.apache.zookeeper.data.ACL;
 import org.apache.zookeeper.data.Stat;
 
@@ -18,13 +19,15 @@ import java.util.List;
  */
 public class ZKNode {
 
+    public static final Stat STAT = new Stat();
+
     private static final List<String> binaryExtNames = Arrays.asList("pb", "bin", "msgpack");
     private boolean root;
     private String path;
     private String fullPath;
     private String name;
     private byte[] data;
-    private Stat stat;
+    private Stat stat = STAT;
     private List<? extends ACL> perms = new ArrayList<>();
 
     private ZKNode() {
@@ -38,15 +41,7 @@ public class ZKNode {
         this.path = path;
         this.name = name;
         this.root = root;
-        if (root) {
-            this.fullPath = path;
-        } else {
-            if (ZKConstant.SLASH.equals(path)) {
-                this.fullPath = path + name;
-            } else {
-                this.fullPath = path + ZKConstant.SLASH + name;
-            }
-        }
+        this.fullPath = root ? path : StringUtil.join(path, name);
     }
 
     public String getPath() {
@@ -90,25 +85,17 @@ public class ZKNode {
     }
 
     public boolean isLeaf() {
-        return stat != null && stat.getNumChildren() == 0;
+        return stat.getNumChildren() == 0;
     }
 
     public boolean isEphemeral() {
-        return stat != null && stat.getEphemeralOwner() > 0;
-    }
-
-    public int getChildrenCount() {
-        return stat != null ? stat.getNumChildren() : 0;
-    }
-
-    public boolean isFill() {
-        return stat != null;
+        return stat.getEphemeralOwner() > 0;
     }
 
     public boolean isBinary() {
         String extName = null;
-        if (name.contains(".")) {
-            extName = name.substring(name.lastIndexOf(".") + 1);
+        if (name.contains(ZKConstant.DOT)) {
+            extName = name.substring(name.lastIndexOf(ZKConstant.DOT) + 1);
         }
         return extName != null && binaryExtNames.contains(extName.toLowerCase());
     }

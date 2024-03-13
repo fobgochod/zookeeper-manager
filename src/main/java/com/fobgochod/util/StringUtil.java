@@ -2,6 +2,9 @@ package com.fobgochod.util;
 
 import com.fobgochod.constant.ZKConstant;
 import com.fobgochod.settings.ZKSettings;
+import com.intellij.openapi.fileTypes.FileType;
+import com.intellij.openapi.fileTypes.FileTypeManager;
+import com.intellij.openapi.fileTypes.FileTypes;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -85,6 +88,34 @@ public class StringUtil {
         String full = first + ZKConstant.SLASH + second;
         String[] array = full.split(ZKConstant.SLASH);
         return ZKConstant.SLASH + Arrays.stream(array).filter(p -> !p.isEmpty()).collect(Collectors.joining(ZKConstant.SLASH));
+    }
+
+    public static String pathName(String path) {
+        return path.substring(path.lastIndexOf(ZKConstant.SLASH) + 1);
+    }
+
+    public static String pathParent(String path) {
+        if ("/".equals(path)) {
+            return null;
+        }
+        int index = path.lastIndexOf("/");
+        if (index == 0) {
+            return "/";
+        } else {
+            return path.substring(0, index);
+        }
+    }
+
+    public static String fileName(String name) {
+        return name.replace(ZKConstant.ZIP, ZKConstant.EMPTY);
+    }
+
+    public static FileType fileType(String name) {
+        FileType fileType = FileTypeManager.getInstance().getFileTypeByFileName(fileName(name));
+        if (FileTypes.UNKNOWN.getName().equalsIgnoreCase(fileType.getName())) {
+            return FileTypes.PLAIN_TEXT;
+        }
+        return fileType;
     }
 
     public static Charset charset() {

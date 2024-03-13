@@ -17,7 +17,6 @@ import com.intellij.ui.components.JBTextField
 import com.intellij.ui.dsl.builder.*
 import com.intellij.ui.dsl.gridLayout.HorizontalAlign
 import com.intellij.ui.layout.selected
-import java.awt.Dimension
 
 /**
  * Zookeeper Settings Configurable
@@ -119,11 +118,13 @@ class ZKSettingsConfigurable : BoundSearchableConfigurable(
 
                 indent {
                     row(message("settings.sasl.username")) {
-                        textField().bindText(state::username)
+                        textField()
+                            .horizontalAlign(HorizontalAlign.FILL)
+                            .bindText(state::username)
                     }
                     row(message("settings.sasl.password")) {
                         val result = cell(JBPasswordField())
-                        result.apply { component.preferredSize = Dimension(200, component.preferredSize.height) }
+                        result.horizontalAlign(HorizontalAlign.FILL)
                         result.bindText(state::password)
                     }
                 }.enabledIf(enableSaslModel.selected)

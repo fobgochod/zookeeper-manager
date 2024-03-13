@@ -7,6 +7,7 @@ import com.fobgochod.domain.ZKNode;
 import com.fobgochod.domain.ZKTreeModel;
 import com.fobgochod.util.NoticeUtil;
 import com.fobgochod.util.SingleUtil;
+import com.fobgochod.util.StringUtil;
 import com.fobgochod.view.editor.ZKFileTypePanel;
 import com.fobgochod.view.editor.ZKNodeEditor;
 import com.fobgochod.view.vfs.ZKNodeFile;
@@ -209,12 +210,12 @@ public class ZKToolWindow extends SimpleToolWindowPanel {
             return;
         }
         if (force || (selectionNode.isLeaf() && !selectionNode.isBinary())) {
-            ZKNodeFile virtualFile = (ZKNodeFile) ZKNodeFileSystem.getInstance().findFileByPath(selectionNode.getFullPath());
-            if (virtualFile != null) {
+            ZKNodeFile zkNodeFile = ZKNodeFileSystem.getInstance().findFileByPath(selectionNode.getFullPath());
+            if (zkNodeFile != null) {
                 if (force) {
-                    virtualFile.setLeaf();
+                    zkNodeFile.setLeaf();
                 }
-                FileEditorManager.getInstance(project).openFile(virtualFile, true);
+                FileEditorManager.getInstance(project).openFile(zkNodeFile, true);
             }
         }
     }
@@ -348,6 +349,7 @@ public class ZKToolWindow extends SimpleToolWindowPanel {
 
         String tabName = tabs.getSelectedInfo().getText();
         if (ZKTab.Data.key().equals(tabName)) {
+            zkFileTypePanel.setDataFileType(StringUtil.fileType(selectionNode.getName()));
             ZKNodeData.getInstance(project).showTabData(selectionNode);
         } else if (ZKTab.Stat.key().equals(tabName)) {
             ZKNodeData.getInstance(project).showTabStat(selectionNode);

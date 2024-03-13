@@ -1,6 +1,7 @@
 package com.fobgochod.action.popup.node;
 
 import com.fobgochod.action.NodeSelectedAction;
+import com.fobgochod.domain.ZKNode;
 import com.fobgochod.util.ZKBundle;
 import com.fobgochod.view.window.ZKToolWindow;
 import com.intellij.icons.AllIcons;
@@ -25,5 +26,12 @@ public class OpenNodeInEditorAction extends NodeSelectedAction {
             return;
         }
         ZKToolWindow.getInstance(event.getProject()).openFile(true);
+    }
+
+    @Override
+    public void update(@NotNull AnActionEvent event) {
+        super.update(event);
+        ZKNode selectionNode = toolWindow.getSelectionNode();
+        event.getPresentation().setEnabledAndVisible(selectionNode != null && !selectionNode.isRoot());
     }
 }

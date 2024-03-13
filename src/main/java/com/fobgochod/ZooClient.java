@@ -2,6 +2,7 @@ package com.fobgochod;
 
 import com.fobgochod.constant.ZKCli;
 import com.fobgochod.constant.ZKConstant;
+import com.fobgochod.domain.ZKNode;
 import com.fobgochod.util.NoticeUtil;
 import com.fobgochod.util.ZKPaths;
 import com.intellij.notification.NotificationType;
@@ -149,11 +150,13 @@ public final class ZooClient implements ZKClient {
 
     public byte[] getData(String path) {
         try {
-            byte[] data = zooKeeper.getData(path, false, null);
-            NoticeUtil.debug(ZKCli.getLog(ZKCli.get, path));
-            if (data != null) {
-                // 通过cli执行create /hello  返回数据未null
-                return data;
+            if (isConnected()) {
+                byte[] data = zooKeeper.getData(path, false, null);
+                NoticeUtil.debug(ZKCli.getLog(ZKCli.get, path));
+                if (data != null) {
+                    // 通过cli执行create /hello  返回数据未null
+                    return data;
+                }
             }
         } catch (Exception e) {
             NoticeUtil.error(ZKCli.getLog(ZKCli.get, path), e.getMessage());
@@ -176,16 +179,23 @@ public final class ZooClient implements ZKClient {
 
     public Stat exists(String path) {
         try {
-            return zooKeeper.exists(path, false);
+            if (isConnected()) {
+                Stat stat = zooKeeper.exists(path, false);
+                if (stat != null) {
+                    return stat;
+                }
+            }
         } catch (Exception e) {
             NoticeUtil.error(ZKCli.getLog(ZKCli.stat, path), e.getMessage());
         }
-        return null;
+        return ZKNode.STAT;
     }
 
     public List<String> getChildren(String path) {
         try {
-            return zooKeeper.getChildren(path, false);
+            if (isConnected()) {
+                return zooKeeper.getChildren(path, false);
+            }
         } catch (Exception e) {
             NoticeUtil.error(ZKCli.getLog(ZKCli.ls, path), e.getMessage());
         }

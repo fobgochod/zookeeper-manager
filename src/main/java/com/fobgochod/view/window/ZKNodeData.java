@@ -57,7 +57,7 @@ public class ZKNodeData {
         ZKTreeModel.fillStat(node);
 
         Stat stat = node.getStat();
-        if (stat == null) {
+        if (stat == ZKNode.STAT) {
             toolWindow.setStat(new DefaultTableModel());
             return;
         }
