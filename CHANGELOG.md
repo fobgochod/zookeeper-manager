@@ -4,6 +4,11 @@
 
 ## [Unreleased]
 
+### Fixed
+
+- Fix zk node vfs
+- Fix SASL setting ui 
+
 ## [3.0.0] - 2024-03-11
 
 ### Added

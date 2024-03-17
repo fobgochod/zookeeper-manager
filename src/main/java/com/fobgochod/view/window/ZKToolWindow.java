@@ -52,7 +52,7 @@ public class ZKToolWindow extends SimpleToolWindowPanel {
     private Tree tree;
 
     /**
-     * 选项卡面板 - 节点信息
+     * tab panel
      */
     private JBTabs tabs;
 

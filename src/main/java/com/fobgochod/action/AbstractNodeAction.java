@@ -2,6 +2,7 @@ package com.fobgochod.action;
 
 import com.fobgochod.ZKClient;
 import com.fobgochod.view.window.ZKToolWindow;
+import com.intellij.openapi.actionSystem.ActionUpdateThread;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.project.Project;
@@ -18,5 +19,10 @@ public abstract class AbstractNodeAction extends AnAction {
         if (project != null && this.toolWindow == null) {
             this.toolWindow = ZKToolWindow.getInstance(project);
         }
+    }
+
+    @Override
+    public @NotNull ActionUpdateThread getActionUpdateThread() {
+        return ActionUpdateThread.BGT;
     }
 }

@@ -95,10 +95,9 @@ public class ZKNodeFile extends VirtualFile {
         return new ByteArrayOutputStream() {
             @Override
             public void close() {
-                byte[] content = toByteArray();
                 myModStamp = newModificationStamp;
-                myContent = content;
-                zkClient.setData(myPath, content);
+                myContent = toByteArray();
+                zkClient.setData(myPath, myContent);
             }
         };
     }
@@ -157,7 +156,7 @@ public class ZKNodeFile extends VirtualFile {
             if (isZip()) {
                 data = ByteUtil.unzip(data);
             }
-            this.myContent = ZKCli.getString(data).getBytes();
+            this.myContent = ZKCli.getString(data).getBytes(getCharset());
         }
     }
 }

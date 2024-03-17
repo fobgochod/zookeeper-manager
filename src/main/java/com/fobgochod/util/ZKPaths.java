@@ -49,7 +49,7 @@ public class ZKPaths {
     }
 
     /**
-     * 是否是有序节点
+     * is sequence node
      * The counter has a format of %010d
      * that is 10 digits with 0 (zero) padding (the counter is formatted in this way to simplify sorting).
      * i.e. "0000000001".
