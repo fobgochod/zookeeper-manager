@@ -4,10 +4,12 @@
 
 ## [Unreleased]
 
+## [3.0.1] - 2024-03-17
+
 ### Fixed
 
 - Fix zk node vfs
-- Fix SASL setting ui 
+- Fix SASL setting ui
 
 ## [3.0.0] - 2024-03-11
 
@@ -127,7 +129,7 @@
 
 - Initial project scaffold
 
-[Unreleased]: https://github.com/fobgochod/zookeeper-manager/compare/v3.0.0...HEAD
+[Unreleased]: https://github.com/fobgochod/zookeeper-manager/compare/v3.0.1...HEAD
 [2022.3.5]: https://github.com/fobgochod/zookeeper-manager/compare/v2022.3.4...v2022.3.5
 [2022.3.4]: https://github.com/fobgochod/zookeeper-manager/compare/v2022.3.3...v2022.3.4
 [2022.3.3]: https://github.com/fobgochod/zookeeper-manager/compare/v2022.3.2...v2022.3.3
@@ -138,5 +140,6 @@
 [2022.1.0]: https://github.com/fobgochod/zookeeper-manager/compare/v2021.3.0...v2022.1.0
 [2021.3.0]: https://github.com/fobgochod/zookeeper-manager/compare/v2020.3.0...v2021.3.0
 [2020.3.0]: https://github.com/fobgochod/zookeeper-manager/compare/v1.0.0...v2020.3.0
+[3.0.1]: https://github.com/fobgochod/zookeeper-manager/compare/v3.0.0...v3.0.1
 [3.0.0]: https://github.com/fobgochod/zookeeper-manager/compare/v2022.3.5...v3.0.0
 [1.0.0]: https://github.com/fobgochod/zookeeper-manager/commits/v1.0.0
