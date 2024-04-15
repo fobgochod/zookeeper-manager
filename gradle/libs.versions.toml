@@ -2,7 +2,7 @@
 # libraries
 annotations = "24.1.0"
 zookeeper = "3.9.2"
-slf4j-api = "2.0.12"
+slf4j-api = "2.0.13"
 
 # plugins
 kotlin = "1.9.21"
