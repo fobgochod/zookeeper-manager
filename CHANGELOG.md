@@ -4,6 +4,10 @@
 
 ## [Unreleased]
 
+### Fixed
+
+- Compatible with 242 ~ 252
+
 ## [3.0.1] - 2024-03-17
 
 ### Fixed
