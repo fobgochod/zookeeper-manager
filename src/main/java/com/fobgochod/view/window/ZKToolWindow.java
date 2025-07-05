@@ -125,7 +125,7 @@ public class ZKToolWindow extends SimpleToolWindowPanel {
     }
 
     public void closeTree() {
-        treePane.setViewport(null);
+        treePane.setViewportView(new JPanel());
         treePane.updateUI();
     }
 

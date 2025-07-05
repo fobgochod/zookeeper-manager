@@ -114,18 +114,18 @@ class ZKSettings : PersistentStateComponent<ZKSettingsState> {
 
     /**
      * example1:
-     * input:  host=192.168.10.10:2181  port=
-     * output: 192.168.10.10:2181
+     * - input:  host=192.168.10.10:2181  port=
+     * - output: 192.168.10.10:2181
      *
      *
      * example2:
-     * input:  host=192.168.10.10,192.168.10.11,192.168.10.10  port=2181
-     * output: 192.168.10.10:2181,192.168.10.11:2181,192.168.10.12:2181
+     * - input:  host=192.168.10.10,192.168.10.11,192.168.10.10  port=2181
+     * - output: 192.168.10.10:2181,192.168.10.11:2181,192.168.10.12:2181
      *
      *
      * example3:
-     * input:  host=192.168.10.10  port=2181
-     * output: 192.168.10.10:2181
+     * - input:  host=192.168.10.10  port=2181
+     * - output: 192.168.10.10:2181
      *
      * @return connectString
      */
@@ -147,8 +147,8 @@ class ZKSettings : PersistentStateComponent<ZKSettingsState> {
     /**
      * 根据连接字符串获取一个name
      *
-     * input:  192.168.10.10:2181,192.168.10.11:2181,192.168.10.12:2181/hello
-     * output: 192.168.10.10:2181/hello
+     * - input:  192.168.10.10:2181,192.168.10.11:2181,192.168.10.12:2181/hello
+     * - output: 192.168.10.10:2181/hello
      */
     fun getTitle(): String {
         if (StringUtil.isNotEmpty(name)) {

@@ -56,8 +56,8 @@ class HostListTable : ListTableWithButtons<HostListTable.Item>() {
         }
     }
 
-    override fun createListModel(): ListTableModel<String> {
-        return ListTableModel<String>(NAME_COLUMN)
+    override fun createListModel(): ListTableModel<Item> {
+        return ListTableModel<Item>(NAME_COLUMN)
     }
 
     override fun createElement(): Item {

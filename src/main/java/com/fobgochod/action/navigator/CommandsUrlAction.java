@@ -22,8 +22,6 @@ import java.net.URI;
  */
 public class CommandsUrlAction extends ClientConnectedAction {
 
-    private static final ZKSettings state = ZKSettings.getInstance();
-
     public CommandsUrlAction() {
         getTemplatePresentation().setText(ZKBundle.message("action.toolbar.commands.url.text"));
         getTemplatePresentation().setIcon(AllIcons.Actions.InlayGlobe);
@@ -33,7 +31,7 @@ public class CommandsUrlAction extends ClientConnectedAction {
     public void actionPerformed(@NotNull AnActionEvent event) {
         try {
             if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
-                Desktop.getDesktop().browse(URI.create(state.adminServerUrl()));
+                Desktop.getDesktop().browse(URI.create(ZKSettings.getInstance().adminServerUrl()));
             } else {
                 NoticeUtil.message("Desktop browsing is not supported on this platform.");
             }

@@ -8,7 +8,7 @@ import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.wm.impl.status.StatusBarUtil;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
 import javax.swing.text.BadLocationException;

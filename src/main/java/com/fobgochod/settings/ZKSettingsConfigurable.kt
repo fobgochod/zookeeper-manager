@@ -7,6 +7,7 @@ import com.intellij.application.options.editor.checkBox
 import com.intellij.icons.AllIcons
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
+import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.options.BoundSearchableConfigurable
 import com.intellij.openapi.ui.DialogPanel
 import com.intellij.openapi.ui.messages.MessageDialog
@@ -15,7 +16,6 @@ import com.intellij.ui.components.JBCheckBox
 import com.intellij.ui.components.JBPasswordField
 import com.intellij.ui.components.JBTextField
 import com.intellij.ui.dsl.builder.*
-import com.intellij.ui.dsl.gridLayout.HorizontalAlign
 import com.intellij.ui.layout.selected
 
 /**
@@ -41,27 +41,27 @@ class ZKSettingsConfigurable : BoundSearchableConfigurable(
         return panel {
             group(message("settings.group.connection")) {
                 row(message("settings.connection.name")) {
-                    textField().horizontalAlign(HorizontalAlign.FILL).bindText(state::name)
+                    textField().align(Align.FILL).bindText(state::name)
                 }
 
                 row(message("settings.connection.host")) {
                     hostModel = textField()
                         .applyToComponent { setEmptyState("172.16.2.1,172.16.2.2,172.16.2.3") }
                         .resizableColumn()
-                        .horizontalAlign(HorizontalAlign.FILL)
+                        .align(Align.FILL)
                         .bindText(state::host).component
 
                     portModel = intTextField(0..65536)
                         .label(message("settings.connection.port"))
                         .columns(10)
-                        .horizontalAlign(HorizontalAlign.RIGHT)
+                        .align(AlignX.RIGHT)
                         .bindIntText(state::port).component
                 }
 
                 row(message("settings.connection.path")) {
                     pathModel = textField()
                         .applyToComponent { setEmptyState("/zookeeper") }
-                        .horizontalAlign(HorizontalAlign.FILL)
+                        .align(Align.FILL)
                         .bindText(state::path).component
                 }
 
@@ -92,7 +92,7 @@ class ZKSettingsConfigurable : BoundSearchableConfigurable(
                             }
                             // @formatter:on
                         }
-                    ).horizontalAlign(HorizontalAlign.RIGHT)
+                    ).align(AlignX.RIGHT)
                 }
             }
 
@@ -103,7 +103,7 @@ class ZKSettingsConfigurable : BoundSearchableConfigurable(
 
                 row(message("settings.other.admin.server")) {
                     textField()
-                        .horizontalAlign(HorizontalAlign.FILL)
+                        .align(Align.FILL)
                         .bindText(state::adminServer)
                 }.rowComment(
                     "Config admin.enableServer=false to disable the <a href='https://zookeeper.apache.org/doc/current/zookeeperAdmin.html#sc_adminserver'>AdminServer</a>.",
@@ -119,16 +119,28 @@ class ZKSettingsConfigurable : BoundSearchableConfigurable(
                 indent {
                     row(message("settings.sasl.username")) {
                         textField()
-                            .horizontalAlign(HorizontalAlign.FILL)
+                            .align(Align.FILL)
                             .bindText(state::username)
                     }
                     row(message("settings.sasl.password")) {
-                        val result = cell(JBPasswordField())
-                        result.horizontalAlign(HorizontalAlign.FILL)
-                        result.bindText(state::password)
+                        val pwdField = JBPasswordField()
+                        cell(pwdField).align(Align.FILL)
+                        loadPasswordAsync { pwd ->
+                            pwdField.text = pwd
+                        }
                     }
                 }.enabledIf(enableSaslModel.selected)
             }
         }
     }
+
+    fun loadPasswordAsync(onResult: (String) -> Unit) {
+        ApplicationManager.getApplication().executeOnPooledThread {
+            val pwd = state.password
+            ApplicationManager.getApplication().invokeLater {
+                onResult(pwd)
+            }
+        }
+    }
+
 }
