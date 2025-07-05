@@ -7,7 +7,6 @@ import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import com.intellij.credentialStore.CredentialAttributes
 import com.intellij.credentialStore.Credentials
-import com.intellij.credentialStore.generateServiceName
 import com.intellij.ide.passwordSafe.PasswordSafe
 import com.intellij.openapi.components.*
 import com.intellij.util.xmlb.XmlSerializerUtil
@@ -109,7 +108,7 @@ class ZKSettings : PersistentStateComponent<ZKSettingsState> {
         }
 
     private fun credentialAttributes(): CredentialAttributes {
-        return CredentialAttributes(generateServiceName(ZKBundle.message("plugin.name"), "password"))
+        return CredentialAttributes(ZKBundle.message("plugin.name"), "password")
     }
 
     /**
