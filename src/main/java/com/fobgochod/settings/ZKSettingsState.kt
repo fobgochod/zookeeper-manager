@@ -3,15 +3,9 @@ package com.fobgochod.settings
 import com.fobgochod.constant.ZKConstant
 import com.intellij.openapi.components.BaseState
 import com.intellij.util.xmlb.annotations.OptionTag
-import com.intellij.util.xmlb.annotations.Tag
-import com.intellij.util.xmlb.annotations.XCollection
 import java.nio.charset.StandardCharsets
 
 class ZKSettingsState : BaseState() {
-
-    @get:Tag("HOST_ROWS")
-    @get:XCollection(style = XCollection.Style.v2)
-    var hostRows by list<String>()
 
     @get:OptionTag("NAME")
     var name by string()

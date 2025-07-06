@@ -7,7 +7,6 @@ import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import com.intellij.credentialStore.CredentialAttributes
 import com.intellij.credentialStore.Credentials
-import com.intellij.credentialStore.generateServiceName
 import com.intellij.ide.passwordSafe.PasswordSafe
 import com.intellij.openapi.components.*
 import com.intellij.util.xmlb.XmlSerializerUtil
@@ -34,12 +33,6 @@ class ZKSettings : PersistentStateComponent<ZKSettingsState> {
     override fun getState() = state
 
     override fun loadState(state: ZKSettingsState) = XmlSerializerUtil.copyBean(state, this.state)
-
-    var hostRows: MutableList<String>
-        get() = state.hostRows
-        set(value) {
-            state.hostRows = value
-        }
 
     var name: String
         get() = state.name ?: ZKConstant.EMPTY
@@ -109,7 +102,7 @@ class ZKSettings : PersistentStateComponent<ZKSettingsState> {
         }
 
     private fun credentialAttributes(): CredentialAttributes {
-        return CredentialAttributes(generateServiceName(ZKBundle.message("plugin.name"), "password"))
+        return CredentialAttributes(ZKBundle.message("plugin.name"), "password")
     }
 
     /**

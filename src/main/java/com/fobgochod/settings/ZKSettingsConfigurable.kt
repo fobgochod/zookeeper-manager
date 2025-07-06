@@ -7,6 +7,7 @@ import com.intellij.application.options.editor.checkBox
 import com.intellij.icons.AllIcons
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
+import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.options.BoundSearchableConfigurable
 import com.intellij.openapi.ui.DialogPanel
 import com.intellij.openapi.ui.messages.MessageDialog
@@ -123,11 +124,22 @@ class ZKSettingsConfigurable : BoundSearchableConfigurable(
                             .bindText(state::username)
                     }
                     row(message("settings.sasl.password")) {
-                        val result = cell(JBPasswordField())
-                        result.horizontalAlign(HorizontalAlign.FILL)
-                        result.bindText(state::password)
+                        val pwdField = JBPasswordField()
+                        cell(pwdField).horizontalAlign(HorizontalAlign.FILL)
+                        loadPasswordAsync { pwd ->
+                            pwdField.text = pwd
+                        }
                     }
                 }.enabledIf(enableSaslModel.selected)
+            }
+        }
+    }
+
+    fun loadPasswordAsync(onResult: (String) -> Unit) {
+        ApplicationManager.getApplication().executeOnPooledThread {
+            val pwd = state.password
+            ApplicationManager.getApplication().invokeLater {
+                onResult(pwd)
             }
         }
     }

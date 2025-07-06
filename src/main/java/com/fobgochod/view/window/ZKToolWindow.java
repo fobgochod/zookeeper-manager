@@ -27,9 +27,9 @@ import com.intellij.ui.JBSplitter;
 import com.intellij.ui.components.JBScrollPane;
 import com.intellij.ui.table.JBTable;
 import com.intellij.ui.tabs.JBTabs;
+import com.intellij.ui.tabs.JBTabsFactory;
 import com.intellij.ui.tabs.TabInfo;
 import com.intellij.ui.tabs.TabsListener;
-import com.intellij.ui.tabs.impl.JBTabsImpl;
 import com.intellij.ui.treeStructure.Tree;
 import org.jetbrains.annotations.NotNull;
 
@@ -125,7 +125,7 @@ public class ZKToolWindow extends SimpleToolWindowPanel {
     }
 
     public void closeTree() {
-        treePane.setViewport(null);
+        treePane.setViewportView(new JPanel());
         treePane.updateUI();
     }
 
@@ -226,7 +226,7 @@ public class ZKToolWindow extends SimpleToolWindowPanel {
         treePane = new JBScrollPane();
         root.setFirstComponent(treePane);
 
-        tabs = new JBTabsImpl(project);
+        tabs = JBTabsFactory.createTabs(project);
 
         // node data
         nodeData = new ZKNodeEditor(project);
